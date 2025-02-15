@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="بوابة الامتحانات لثانوية عبد الحميد بن باديس - بيضاء برج. اختبارات وفروض لجميع المستويات.">
+    <meta name="keywords" content="امتحانات, ثانوية عبد الحميد بن باديس, بيضاء برج, فروض, اختبارات">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="بوابة الامتحانات - ثانوية عبد الحميد بن باديس">
+    <meta property="og:description" content="منصة تعليمية لتحميل الاختبارات والفروض">
+    <meta property="og:type" content="website">
+    <!--<meta property="og:url" content="https://exams.school-domain.com">-->
+    <meta property="og:image" content="favicon.png">
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://faridmezane.space">
+    <link rel="dns-prefetch" href="https://faridmezane.space">
+    
+    <title>بوابة الامتحانات - ثانوية عبد الحميد بن باديس</title>
+    
+    <!-- Schema.org markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "ثانوية عبد الحميد بن باديس",
+        "description": "بوابة الامتحانات والفروض المدرسية",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "بيضاء برج",
+            "addressCountry": "DZ"
+        }
+    }
+    </script>
+    
+    <link rel="stylesheet" href="styles.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <!-- PWA support -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1a1a1a">
+    <link rel="apple-touch-icon" href="/images/icon-192.png">
+</head>
+<body class="dark-theme">
+    <!-- Skip Navigation -->
+    <a href="#main-content" class="skip-link">التنقل إلى المحتوى الرئيسي</a>
+
+    <div class="container">
+        <header role="banner">
+            <div class="header-content">
+                <h1>ثانوية عبد الحميد بن باديس – بيضاء برج</h1>
+                <h2>بوابة الامتحانات</h2>
+                <p class="teacher-name">الأستاذ: مزان فريد</p>
+            </div>
+            
+            <!-- Theme Switcher -->
+            <div class="theme-switcher">
+                <button aria-label="تبديل المظهر" class="theme-toggle" id="themeToggle">
+                    <span class="theme-icon">🌓</span>
+                </button>
+                </button>
+				<!--
+                <button aria-label="تبديل التباين العالي" class="contrast-toggle" id="contrastToggle">
+                    <span class="contrast-icon">Aa</span> 
+                </button>
+				-->
+            </div>
+        </header>
+
+        <main id="main-content" role="main">
+            <!-- Breadcrumb -->
+            <nav aria-label="مسار التنقل" class="breadcrumb">
+                <ol>
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><span>بوابة الامتحانات</span></li>
+                </ol>
+            </nav>
+
+            <div class="years-tabs" role="tablist">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" 
+                            role="tab" 
+                            aria-selected="true" 
+                            aria-controls="year2024" 
+                            id="tab2024"
+                            data-year="2024">
+                        2024-2025
+                    </button>
+                    <button class="tab-btn" 
+                            role="tab" 
+                            aria-selected="false" 
+                            aria-controls="year2023" 
+                            id="tab2023"
+                            data-year="2023">
+                        2023-2024
+                    </button>
+                    <button class="tab-btn" 
+                            role="tab" 
+                            aria-selected="false" 
+                            aria-controls="year2022" 
+                            id="tab2022"
+                            data-year="2022">
+                        2022-2023
+                    </button>
+                </div>
+
+                <div id="year2024" 
+                     class="tab-content active" 
+                     role="tabpanel" 
+                     aria-labelledby="tab2024">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+
+                <div id="year2023" 
+                     class="tab-content" 
+                     role="tabpanel" 
+                     aria-labelledby="tab2023" 
+                     hidden>
+                    <!-- Content will be loaded dynamically -->
+                </div>
+
+                <div id="year2022" 
+                     class="tab-content" 
+                     role="tabpanel" 
+                     aria-labelledby="tab2022" 
+                     hidden>
+                    <!-- Content will be loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- Search Section -->
+            <div class="search-section">
+                <form role="search" class="search-form">
+                    <label for="examSearch">البحث عن الامتحانات</label>
+                    <input type="search" 
+                           id="examSearch" 
+                           placeholder="ادخل الكلمات المفتاحية للبحث..."
+                           aria-label="البحث في الامتحانات">
+                    <button type="submit" aria-label="بحث">
+                        <span class="search-icon">🔍</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Notifications -->
+            <div class="notifications" 
+                 role="status" 
+                 aria-live="polite" 
+                 id="notificationArea">
+            </div>
+        </main>
+
+        <footer role="contentinfo">
+            <div class="footer-content">
+                <p>تم تطوير الموقع بواسطة <a href="https://faridmezane.space" target="_blank" rel="noopener">Farid Mezane</a></p>
+                <nav class="footer-nav">
+                    <ul>
+                        <li><a href="/privacy">سياسة الخصوصية</a></li>
+                        <li><a href="/terms">شروط الاستخدام</a></li>
+                        <li><a href="/contact">اتصل بنا</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </footer>
+
+        <!-- Back to Top Button -->
+        <a href="#top" 
+           class="back-to-top" 
+           id="backToTop" 
+           aria-label="العودة إلى أعلى الصفحة">
+            ↑
+        </a>
+
+        <!-- Download Progress -->
+        <div class="download-progress" 
+             role="alert" 
+             aria-live="polite" 
+             hidden>
+            <div class="progress-bar"></div>
+            <p class="progress-text"></p>
+        </div>
+    </div>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => console.log('ServiceWorker registered'))
+                .catch(error => console.log('ServiceWorker registration failed:', error));
+        }
+    </script>
+
+    <!-- Main Script -->
+    <script src="script.js"></script>
+
+    <!-- Error Boundary -->
+    <script>
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            const errorMessage = {
+                message: msg,
+                url: url,
+                line: lineNo,
+                column: columnNo,
+                error: error
+            };
+            
+            // Log error to your analytics or error tracking service
+            console.error('Page Error:', errorMessage);
+            
+            // Show user-friendly error message
+            const notificationArea = document.getElementById('notificationArea');
+            if (notificationArea) {
+                notificationArea.innerHTML = '<div class="error-message">عذراً، حدث خطأ. يرجى تحديث الصفحة.</div>';
+            }
+            
+            return false;
+        };
+    </script>
+</body>
+</html>
