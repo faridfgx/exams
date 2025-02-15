@@ -1,0 +1,56 @@
+{
+  "name": "بوابة الامتحانات - ثانوية عبد الحميد بن باديس",
+  "short_name": "بوابة الامتحانات",
+  "description": "بوابة الامتحانات لثانوية عبد الحميد بن باديس - بيضاء برج. اختبارات وفروض لجميع المستويات.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#1a1a1a",
+  "background_color": "#1a1a1a",
+  "categories": ["education", "academic"],
+  "icons": [
+    {
+      "src": "/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshot1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/images/screenshot2.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "امتحانات 2024-2025",
+      "url": "/index.html?year=2024",
+      "description": "عرض امتحانات السنة الدراسية الحالية"
+    },
+    {
+      "name": "امتحانات 2023-2024",
+      "url": "/index.html?year=2023",
+      "description": "عرض امتحانات السنة الدراسية السابقة"
+    }
+  ],
+  "id": "exam-portal-badiis-school",
+  "scope": "/",
+  "prefer_related_applications": false
+}

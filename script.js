@@ -263,7 +263,7 @@ function showYear(year) {
     if (!targetContent) return;
     
     showLoadingState(targetContent);
-    
+
     // Remove active states
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -285,12 +285,9 @@ function showYear(year) {
     targetContent.classList.add('active');
     targetContent.hidden = false;
     
-    // Load content with slight delay for smooth transition
+    // Load content without checking dataset.loaded
     setTimeout(() => {
-        if (!targetContent.dataset.loaded) {
-            targetContent.innerHTML = createYearContent(year);
-            targetContent.dataset.loaded = 'true';
-        }
+        targetContent.innerHTML = createYearContent(year);
     }, 300);
 }
 
