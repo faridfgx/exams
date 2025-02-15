@@ -39,7 +39,7 @@
     <link rel="icon" type="image/png" href="favicon.png">
     
     <!-- PWA support -->
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#1a1a1a">
     <link rel="apple-touch-icon" href="/images/icon-192.png">
 </head>
@@ -155,14 +155,13 @@
         <footer role="contentinfo">
             <div class="footer-content">
                 <p>تم تطوير الموقع بواسطة <a href="https://faridmezane.space" target="_blank" rel="noopener">Farid Mezane</a></p>
-               <!-- <nav class="footer-nav">
+                <nav class="footer-nav">
                     <ul>
                         <li><a href="/privacy">سياسة الخصوصية</a></li>
                         <li><a href="/terms">شروط الاستخدام</a></li>
                         <li><a href="/contact">اتصل بنا</a></li>
                     </ul>
                 </nav>
-		    -->
             </div>
         </footer>
 
@@ -186,11 +185,11 @@
 
     <!-- Service Worker Registration -->
     <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js')
-                .then(registration => console.log('ServiceWorker registered'))
-                .catch(error => console.log('ServiceWorker registration failed:', error));
-        }
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+        .then(registration => console.log('ServiceWorker registered'))
+        .catch(error => console.log('ServiceWorker registration failed:', error));
+}
     </script>
 
     <!-- Main Script -->
