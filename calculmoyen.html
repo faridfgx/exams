@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>حاسبة المعدل الفصلي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      margin: 0;
+      padding: 20px;
+      direction: rtl;
+      color: #2c3e50;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      background: #fff;
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #eee;
+    }
+    
+    h1 {
+      font-size: 2.2em;
+      color: #2c3e50;
+      margin-bottom: 15px;
+    }
+    
+    .class-switch {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+    
+    .class-btn {
+      padding: 10px 20px;
+      font-size: 1em;
+      border: 2px solid #3498db;
+      background: #fff;
+      color: #3498db;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .class-btn.active {
+      background: #3498db;
+      color: #fff;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-bottom: 25px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    th, td {
+      padding: 15px 10px;
+      text-align: center;
+    }
+    
+    th {
+      background: #34495e;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.1em;
+    }
+    
+    tr:nth-child(even) {
+      background: #f8fafc;
+    }
+    
+    tr:hover {
+      background: #f1f8ff;
+    }
+    
+    input[type="number"] {
+      width: 80px;
+      padding: 8px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 1em;
+      transition: all 0.3s ease;
+    }
+    
+    input[type="number"]:focus {
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      outline: none;
+    }
+    
+    input[type="number"]::-webkit-inner-spin-button {
+      opacity: 1;
+    }
+    
+    .calculate-btn {
+      background: #2ecc71;
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 8px;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: block;
+      margin: 30px auto;
+      font-weight: 600;
+    }
+    
+    .calculate-btn:hover {
+      background: #27ae60;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+    }
+    
+    .result {
+      text-align: center;
+      font-size: 1.6em;
+      margin-top: 30px;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 8px;
+      border: 2px solid #eee;
+      color: #2c3e50;
+      font-weight: 700;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+        margin: 10px;
+      }
+      
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      
+      input[type="number"] {
+        width: 70px;
+        padding: 6px;
+      }
+      
+      th, td {
+        padding: 10px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>حاسبة المعدل الفصلي</h1>
+      <div class="class-switch">
+        <button class="class-btn active" data-class="science">1 ج م ع ت</button>
+        <button class="class-btn" data-class="math">1 ج م أ</button>
+      </div>
+    </div>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>المادة</th>
+          <th>المعامل</th>
+          <th>التقويم المستمر</th>
+          <th>الأعمال التطبيقة / التعبير الشفوي</th>
+          <th>الفرض</th>
+          <th>الإختبار</th>
+          <th>معدل المادة</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 1. العربية (with التعبير الشفوي) -->
+        <tr data-extra="oral">
+          <td>العربية</td>
+          <td><input type="number" step="1" class="coefficient" value="3" /></td>
+          <td><input type="number" step="0.25" class="continuous" value="0" /></td>
+          <td><input type="number" step="0.25" class="extra" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam1" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam2" value="0" /></td>
+          <td class="subject-result">-</td>
+        </tr>
+        <!-- 2. الرياضيات (no extra exam) -->
+        <tr data-extra="none">
+          <td>الرياضيات</td>
+          <td><input type="number" step="1" class="coefficient" value="5" /></td>
+          <td><input type="number" step="0.25" class="continuous" value="0" /></td>
+          <td></td>
+          <td><input type="number" step="0.25" class="exam1" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam2" value="0" /></td>
+          <td class="subject-result">-</td>
+        </tr>
+        <!-- 3. الفيزياء (with الأعمال التطبيقية) -->
+        <tr data-extra="applied">
+          <td>الفيزياء</td>
+          <td><input type="number" step="1" class="coefficient" value="4" /></td>
+          <td><input type="number" step="0.25" class="continuous" value="0" /></td>
+          <td><input type="number" step="0.25" class="extra" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam1" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam2" value="0" /></td>
+          <td class="subject-result">-</td>
+        </tr>
+        <!-- 4. العلوم الطبيعية (with الأعمال التطبيقية) -->
+        <tr data-extra="applied">
+          <td>العلوم الطبيعية</td>
+          <td><input type="number" step="1" class="coefficient" value="4" /></td>
+          <td><input type="number" step="0.25" class="continuous" value="0" /></td>
+          <td><input type="number" step="0.25" class="extra" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam1" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam2" value="0" /></td>
+          <td class="subject-result">-</td>
+        </tr>
+        <!-- 5. العلوم الإسلامية (no extra exam) -->
+        <tr data-extra="none">
+          <td>العلوم الإسلامية</td>
+          <td><input type="number" step="1" class="coefficient" value="2" /></td>
+          <td><input type="number" step="0.25" class="continuous" value="0" /></td>
+          <td></td>
+          <td><input type="number" step="0.25" class="exam1" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam2" value="0" /></td>
+          <td class="subject-result">-</td>
+        </tr>
+        <!-- 6. التاريخ والجغرافيا (no extra exam) -->
+        <tr data-extra="none">
+          <td>التاريخ والجغرافيا</td>
+          <td><input type="number" step="1" class="coefficient" value="2" /></td>
+          <td><input type="number" step="0.25" class="continuous" value="0" /></td>
+          <td></td>
+          <td><input type="number" step="0.25" class="exam1" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam2" value="0" /></td>
+          <td class="subject-result">-</td>
+        </tr>
+        <!-- 7. الفرنسية (with التعبير الشفوي) -->
+        <tr data-extra="oral">
+          <td>الفرنسية</td>
+          <td><input type="number" step="1" class="coefficient" value="2" /></td>
+          <td><input type="number" step="0.25" class="continuous" value="0" /></td>
+          <td><input type="number" step="0.25" class="extra" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam1" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam2" value="0" /></td>
+          <td class="subject-result">-</td>
+        </tr>
+        <!-- 8. الانجليزية (with التعبير الشفوي) -->
+        <tr data-extra="oral">
+          <td>الانجليزية</td>
+          <td><input type="number" step="1" class="coefficient" value="2" /></td>
+          <td><input type="number" step="0.25" class="continuous" value="0" /></td>
+          <td><input type="number" step="0.25" class="extra" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam1" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam2" value="0" /></td>
+          <td class="subject-result">-</td>
+        </tr>
+        <!-- 9. المعلوماتية (with الأعمال التطبيقية) -->
+        <tr data-extra="applied">
+          <td>المعلوماتية</td>
+          <td><input type="number" step="1" class="coefficient" value="2" /></td>
+          <td><input type="number" step="0.25" class="continuous" value="0" /></td>
+          <td><input type="number" step="0.25" class="extra" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam1" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam2" value="0" /></td>
+          <td class="subject-result">-</td>
+        </tr>
+        <!-- 10. التكنلوجيا (no extra exam) -->
+        <tr data-extra="applied">
+          <td>التكنلوجيا</td>
+          <td><input type="number" step="1" class="coefficient" value="2" /></td>
+          <td><input type="number" step="0.25" class="continuous" value="0" /></td>
+          <td><input type="number" step="0.25" class="extra" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam1" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam2" value="0" /></td>
+          <td class="subject-result">-</td>
+        </tr>
+        <!-- 11. التربية الفنية (no extra exam) -->
+        <tr data-extra="none">
+          <td>التربية الفنية</td>
+          <td><input type="number" step="1" class="coefficient" value="0" /></td>
+          <td><input type="number" step="0.25" class="continuous" value="0" /></td>
+          <td></td>
+          <td><input type="number" step="0.25" class="exam1" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam2" value="0" /></td>
+          <td class="subject-result">-</td>
+        </tr>
+        <!-- 12. التربية البدنية (no extra exam) -->
+        <tr data-extra="none">
+          <td>التربية البدنية</td>
+          <td><input type="number" step="1" class="coefficient" value="1" /></td>
+          <td><input type="number" step="0.25" class="continuous" value="0" /></td>
+          <td></td>
+          <td><input type="number" step="0.25" class="exam1" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam2" value="0" /></td>
+          <td class="subject-result">-</td>
+        </tr>
+        <!-- 13. الأمازيغية (with all exams) -->
+        <tr data-extra="oral">
+          <td>الأمازيغية</td>
+          <td><input type="number" step="1" class="coefficient" value="0" /></td>
+          <td><input type="number" step="0.25" class="continuous" value="0" /></td>
+          <td><input type="number" step="0.25" class="extra" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam1" value="0" /></td>
+          <td><input type="number" step="0.25" class="exam2" value="0" /></td>
+          <td class="subject-result">-</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button class="calculate-btn">احسب المعدل الفصلي</button>
+    <div class="result">المعدل الفصلي: -</div>
+  </div>
+
+  <script>
+    // Coefficient data for both classes
+    const coefficients = {
+      science: {
+        'العربية': 3,
+        'الرياضيات': 5,
+        'الفيزياء': 4,
+        'العلوم الطبيعية': 4,
+        'العلوم الإسلامية': 2,
+        'التاريخ والجغرافيا': 2,
+        'الفرنسية': 2,
+        'الانجليزية': 2,
+        'المعلوماتية': 2,
+        'التكنلوجيا': 2,
+        'التربية الفنية': 0,
+        'التربية البدنية': 1,
+        'الأمازيغية': 0
+      },
+      math: {
+        'العربية': 5,
+        'الرياضيات': 2,
+        'الفيزياء': 2,
+        'العلوم الطبيعية': 2,
+        'العلوم الإسلامية': 2,
+        'التاريخ والجغرافيا': 3,
+        'الفرنسية': 2,
+        'الانجليزية': 2,
+        'المعلوماتية': 2,
+        'التكنلوجيا': 0,
+        'التربية الفنية': 0,
+        'التربية البدنية': 1,
+        'الأمازيغية': 0
+      }
+    };
+
+    // Add input validation
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+      input.setAttribute('min', '0');
+      input.setAttribute('max', '20');
+      input.addEventListener('input', function() {
+        let value = parseFloat(this.value);
+        if (value < 0) this.value = 0;
+        if (value > 20) this.value = 20;
+      });
+    });
+
+    // Class switching functionality
+    const classButtons = document.querySelectorAll('.class-btn');
+    let currentClass = 'science';
+
+    classButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        classButtons.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        currentClass = this.dataset.class;
+        updateCoefficients(currentClass);
+      });
+    });
+
+    function updateCoefficients(classType) {
+      const rows = document.querySelectorAll('table tbody tr');
+      rows.forEach(row => {
+        const subject = row.querySelector('td').textContent;
+        const coefficientInput = row.querySelector('.coefficient');
+        coefficientInput.value = coefficients[classType][subject];
+      });
+    }
+
+    document.querySelector('.calculate-btn').addEventListener('click', function() {
+      let totalWeightedScore = 0;
+      let totalCoefficients = 0;
+      const rows = document.querySelectorAll('table tbody tr');
+
+      rows.forEach(row => {
+        const coefficient = parseFloat(row.querySelector('.coefficient').value) || 0;
+        const continuous = parseFloat(row.querySelector('.continuous').value) || 0;
+        const exam1 = parseFloat(row.querySelector('.exam1').value) || 0;
+        const exam2 = parseFloat(row.querySelector('.exam2').value) || 0;
+        let extraScore = 0;
+        let divisor = 4;
+
+        const extraType = row.getAttribute('data-extra');
+        if (extraType !== 'none') {
+          extraScore = parseFloat(row.querySelector('.extra').value) || 0;
+          divisor = 5;
+        }
+
+        const subjectScore = (continuous + exam1 + (exam2 * 2) + extraScore) / divisor;
+        row.querySelector('.subject-result').textContent = subjectScore.toFixed(2);
+
+        totalWeightedScore += subjectScore * coefficient;
+        totalCoefficients += coefficient;
+      });
+
+      const finalScore = totalCoefficients ? (totalWeightedScore / totalCoefficients) : 0;
+      document.querySelector('.result').textContent = 'المعدل الفصلي: ' + finalScore.toFixed(2);
+    });
+  </script>
+</body>
+</html>
