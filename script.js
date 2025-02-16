@@ -26,7 +26,8 @@ const translations = {
     downloadStarted: 'جاري تحميل الملف',
     searchPlaceholder: 'ابحث عن الامتحانات...',
     noResults: 'لا توجد نتائج للبحث',
-    errorMessage: 'حدث خطأ. يرجى المحاولة مرة أخرى'
+    errorMessage: 'حدث خطأ. يرجى المحاولة مرة أخرى',
+    fileNotFound: 'الملف غير متوفر حاليا'
 };
 
 // Cache management
@@ -120,18 +121,57 @@ const searchManager = {
 async function handleExamClick(event, year, semester, type) {
     event.preventDefault();
     
-    showNotification(translations.downloadStarted);
-    showDownloadProgress();
-    
     try {
+        // First check if the file exists
+        const fileExists = await checkFileExists(year, semester, type);
+        
+        if (!fileExists) {
+            // If file doesn't exist, show the "file not found" notification and return early
+            showNotification(translations.fileNotFound, 'warning');
+            return;
+        }
+        
+        // If file exists, proceed with download
+        showNotification(translations.downloadStarted);
+        showDownloadProgress();
+        
         const examData = await loadExam(year, semester, type);
         await downloadExam(examData, year, semester, type);
         showNotification(translations.downloadComplete, 'success');
     } catch (error) {
         console.error('Download error:', error);
-        showNotification(translations.downloadError, 'error');
+        if (error.message === 'File not found') {
+            showNotification(translations.fileNotFound, 'warning');
+        } else {
+            showNotification(translations.downloadError, 'error');
+        }
     } finally {
         hideDownloadProgress();
+    }
+}
+async function downloadExam(blob, year, semester, type) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `exam-${year}-sem${semester}-${type}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    // Track download
+    trackDownload(year, semester, type);
+}
+// New function to check file existence
+async function checkFileExists(year, semester, type) {
+    try {
+        const response = await fetch(`exams/${year}/sem${semester}/${type}.pdf`, {
+            method: 'HEAD'
+        });
+        return response.ok;
+    } catch (error) {
+        console.error("Error checking file:", error);
+        return false;
     }
 }
 
@@ -147,10 +187,12 @@ async function loadExam(year, semester, type) {
         const response = await fetch(`exams/${year}/sem${semester}/${type}.pdf`);
         
         if (response.status === 404) {
-            return "File not uploaded yet";
+            throw new Error('File not found');
         }
         
-        if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
+        if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.status}`);
+        }
 
         const blob = await response.blob();
         examCache.set(cacheKey, {
@@ -161,46 +203,108 @@ async function loadExam(year, semester, type) {
         return blob;
     } catch (error) {
         console.error("Error loading exam:", error);
-        return "Error loading exam";
+        throw error;
     }
 }
-
-
-async function downloadExam(blob, year, semester, type) {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `exam-${year}-sem${semester}-${type}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
-    // Track download
-    trackDownload(year, semester, type);
-}
-
 // UI utilities
-function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-    
-    const notificationArea = document.getElementById('notificationArea');
-    notificationArea.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
-}
 
+// Add this function right before or after hideDownloadProgress function
 function showDownloadProgress() {
     const progress = document.querySelector('.download-progress');
     if (progress) {
         progress.hidden = false;
+        
+        // Reset progress bar
+        const progressBar = progress.querySelector('.progress-bar');
+        if (progressBar) {
+            progressBar.style.width = '0%';
+            
+            // Simulate progress (since we don't have actual progress events)
+            let width = 0;
+            const intervalId = setInterval(() => {
+                if (width >= 90) {
+                    clearInterval(intervalId);
+                } else {
+                    width += 5;
+                    progressBar.style.width = width + '%';
+                }
+            }, 300);
+            
+            // Store the interval ID to clear it later if needed
+            progress.dataset.intervalId = intervalId;
+        }
+        
+        // Update text
+        const progressText = progress.querySelector('.progress-text');
+        if (progressText) {
+            progressText.textContent = translations.downloadStarted;
+        }
     }
 }
 
+// Modify hideDownloadProgress to also clear the interval
+function hideDownloadProgress() {
+    const progress = document.querySelector('.download-progress');
+    if (progress) {
+        // Clear any running interval
+        if (progress.dataset.intervalId) {
+            clearInterval(parseInt(progress.dataset.intervalId));
+            delete progress.dataset.intervalId;
+        }
+        
+        progress.hidden = true;
+    }
+}
+// Enhanced showNotification function
+function showNotification(message, type = 'info') {
+    const notificationArea = document.getElementById('notificationArea');
+    
+    // Create new notification
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    
+    // Add an icon based on notification type
+    const icon = document.createElement('span');
+    icon.className = 'notification-icon';
+    
+    switch(type) {
+        case 'success':
+            icon.textContent = '✓';
+            break;
+        case 'warning':
+            icon.textContent = '⚠';
+            break;
+        case 'error':
+            icon.textContent = '✗';
+            break;
+        default: // info
+            icon.textContent = 'ℹ';
+    }
+    
+    const textSpan = document.createElement('span');
+    textSpan.textContent = message;
+    
+    notification.appendChild(icon);
+    notification.appendChild(textSpan);
+    
+    notificationArea.appendChild(notification);
+    
+    // Add animation class after a small delay (for animation to work)
+    setTimeout(() => {
+        notification.classList.add('notification-visible');
+    }, 10);
+    
+    // Remove after delay
+    setTimeout(() => {
+        notification.classList.remove('notification-visible');
+        notification.classList.add('notification-hiding');
+        
+        // Wait for fade out animation before removing
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 3000);
+}
 function hideDownloadProgress() {
     const progress = document.querySelector('.download-progress');
     if (progress) {
