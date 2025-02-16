@@ -138,26 +138,33 @@ async function handleExamClick(event, year, semester, type) {
 async function loadExam(year, semester, type) {
     const cacheKey = `${year}-${semester}-${type}`;
     const cachedExam = examCache.get(cacheKey);
-    
+
     if (cachedExam && (Date.now() - cachedExam.timestamp) < CACHE_DURATION) {
         return cachedExam.data;
     }
-    
+
     try {
         const response = await fetch(`exams/${year}/sem${semester}/${type}.pdf`);
-        if (!response.ok) throw new Error('Network response was not ok');
         
+        if (response.status === 404) {
+            return "File not uploaded yet";
+        }
+        
+        if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
+
         const blob = await response.blob();
         examCache.set(cacheKey, {
             data: blob,
             timestamp: Date.now()
         });
-        
+
         return blob;
     } catch (error) {
-        throw new Error('Failed to load exam');
+        console.error("Error loading exam:", error);
+        return "Error loading exam";
     }
 }
+
 
 async function downloadExam(blob, year, semester, type) {
     const url = URL.createObjectURL(blob);
