@@ -1,15 +1,16 @@
 // Version of cache
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const CACHE_NAME = `exam-portal-${CACHE_VERSION}`;
 
 // Assets to cache immediately on install
 const PRECACHE_ASSETS = [
-  '/',
-  '/index.html',
-  '/styles.css',
-  '/script.js',
-  '/favicon.png',
-  '/manifest.json'
+  './',
+  './index.html',
+  './styles.css',
+  './script.js',
+  './calculmoyen.html',
+  './favicon.png',
+  './manifest.json'
 ];
 
 // Install event - precache important assets

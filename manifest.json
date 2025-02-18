@@ -4,9 +4,9 @@
   "description": "بوابة الامتحانات لثانوية عبد الحميد بن باديس - بيضاء برج. اختبارات وفروض لجميع المستويات.",
   "lang": "ar",
   "dir": "rtl",
-  "start_url": "/index.html",
+  "start_url": "/?source=pwa",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "any",
   "theme_color": "#1a1a1a",
   "background_color": "#1a1a1a",
   "categories": ["education", "academic"],
@@ -29,28 +29,50 @@
       "src": "images/screenshot1.png",
       "sizes": "1280x720",
       "type": "image/png",
-      "form_factor": "wide"
+      "form_factor": "wide",
+      "label": "Home screen of exam portal"
     },
     {
       "src": "images/screenshot2.png",
       "sizes": "750x1334",
       "type": "image/png",
-      "form_factor": "narrow"
+      "form_factor": "narrow",
+      "label": "Mobile view of exam portal"
     }
   ],
   "shortcuts": [
     {
       "name": "امتحانات 2024-2025",
-      "url": "/index.html?year=2024",
-      "description": "عرض امتحانات السنة الدراسية الحالية"
+      "short_name": "2024-2025",
+      "url": "/?year=2024",
+      "description": "عرض امتحانات السنة الدراسية الحالية",
+      "icons": [
+        {
+          "src": "images/shortcut-icon.png",
+          "sizes": "96x96"
+        }
+      ]
     },
     {
       "name": "امتحانات 2023-2024",
-      "url": "/index.html?year=2023",
-      "description": "عرض امتحانات السنة الدراسية السابقة"
+      "short_name": "2023-2024",
+      "url": "/?year=2023",
+      "description": "عرض امتحانات السنة الدراسية السابقة",
+      "icons": [
+        {
+          "src": "images/shortcut-icon.png",
+          "sizes": "96x96"
+        }
+      ]
     }
   ],
   "id": "exam-portal-badiis-school",
   "scope": "/",
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "display_override": ["standalone", "browser"],
+  "handle_links": "preferred",
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  }
 }
