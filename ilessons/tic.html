@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f5c4d">
 <title>رحلة تكنولوجيا الإعلام والاتصال</title>
 <style>
 :root{--bg:#f4f6ff;--card:#fff;--tx:#1d2340;--mut:#5b6286;--pri:#5b4bff;--acc:#ff8a3d;--ok:#1fa971;--bad:#e5484d;--bd:#dfe3f5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -52,6 +53,102 @@ h1{font-size:clamp(1.3rem,4.5vw,1.8rem)}
 .ex{border:0;border-inline-start:4px solid var(--acc);border-radius:4px;background:var(--bg)}
 .chips span{border-radius:6px;border-width:1px}.flow b{border-radius:6px}.res2{border-radius:6px}
 .dots i{width:8px;height:8px}.dots i.cur{background:var(--acc)}
+
+/* Responsive polish */
+body{
+  min-height:100vh;
+  -webkit-tap-highlight-color:transparent;
+  background:
+    radial-gradient(ellipse at 8% 0%, color-mix(in srgb,var(--pri) 7%,transparent), transparent 34rem),
+    var(--bg);
+}
+header{padding-top:clamp(18px,4vw,30px);padding-bottom:16px}
+header h1{letter-spacing:-.025em;line-height:1.35}
+.pts{display:inline-flex;align-items:center;gap:7px;margin-top:8px;font-size:.92rem}
+.pts b{font-variant-numeric:tabular-nums;font-size:1.08rem}
+main{width:min(100%,820px);padding:16px 18px 48px}
+.bar{height:8px;background:color-mix(in srgb,var(--bd) 78%,transparent);border-radius:20px}
+.bar i{border-radius:20px;transition:width .45s cubic-bezier(.2,.75,.25,1)}
+.steps{
+  gap:8px;
+  padding:3px 1px 9px;
+  overflow-x:auto;
+  overscroll-behavior-inline:contain;
+  scrollbar-width:thin;
+  scrollbar-color:var(--bd) transparent;
+}
+.st{
+  flex:0 0 auto;
+  min-height:42px;
+  padding:7px 13px;
+  white-space:nowrap;
+  transition:background .18s ease,border-color .18s ease,transform .18s ease,opacity .18s ease;
+}
+.st:not(.lock):active,.btn:active,.opt:active{transform:translateY(1px)}
+.st:focus-visible,.btn:focus-visible,.opt:focus-visible{
+  outline:3px solid color-mix(in srgb,var(--acc) 65%,transparent);
+  outline-offset:3px;
+}
+.panel{
+  min-height:300px;
+  padding:clamp(18px,4vw,30px);
+  border-radius:14px;
+  box-shadow:0 12px 34px rgba(35,32,25,.055);
+}
+.panel h2{line-height:1.45;letter-spacing:-.015em}
+.panel p{line-height:1.9}
+.tag{font-weight:700;letter-spacing:.01em}
+.btn,.opt,.st{touch-action:manipulation}
+.btn{min-height:44px;padding:9px 19px;font-weight:650;transition:filter .18s ease,transform .18s ease}
+.btn:hover:not(:disabled){filter:brightness(1.07)}
+.btn.g{border:1px solid var(--bd)}
+.opt{
+  min-height:48px;
+  padding:11px 14px;
+  line-height:1.65;
+  transition:border-color .18s ease,background .18s ease,transform .18s ease;
+}
+.opt:not(:disabled):hover{border-color:var(--pri)}
+.fb{margin-top:12px}
+.row{align-items:center}
+.ex{line-height:1.8}
+.chips span{margin:4px 3px}
+.res2{box-shadow:0 5px 16px rgba(47,125,79,.12)}
+.big{padding:12px 2px}
+.big h2{line-height:1.5}
+.level-success{animation:levelComplete .55s ease-out both}
+.level-success .tag{animation:tagSettle .45s .08s ease-out both}
+@keyframes levelComplete{
+  0%{transform:scale(.992);box-shadow:0 0 0 0 color-mix(in srgb,var(--ok) 0%,transparent)}
+  55%{transform:scale(1.006);box-shadow:0 0 0 5px color-mix(in srgb,var(--ok) 13%,transparent)}
+  100%{transform:scale(1);box-shadow:0 12px 34px rgba(35,32,25,.055)}
+}
+@keyframes tagSettle{0%{transform:translateY(4px);opacity:.65}100%{transform:translateY(0);opacity:1}}
+@media(max-width:600px){
+  header{padding:17px 16px 12px}
+  header h1{font-size:1.35rem}
+  main{padding:12px 12px 30px}
+  .steps{margin:10px -2px 14px;gap:7px}
+  .st{font-size:.82rem;padding:7px 11px;min-height:40px}
+  .panel{min-height:260px;padding:18px 15px}
+  .panel p{font-size:1rem}
+  .row{gap:8px}
+  .row .btn{flex:1;padding-inline:10px}
+  .opt{font-size:.96rem}
+  .flow{gap:5px}
+  .flow b{font-size:.82rem}
+  .ex{padding:10px}
+}
+@media(max-width:380px){
+  header h1{font-size:1.2rem}
+  .panel{padding:15px 12px}
+  .row{flex-wrap:wrap}
+  .row .btn{min-width:calc(50% - 5px)}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+
 </style>
 </head>
 <body>
@@ -168,7 +265,8 @@ function quiz(){
   if(ok){var first=!S.done[S.lv];S.done[S.lv]=1;if(first)S.pts+=5;if(S.max<L.length-1&&S.max===S.lv)S.max++;save();renderTop()}
   var last=S.lv===L.length-1;
   P.innerHTML='<div class="big"><h2>'+(ok?(last?'أحسنت! أكملت الرحلة':'أحسنت! أنهيت المستوى '+(S.lv+1)):'اقتربت من النجاح')+'</h2><p>نتيجتك: '+S.sc+' من '+l.q.length+'</p><p>'+(ok?(last?'مجموع نقاطك: '+S.pts+'. أنت الآن تعرف أساسيات TIC.':'تم فتح المستوى التالي: '+L[S.lv+1].n):'تحتاج '+need+' إجابات صحيحة على الأقل. راجع الدرس ثم أعد المحاولة.')+'</p><div class="row" style="justify-content:center">'+(ok&&!last?'<button class="btn" id="go">المستوى التالي</button>':'')+(ok?'':'<button class="btn g" id="rv">مراجعة الدرس</button>')+'<button class="btn g" id="rt">إعادة الاختبار</button></div></div>';
-  if($('go'))$('go').onclick=function(){S.lv++;S.it=0;S.qi=0;S.sc=0;S.stage=L[S.lv].items.length?'learn':'quiz';draw()};
+  if(ok){P.classList.add('level-success')}
+   if($('go'))$('go').onclick=function(){S.lv++;S.it=0;S.qi=0;S.sc=0;S.stage=L[S.lv].items.length?'learn':'quiz';draw()};
   if($('rv'))$('rv').onclick=function(){S.it=0;S.stage='learn';draw()};
   $('rt').onclick=function(){S.qi=0;S.sc=0;draw()};return}
  P.innerHTML='<span class="tag">اختبار المستوى</span><p><b>السؤال '+(S.qi+1)+' من '+l.q.length+'</b></p><h2 style="font-size:1.15rem">'+q[0]+'</h2><div id="os"></div><div class="fb" id="fb"></div>';
