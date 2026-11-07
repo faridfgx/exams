@@ -47,6 +47,144 @@ main{max-width:760px;margin:auto;padding:8px 14px 40px}
 .case{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin:10px 0}
 .slot{border:1px dashed var(--bd);border-radius:6px;min-height:60px;padding:6px;text-align:center;font-size:.8rem;display:flex;flex-direction:column;justify-content:center;color:var(--mut)}
 .slot.f{border:1px solid var(--ok);color:var(--tx);background:var(--bg)}.slot small{color:var(--mut)}
+
+/* Refined interface shared with the PC learning experience */
+:root{
+  --bg:#f3f5f4;--card:#ffffff;--tx:#202a28;--mut:#687572;
+  --pri:#176b59;--acc:#b66a3c;--ok:#287a55;--bad:#b5473c;
+  --bd:#dce5e1;--soft:#eaf2ef;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#111a18;--card:#1b2724;--tx:#edf4f1;--mut:#a9b9b3;
+    --pri:#71c3aa;--acc:#e0a078;--ok:#4ba77b;--bad:#df766b;
+    --bd:#30413b;--soft:#243a33;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111a18;--card:#1b2724;--tx:#edf4f1;--mut:#a9b9b3;
+  --pri:#71c3aa;--acc:#e0a078;--ok:#4ba77b;--bad:#df766b;
+  --bd:#30413b;--soft:#243a33;
+}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse at 8% 0%,color-mix(in srgb,var(--pri) 9%,transparent),transparent 38%),
+    var(--bg);
+  -webkit-tap-highlight-color:transparent;
+}
+header{
+  max-width:900px;padding:clamp(18px,4vw,30px) clamp(14px,3vw,24px) 16px;
+  border-bottom:1px solid var(--bd);
+}
+h1{letter-spacing:-.025em;line-height:1.45}
+.pts{display:flex;align-items:center;gap:7px;margin-top:7px}
+.pts b{font-size:1.08rem}
+main{max-width:900px;padding:14px clamp(12px,3vw,24px) 48px}
+.bar{height:8px;border-radius:99px;background:var(--bd);margin-top:12px}
+.bar i{border-radius:99px;background:linear-gradient(90deg,var(--pri),color-mix(in srgb,var(--pri) 55%,#8bcbb5))}
+.steps{
+  display:flex;gap:8px;margin:14px 0 16px;padding:2px 1px 8px;
+  overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;
+  scrollbar-color:var(--bd) transparent;
+}
+.st{
+  flex:0 0 auto;min-height:42px;padding:8px 14px;border-radius:10px;
+  font-size:.88rem;white-space:nowrap;transition:background .18s,border-color .18s,transform .18s;
+}
+.st:not(.lock):active{transform:scale(.97)}
+.st.cur{border:1px solid var(--pri);background:var(--soft);color:var(--pri);box-shadow:0 0 0 2px color-mix(in srgb,var(--pri) 12%,transparent)}
+.st.done{background:var(--ok);border-color:var(--ok);color:#fff}
+.st.lock{opacity:.42}
+.panel{
+  position:relative;overflow:hidden;background:var(--card);
+  border:1px solid var(--bd);border-radius:18px;
+  padding:clamp(18px,4vw,32px);min-height:320px;
+  box-shadow:0 12px 34px rgba(20,45,37,.07);
+  animation:panelIn .28s ease-out;
+}
+@keyframes panelIn{from{opacity:.65;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.tag{
+  color:var(--pri);border:1px solid color-mix(in srgb,var(--pri) 35%,var(--bd));
+  background:var(--soft);border-radius:99px;padding:3px 12px;font-weight:600;
+}
+.panel h2{line-height:1.5;margin:14px 0 8px;letter-spacing:-.015em}
+.panel p{line-height:1.95}
+.row{align-items:center;flex-wrap:wrap;margin-top:22px}
+.btn{
+  min-height:46px;padding:10px 22px;border-radius:11px;font-weight:650;
+  box-shadow:0 3px 9px rgba(20,45,37,.10);
+  transition:transform .16s,filter .16s,box-shadow .16s;
+}
+.btn:not([disabled]):active{transform:translateY(1px) scale(.985)}
+.btn:hover{filter:brightness(1.05)}
+.btn.g{background:var(--soft);border:1px solid var(--bd);box-shadow:none}
+.btn[disabled]{box-shadow:none}
+.opt{
+  min-height:48px;padding:11px 14px;margin:10px 0;border-radius:11px;
+  border-color:var(--bd);background:color-mix(in srgb,var(--bg) 72%,var(--card));
+  transition:border-color .16s,background .16s,transform .16s;
+}
+.opt:hover{border-color:var(--pri);transform:translateY(-1px)}
+.opt:focus-visible,.btn:focus-visible,.st:focus-visible{
+  outline:3px solid color-mix(in srgb,var(--pri) 45%,transparent);outline-offset:2px;
+}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g3 .opt{height:100%;text-align:center}
+.ex{
+  border-inline-start:4px solid var(--acc);border-radius:10px;
+  padding:14px 16px;margin:14px 0;background:var(--soft);
+}
+.chips span{border-radius:9px;padding:5px 12px;background:var(--soft)}
+.flow b{border-radius:9px;padding:6px 14px}
+.case{gap:10px}
+.slot{border-radius:10px;min-height:68px;padding:9px}
+.slot.f{border-color:var(--ok);background:var(--soft)}
+.disk{border-radius:10px;height:48px}
+input,select{max-width:100%;accent-color:var(--pri)}
+input[type=range]{min-height:34px;touch-action:pan-y}
+.inp{min-height:46px;width:min(100%,220px);border-radius:10px;padding:9px 12px}
+.fb{padding-top:4px}
+.complete-mark{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:42px;height:42px;margin:0 auto 8px;border-radius:50%;
+  color:#fff;background:var(--ok);font-size:1.25rem;font-weight:800;
+  animation:markIn .38s cubic-bezier(.2,.8,.2,1) both;
+}
+.panel.level-complete{animation:levelPulse .72s ease-out}
+@keyframes markIn{from{opacity:0;transform:scale(.72)}to{opacity:1;transform:scale(1)}}
+@keyframes levelPulse{
+  0%{box-shadow:0 12px 34px rgba(20,45,37,.07)}
+  35%{box-shadow:0 0 0 4px color-mix(in srgb,var(--ok) 20%,transparent),0 14px 38px rgba(20,45,37,.10)}
+  100%{box-shadow:0 12px 34px rgba(20,45,37,.07)}
+}
+@media(max-width:600px){
+  header{padding-top:calc(16px + env(safe-area-inset-top,0px))}
+  h1{font-size:1.28rem}
+  main{padding:10px 12px calc(28px + env(safe-area-inset-bottom,0px))}
+  .steps{margin:12px -2px 14px;gap:7px}
+  .st{font-size:.8rem;padding:7px 11px;min-height:40px}
+  .panel{min-height:0;padding:18px 15px;border-radius:15px}
+  .panel h2{font-size:1.18rem}
+  .panel p{font-size:1rem}
+  .row{gap:9px}
+  .row .btn{flex:1 1 auto}
+  .g3{grid-template-columns:1fr}
+  .g3 .opt{min-height:44px}
+  .case{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .flow{gap:5px}
+  .flow b{font-size:.82rem;padding:5px 9px}
+  .disk{font-size:.82rem}
+}
+@media(max-width:360px){
+  .panel{padding:15px 12px}
+  .btn{padding:9px 13px;font-size:.92rem}
+  .case{grid-template-columns:1fr 1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+
 </style>
 </head>
 <body>
@@ -176,8 +314,9 @@ function quiz(){
  var l=L[S.lv],q=l.q[S.qi],P=$('panel');
  if(!q){var need=l.q.length-1,ok=S.sc>=need,last=S.lv===L.length-1;
   if(ok){var first=!S.done[S.lv];S.done[S.lv]=1;if(first){S.pts+=5}if(S.max<L.length-1&&S.max===S.lv)S.max++;save();renderTop()}
-  P.innerHTML='<div class="big"><h2>'+(ok?(last?'أحسنت، أكملت الرحلة':'أحسنت، أنهيت المستوى '+(S.lv+1)):'اقتربت من النجاح')+'</h2><p>نتيجتك: '+S.sc+' من '+l.q.length+'</p><p>'+(ok?(last?'مجموع نقاطك: '+S.pts+'. صرت تعرف نظام التشغيل وخطوات تثبيته.':'تم فتح المستوى التالي: '+L[S.lv+1].n):'تحتاج '+need+' إجابات صحيحة على الأقل. راجع الدرس ثم أعد المحاولة.')+'</p><div class="row" style="justify-content:center">'+(ok&&!last?'<button class="btn" id="go">المستوى التالي</button>':'')+(ok?'':'<button class="btn g" id="rv">مراجعة الدرس</button>')+'<button class="btn g" id="rt">إعادة الاختبار</button></div></div>';
-  if($('go'))$('go').onclick=function(){S.lv++;reset();draw()};
+  P.innerHTML='<div class="big">'+(ok?'<span class="complete-mark" aria-hidden="true">✓</span>':'')+'<h2>'+(ok?(last?'أحسنت، أكملت الرحلة':'أحسنت، أنهيت المستوى '+(S.lv+1)):'اقتربت من النجاح')+'</h2><p>نتيجتك: '+S.sc+' من '+l.q.length+'</p><p>'+(ok?(last?'مجموع نقاطك: '+S.pts+'. صرت تعرف نظام التشغيل وخطوات تثبيته.':'تم فتح المستوى التالي: '+L[S.lv+1].n):'تحتاج '+need+' إجابات صحيحة على الأقل. راجع الدرس ثم أعد المحاولة.')+'</p><div class="row" style="justify-content:center">'+(ok&&!last?'<button class="btn" id="go">المستوى التالي</button>':'')+(ok?'':'<button class="btn g" id="rv">مراجعة الدرس</button>')+'<button class="btn g" id="rt">إعادة الاختبار</button></div></div>';
+  if(ok)P.classList.add('level-complete');
+   if($('go'))$('go').onclick=function(){S.lv++;reset();draw()};
   if($('rv'))$('rv').onclick=function(){S.it=0;S.stage='learn';draw()};
   $('rt').onclick=function(){S.qi=0;S.sc=0;draw()};return}
  P.innerHTML='<span class="tag">اختبار المستوى</span><p><b>السؤال '+(S.qi+1)+' من '+l.q.length+'</b></p><h2 style="font-size:1.15rem">'+q[0]+'</h2><div id="os"></div><div class="fb" id="fb"></div>';

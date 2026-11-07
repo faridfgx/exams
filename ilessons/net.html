@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f4ee">
 <title>رحلة داخل الشبكات</title>
 <style>
 :root{--bg:#f7f4ee;--card:#fffdf9;--tx:#2a2622;--mut:#6f675d;--pri:#1f5c4d;--acc:#b5532a;--ok:#2f7d4f;--bad:#b3392f;--bd:#e3dccf;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -17,8 +18,8 @@ main{max-width:760px;margin:auto;padding:8px 14px 40px}
 .bar{height:6px;background:var(--bd);border-radius:3px;overflow:hidden;margin-top:14px}
 .bar i{display:block;height:100%;width:0;background:var(--pri);transition:width .6s}
 .pc{font-size:.85rem;color:var(--mut);margin:4px 0}
-.steps{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
-.st{flex:1;min-width:100px;font:inherit;font-size:.8rem;padding:8px 4px;border-radius:6px;border:1px solid var(--bd);background:var(--card);color:var(--mut);cursor:pointer}
+.steps{display:flex;gap:6px;margin:12px 0}
+.st{flex:1;font:inherit;font-size:.82rem;padding:8px 4px;border-radius:6px;border:1px solid var(--bd);background:var(--card);color:var(--mut);cursor:pointer}
 .st.cur{border:2px solid var(--pri);color:var(--tx);font-weight:700}
 .st.done{background:var(--ok);border-color:var(--ok);color:#fff}
 .st.lock{opacity:.45;cursor:not-allowed}
@@ -34,7 +35,7 @@ main{max-width:760px;margin:auto;padding:8px 14px 40px}
 .opt{display:block;width:100%;text-align:start;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:10px;margin:8px 0;cursor:pointer}
 .opt:hover{border-color:var(--pri)}
 .opt.ok{background:var(--ok);color:#fff;border-color:var(--ok)}.opt.no{background:var(--bad);color:#fff;border-color:var(--bad)}
-.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .big{text-align:center}.big h2{font-size:1.5rem}
 .fb{min-height:1.6em;font-weight:700;margin-top:6px}
 .ex{background:var(--bg);border-inline-start:4px solid var(--acc);border-radius:4px;padding:12px;margin:10px 0;font-size:.98rem}
@@ -42,6 +43,45 @@ main{max-width:760px;margin:auto;padding:8px 14px 40px}
 .chips span{display:inline-block;background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:2px 12px;margin:3px;font-weight:700}
 .flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0}
 .flow b{background:var(--pri);color:#fff;border-radius:6px;padding:4px 12px;font-size:.9rem}
+.bits{display:flex;gap:6px;direction:ltr;margin:8px 0}
+.bits span{width:36px;height:44px;border:1px solid var(--pri);border-radius:6px;display:flex;align-items:center;justify-content:center;font:700 1.2rem monospace;cursor:pointer;background:var(--card)}
+.cvr{display:flex;gap:6px;flex-wrap:wrap;direction:ltr;margin-top:6px}
+.cvr input,.cvr select,.inp{font:inherit;padding:6px;border:1px solid var(--bd);border-radius:6px;background:var(--card);color:var(--tx)}
+.cvr input{width:100px}.inp{width:170px;direction:ltr}
+.case{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:10px 0}
+.slot{border:1px dashed var(--bd);border-radius:6px;min-height:68px;padding:6px;text-align:center;font-size:.85rem;display:flex;flex-direction:column;justify-content:center;color:var(--mut)}
+.slot.f{border:1px solid var(--ok);color:var(--tx);background:var(--bg)}.slot small{color:var(--mut)}
+
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.topology-svg{width:100%;max-width:300px;display:block;margin:auto;stroke:var(--mut);stroke-width:2;fill:none}
+@media(max-width:600px){
+  header{padding:18px 14px 10px}
+  main{padding:8px 12px 28px}
+  .steps{display:flex;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;gap:7px;padding:3px 1px 10px;margin:10px 0 12px;scrollbar-width:thin}
+  .st{flex:0 0 auto;min-width:max-content;padding:10px 13px;font-size:.84rem;white-space:nowrap}
+  .panel{padding:17px 14px;min-height:260px}
+  .panel p{font-size:1rem}
+  .row{flex-wrap:wrap}
+  .row .btn{flex:1 1 130px}
+  .btn{min-height:44px;padding:10px 16px}
+  .opt{min-height:46px;padding:11px 12px}
+  .g3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .flow{gap:5px}
+  .flow b{padding:5px 9px}
+  .chips span{padding:4px 9px}
+}
+@media(max-width:360px){
+  .g3{grid-template-columns:1fr}
+  .panel{padding:14px 11px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+@keyframes levelPulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--ok) 0%,transparent)}35%{box-shadow:0 0 0 5px color-mix(in srgb,var(--ok) 16%,transparent)}100%{box-shadow:0 0 0 0 transparent}}
+@keyframes markPop{0%{opacity:0;transform:scale(.65)}70%{opacity:1;transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
+.panel.level-complete{animation:levelPulse .65s ease-out}
+.complete-mark{width:42px;height:42px;margin:0 auto 8px;border-radius:50%;display:grid;place-items:center;background:var(--ok);color:#fff;font-size:1.35rem;font-weight:700;animation:markPop .35s ease-out}
+
 </style>
 </head>
 <body>
@@ -62,44 +102,44 @@ function topo(t){
  if(t==='bus'){s+=Ln(15,35,225,35);[30,75,120,165,210].forEach(function(x){s+=Ln(x,35,x,85)+N(x,95)})}
  else if(t==='ring'){s+='<circle cx="120" cy="65" r="48"/>';for(i=0;i<5;i++){a=i*2*Math.PI/5-Math.PI/2;s+=N(120+48*Math.cos(a),65+48*Math.sin(a))}}
  else{for(i=0;i<5;i++){a=i*2*Math.PI/5-Math.PI/2;x=120+50*Math.cos(a);y=65+50*Math.sin(a);s+=Ln(120,65,x,y)+N(x,y)}s+=N(120,65,13,'--acc')}
- return '<svg viewBox="0 0 240 130" style="width:100%;max-width:300px;display:block;margin:auto;stroke:var(--mut);stroke-width:2;fill:none">'+s+'</svg>'}
+ return '<svg viewBox="0 0 240 130" class="topology-svg">'+s+'</svg>'}
 var L=[
 {n:"ما هي الشبكة",act:1,tl:"أي فائدة هذا؟",fm:"صنفت {s} أمثلة من أول محاولة من أصل {n}.",sc:["مشاركة الملفات والبرامج","مشاركة الأجهزة","التواصل"],sd:[
 ["نسخ ملف من حاسوب إلى آخر عبر الشبكة","",0],["طباعة عدة حواسيب على طابعة واحدة","",1],["إرسال بريد إلكتروني إلى صديق","",2],["استعمال برنامج موجود على حاسوب آخر","",0],["الاستفادة من قرص مشترك بين الحواسيب","",1],["الدردشة عبر مواقع التواصل الاجتماعي","",2],["تبادل ملفات الدرس بين التلاميذ","",0],["استعمال طابعة القسم من أي حاسوب","",1]],
 items:[
-["Réseau","تعريف الشبكة","مجموعة من أجهزة الحاسوب (جهازان على الأقل) متصلة ببعضها البعض.",fl(["جهاز","ربط","جهاز"])],
-["الفائدة الأولى","مشاركة الملفات والبرامج","تستطيع الأجهزة المتصلة تبادل الملفات واستعمال البرامج بينها."],
-["الفائدة الثانية","المشاركة في الأجهزة","مثل استعمال طابعة واحدة أو أقراص مشتركة من عدة حواسيب."],
+["Réseau","تعريف الشبكة","مجموعة من جهازين رقميين أو أكثر، مثل الحواسيب والهواتف والطابعات، متصلة لتبادل البيانات أو مشاركة الموارد.",fl(["جهاز","ربط","جهاز"])],
+["الفائدة الأولى","مشاركة الملفات والبرامج","تستطيع الأجهزة المتصلة تبادل الملفات والوصول إلى خدمات أو برامج وموارد مشتركة عبر الشبكة."],
+["الفائدة الثانية","المشاركة في الأجهزة","مثل استعمال عدة حواسيب لطابعة واحدة أو الوصول إلى مساحة تخزين مشتركة."],
 ["الفائدة الثالثة","التواصل بين المستخدمين","مثل البريد الإلكتروني وأدوات التواصل الاجتماعي.",ch(["البريد الإلكتروني","التواصل الاجتماعي"])]],
 q:[["أقل عدد من الحواسيب لتكوين شبكة:",["جهازان","جهاز واحد","ثلاثة أجهزة"],0],
 ["استعمال طابعة واحدة من عدة حواسيب هو:",["مشاركة الأجهزة","مشاركة البرامج","التواصل"],0],
 ["البريد الإلكتروني مثال على:",["التواصل بين المستخدمين","مشاركة الأقراص","مشاركة الطابعة"],0]]},
 {n:"أنواع الشبكات",act:1,tl:"أي شبكة هذه؟",fm:"صنفت {s} أمثلة من أول محاولة من أصل {n}.",sc:["PAN","LAN","MAN","WAN"],sd:[
-["شبكة بين أجهزتك في غرفتك","",0],["شبكة قاعة المعلوماتية","",1],["شبكة مقهى الإنترنت","",1],["شبكة جامعة","",2],["شبكة تربط أجهزة مدينة","",2],["الإنترنت","",3],["شبكة تربط بين دول وقارات","",3],["شبكة شخصية في البيت","",0]],
+["ربط الهاتف بسماعة Bluetooth","",0],["شبكة قاعة المعلوماتية","",1],["شبكة مقهى الإنترنت","",1],["شبكة تربط عدة مبانٍ داخل مدينة","",2],["شبكة تربط أجهزة مدينة","",2],["الإنترنت","",3],["شبكة تربط بين دول وقارات","",3],["ربط الهاتف بساعة ذكية قريبة","",0]],
 items:[
 ["حسب وسيلة الربط","شبكة سلكية","تربط الأجهزة بالكابل أو بالألياف البصرية.",ch(["الكابل","الألياف البصرية"])],
-["حسب وسيلة الربط","شبكة لاسلكية Wi-Fi","تربط الأجهزة دون أسلاك. وWi-Fi تسمية تجارية، وتشرح عادة بعبارة Wireless Fidelity."],
-["PAN","الشبكة الشخصية","شبكة صغيرة جدا في البيت أو في الغرفة."],
-["LAN","الشبكة المحلية","شبكة في قاعة المعلوماتية أو في مقهى الإنترنت."],
-["MAN","الشبكة الإقليمية","شبكة أوسع مثل شبكة الجامعات أو المدن (وتسمى أيضا الحضرية)."],
-["WAN","الشبكة الواسعة","شبكة تمتد عبر القارات أو الدول، وأكبرها الشبكة العالمية (الإنترنت).",fl(["PAN","LAN","MAN","WAN"])]],
+["حسب وسيلة الربط","شبكة لاسلكية Wi-Fi","تربط الأجهزة لاسلكيا باستخدام موجات الراديو وفق معايير IEEE 802.11. وWi-Fi اسم تجاري للتقنية، وليس اختصارا رسميا لعبارة Wireless Fidelity."],
+["PAN","الشبكة الشخصية","شبكة قصيرة المدى حول شخص واحد، تربط أجهزته الشخصية مثل الهاتف والسماعة أو الساعة الذكية، وغالبا باستخدام Bluetooth."],
+["LAN","الشبكة المحلية","شبكة تغطي مساحة محدودة مثل المنزل أو قاعة المعلوماتية أو مبنى المؤسسة."],
+["MAN","الشبكة الحضرية","شبكة تغطي مدينة أو منطقة حضرية، وقد تربط عدة شبكات محلية داخلها."],
+["WAN","الشبكة الواسعة","شبكة تمتد على مساحة جغرافية كبيرة، وقد تربط شبكات محلية عبر دول أو قارات. الإنترنت مثال عالمي على شبكة واسعة، وهو أيضا شبكة من الشبكات.",fl(["PAN","LAN","MAN","WAN"])]],
 q:[["شبكة قاعة المعلوماتية هي:",["LAN","WAN","PAN"],0],
-["أكبر شبكة واسعة هي:",["الإنترنت","شبكة الغرفة","شبكة المقهى"],0],
+["مثال على شبكة واسعة عالمية:",["الإنترنت","شبكة الغرفة","شبكة المقهى"],0],
 ["Wi-Fi شبكة:",["لاسلكية","سلكية بالكابل","سلكية بالألياف"],0]]},
 {n:"الخادم والزبون",act:1,tl:"أي علاقة هذه؟",fm:"صنفت {s} عبارات من أول محاولة من أصل {n}.",sc:["خادم وزبون","ند للند"],sd:[
-["جهاز بمواصفات عالية يقدم الخدمات لبقية الأجهزة","",0],["كل حاسوب خادم وزبون في نفس الوقت","",1],["الأجهزة التي تطلب الخدمات تسمى زبائن","",0],["لا يوجد جهاز رئيسي واحد","",1],["Serveur هو الجهاز الذي يقدم الموارد","",0],["Peer to Peer","",1]],
+["جهاز أو برنامج يقدم خدمة أو موردا لبقية الأجهزة","",0],["الأجهزة تتبادل الموارد مباشرة دون خادم مركزي مخصص","",1],["الأجهزة التي تطلب الخدمات تسمى زبائن","",0],["لا يعتمد النموذج على خادم مركزي مخصص","",1],["Serveur هو الجهاز الذي يقدم الموارد","",0],["Peer to Peer","",1]],
 items:[
-["Serveur و Client","الخادم والزبون","الخادم (Serveur) جهاز بمواصفات عالية يقدم الخدمات والموارد لبقية أجهزة الحاسوب، وتسمى هذه الأجهزة الزبائن (Clients).",fl(["الخادم","يقدم الخدمة","الزبائن"])],
-["Peer to Peer","الند للند","في هذه الشبكة تكون كل الحواسيب خادما وزبونا في نفس الوقت، فلا يوجد جهاز رئيسي.",ch(["كل جهاز خادم","كل جهاز زبون"])]],
+["Serveur و Client","الخادم والزبون","الخادم (Serveur) جهاز أو برنامج يقدم خدمة أو موردا عبر الشبكة، وتسمى الأجهزة أو البرامج التي تطلب الخدمة الزبائن (Clients). وقد يكون الخادم حاسوبا مخصصا أو جهازا عاديا حسب حجم العمل.",fl(["الخادم","يقدم الخدمة","الزبائن"])],
+["Peer to Peer","الند للند","في شبكة الند للند تتبادل الأجهزة الموارد مباشرة دون الاعتماد على خادم مركزي مخصص؛ ويمكن لكل جهاز أن يطلب موارد من غيره وأن يشارك موارده.",ch(["مشاركة مباشرة","دون خادم مركزي مخصص"])]],
 q:[["في الشبكة، الجهاز الذي يقدم الخدمات يسمى:",["الخادم","الزبون","المحول"],0],
 ["في شبكة الند للند:",["كل حاسوب خادم وزبون في الوقت نفسه","يوجد خادم واحد فقط","لا يوجد اتصال"],0],
 ["Client تعني:",["الزبون","الخادم","الموزع"],0]]},
 {n:"طوبولوجيا الربط",act:1,tl:"أي طوبولوجيا؟",fm:"صنفت {s} عبارات من أول محاولة من أصل {n}.",sc:["الباص","الحلقة","النجمة"],sd:[
-["كل الأجهزة مرتبطة بخط واحد","",0],["الأول يرتبط بالموالي والأخير بالأول","",1],["جهاز مركزي مثل Switch أو Hub","",2],["قطع الكابل الرئيسي يوقف الاتصال","",0],["البيانات تمر بالتتابع عبر جميع الأجهزة","",1],["تعطل جهاز واحد لا يوقف البقية، وتعطل المحول يوقف الشبكة","",2]],
+["كل الأجهزة مرتبطة بخط واحد","",0],["كل جهاز يتصل بالذي يليه والأخير بالأول","",1],["جهاز مركزي مثل Switch أو Hub","",2],["قطع الكابل الرئيسي يوقف الاتصال","",0],["في الحلقة التقليدية تمر البيانات عبر الأجهزة بالتتابع","",1],["تعطل جهاز واحد لا يوقف البقية، وتعطل المحول يوقف الشبكة","",2]],
 items:[
 ["Bus","طوبولوجيا الباص","ترتبط أجهزة الحاسوب بخط واحد (كابل رئيسي). إذا انقطع هذا الكابل توقف الاتصال بين الأجهزة.",topo('bus')],
-["Ring","طوبولوجيا الحلقة","ترتبط أجهزة الحاسوب على شكل حلقة: الأول بالموالي والأخير بالأول، فتنتقل البيانات عبر جميع الأجهزة.",topo('ring')],
-["Star","طوبولوجيا النجمة","ترتبط أجهزة الحاسوب عبر توصيل مركزي مثل المحول (Switch) أو الموزع (Hub)، ومنه تتبادل الأجهزة البيانات. تعطل جهاز واحد لا يوقف البقية، لكن تعطل الجهاز المركزي يوقف الشبكة.",topo('star')]],
+["Ring","طوبولوجيا الحلقة","ترتبط الأجهزة في مسار مغلق؛ كل جهاز يتصل بالذي يليه، والأخير بالأول. في نموذج الحلقة التقليدي تمر البيانات عبر الأجهزة بالتتابع حتى تصل إلى وجهتها.",topo('ring')],
+["Star","طوبولوجيا النجمة","ترتبط أجهزة الحاسوب عبر توصيل مركزي مثل المحول (Switch) أو الموزع (Hub)، ومنه تتبادل الأجهزة البيانات. في التصميم النجمي، تعطل كابل أو جهاز طرفي واحد يعزل ذلك الجهاز عادة ولا يوقف بقية الأجهزة. أما تعطل المحول أو الجهاز المركزي فيؤثر في اتصال الشبكة كلها.",topo('star')]],
 q:[["أي طوبولوجيا تستعمل محولا Switch أو موزعا Hub؟",["النجمة","الباص","الحلقة"],0],
 ["في طوبولوجيا الحلقة، الجهاز الأخير يرتبط بـ:",["الجهاز الأول","الخادم","الطابعة"],0],
 ["في طوبولوجيا الباص، قطع الكابل الرئيسي:",["يوقف الاتصال بين الأجهزة","لا يؤثر","يسرع الشبكة"],0]]},
@@ -110,7 +150,7 @@ q:[["أي طوبولوجيا تستعمل محولا Switch أو موزعا Hub�
 ["في شبكة الند للند:",["كل حاسوب خادم وزبون","كل الحواسيب زبائن فقط","كل الحواسيب خوادم فقط"],0]]}
 ];
 var S={lv:0,it:0,stage:'learn',ai:0,as:0,w:0,qi:0,sc:0,max:0,done:{},seen:{},pts:0};
-var KEY='net-progress-v1';
+var KEY='net-learning-progress-v2';
 try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv){S.max=sv.max||0;S.done=sv.done||{};S.pts=sv.pts||0;S.lv=Math.min(S.max,L.length-1)}}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify({max:S.max,done:S.done,pts:S.pts}))}catch(e){}}
 function addPts(n){if(!S.done[S.lv]){S.pts+=n;$('pts').textContent=S.pts}}
@@ -146,8 +186,8 @@ function sortAct(){
 function quiz(){
  var l=L[S.lv],q=l.q[S.qi],P=$('panel');
  if(!q){var need=l.q.length-1,ok=S.sc>=need,last=S.lv===L.length-1;
-  if(ok){var first=!S.done[S.lv];S.done[S.lv]=1;if(first){S.pts+=5}if(S.max<L.length-1&&S.max===S.lv)S.max++;save();renderTop()}
-  P.innerHTML='<div class="big"><h2>'+(ok?(last?'أحسنت، أكملت الرحلة':'أحسنت، أنهيت المستوى '+(S.lv+1)):'اقتربت من النجاح')+'</h2><p>نتيجتك: '+S.sc+' من '+l.q.length+'</p><p>'+(ok?(last?'مجموع نقاطك: '+S.pts+'. صرت تعرف أنواع الشبكات وطرق ربطها.':'تم فتح المستوى التالي: '+L[S.lv+1].n):'تحتاج '+need+' إجابات صحيحة على الأقل. راجع الدرس ثم أعد المحاولة.')+'</p><div class="row" style="justify-content:center">'+(ok&&!last?'<button class="btn" id="go">المستوى التالي</button>':'')+(ok?'':'<button class="btn g" id="rv">مراجعة الدرس</button>')+'<button class="btn g" id="rt">إعادة الاختبار</button></div></div>';
+  if(ok){var first=!S.done[S.lv];S.done[S.lv]=1;if(first){S.pts+=5}if(S.max<L.length-1&&S.max===S.lv)S.max++;save();renderTop();P.classList.add("level-complete")}
+  P.innerHTML='<div class="big">'+(ok?'<div class="complete-mark" aria-hidden="true">✓</div>':'')+'<h2>'+(ok?(last?'أحسنت، أكملت الرحلة':'أحسنت، أنهيت المستوى '+(S.lv+1)):'اقتربت من النجاح')+'</h2><p>نتيجتك: '+S.sc+' من '+l.q.length+'</p><p>'+(ok?(last?'مجموع نقاطك: '+S.pts+'. صرت تعرف أنواع الشبكات وطرق ربطها.':'تم فتح المستوى التالي: '+L[S.lv+1].n):'تحتاج '+need+' إجابات صحيحة على الأقل. راجع الدرس ثم أعد المحاولة.')+'</p><div class="row" style="justify-content:center">'+(ok&&!last?'<button class="btn" id="go">المستوى التالي</button>':'')+(ok?'':'<button class="btn g" id="rv">مراجعة الدرس</button>')+'<button class="btn g" id="rt">إعادة الاختبار</button></div></div>';
   if($('go'))$('go').onclick=function(){S.lv++;reset();draw()};
   if($('rv'))$('rv').onclick=function(){S.it=0;S.stage='learn';draw()};
   $('rt').onclick=function(){S.qi=0;S.sc=0;draw()};return}
