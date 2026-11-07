@@ -82,6 +82,15 @@ main{max-width:760px;margin:auto;padding:8px 14px 40px}
 .panel.level-complete{animation:levelPulse .65s ease-out}
 .complete-mark{width:42px;height:42px;margin:0 auto 8px;border-radius:50%;display:grid;place-items:center;background:var(--ok);color:#fff;font-size:1.35rem;font-weight:700;animation:markPop .35s ease-out}
 
+
+/* Mobile step navigation: same wrapping behaviour as sec.html */
+@media(max-width:600px){
+  .steps{flex-wrap:wrap;gap:6px}
+  .st{flex:1 1 calc(50% - 6px);min-width:0;min-height:44px;white-space:normal;touch-action:manipulation}
+}
+@media(max-width:360px){
+  .st{flex-basis:100%}
+}
 </style>
 </head>
 <body>

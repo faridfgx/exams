@@ -185,6 +185,15 @@ input[type=range]{min-height:34px;touch-action:pan-y}
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 
+
+/* Mobile step navigation: same wrapping behaviour as sec.html */
+@media(max-width:600px){
+  .steps{flex-wrap:wrap;gap:6px}
+  .st{flex:1 1 calc(50% - 6px);min-width:0;min-height:44px;white-space:normal;touch-action:manipulation}
+}
+@media(max-width:360px){
+  .st{flex-basis:100%}
+}
 </style>
 </head>
 <body>
