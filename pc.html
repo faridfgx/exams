@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>رحلة داخل الحاسوب</title>
+<style>
+:root{--bg:#f7f4ee;--card:#fffdf9;--tx:#2a2622;--mut:#6f675d;--pri:#1f5c4d;--acc:#b5532a;--ok:#2f7d4f;--bad:#b3392f;--bd:#e3dccf;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1814;--card:#24211c;--tx:#efe9df;--mut:#b2a99a;--pri:#6fb59f;--bd:#3a352d}}
+:root[data-theme="dark"]{--bg:#1a1814;--card:#24211c;--tx:#efe9df;--mut:#b2a99a;--pri:#6fb59f;--bd:#3a352d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.8}
+header{max-width:760px;margin:auto;padding:22px 14px 10px;border-bottom:1px solid var(--bd)}
+h1{margin:0;font-size:clamp(1.3rem,4.5vw,1.8rem)}
+.pts{color:var(--mut)}.pts b{color:var(--acc)}
+main{max-width:760px;margin:auto;padding:8px 14px 40px}
+.bar{height:6px;background:var(--bd);border-radius:3px;overflow:hidden;margin-top:14px}
+.bar i{display:block;height:100%;width:0;background:var(--pri);transition:width .6s}
+.pc{font-size:.85rem;color:var(--mut);margin:4px 0}
+.steps{display:flex;gap:6px;margin:12px 0}
+.st{flex:1;font:inherit;font-size:.82rem;padding:8px 4px;border-radius:6px;border:1px solid var(--bd);background:var(--card);color:var(--mut);cursor:pointer}
+.st.cur{border:2px solid var(--pri);color:var(--tx);font-weight:700}
+.st.done{background:var(--ok);border-color:var(--ok);color:#fff}
+.st.lock{opacity:.45;cursor:not-allowed}
+.panel{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:24px;min-height:290px;animation:in .35s}
+@keyframes in{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+.tag{display:inline-block;color:var(--acc);border:1px solid var(--acc);border-radius:4px;padding:0 10px;font-size:.85rem}
+.panel h2{margin:10px 0 6px}.panel p{font-size:1.06rem;margin:6px 0}
+.dots{display:flex;gap:5px;justify-content:center;margin:14px 0 4px}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--bd)}.dots i.on{background:var(--pri)}.dots i.cur{background:var(--acc)}
+.row{display:flex;justify-content:space-between;gap:10px;margin-top:16px}
+.btn{font:inherit;border:0;border-radius:6px;padding:10px 22px;background:var(--pri);color:#fff;cursor:pointer}
+.btn.g{background:var(--bd);color:var(--tx)}.btn[disabled]{opacity:.4;cursor:default}
+.opt{display:block;width:100%;text-align:start;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:10px;margin:8px 0;cursor:pointer}
+.opt:hover{border-color:var(--pri)}
+.opt.ok{background:var(--ok);color:#fff;border-color:var(--ok)}.opt.no{background:var(--bad);color:#fff;border-color:var(--bad)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.big{text-align:center}.big h2{font-size:1.5rem}
+.fb{min-height:1.6em;font-weight:700;margin-top:6px}
+.ex{background:var(--bg);border-inline-start:4px solid var(--acc);border-radius:4px;padding:12px;margin:10px 0;font-size:.98rem}
+.ex .t{color:var(--mut);font-size:.85rem;margin:4px 0}
+.chips span{display:inline-block;background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:2px 12px;margin:3px;font-weight:700}
+.flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0}
+.flow b{background:var(--pri);color:#fff;border-radius:6px;padding:4px 12px;font-size:.9rem}
+.bits{display:flex;gap:6px;direction:ltr;margin:8px 0}
+.bits span{width:36px;height:44px;border:1px solid var(--pri);border-radius:6px;display:flex;align-items:center;justify-content:center;font:700 1.2rem monospace;cursor:pointer;background:var(--card)}
+.cvr{display:flex;gap:6px;flex-wrap:wrap;direction:ltr;margin-top:6px}
+.cvr input,.cvr select,.inp{font:inherit;padding:6px;border:1px solid var(--bd);border-radius:6px;background:var(--card);color:var(--tx)}
+.cvr input{width:100px}.inp{width:170px;direction:ltr}
+.case{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:10px 0}
+.slot{border:1px dashed var(--bd);border-radius:6px;min-height:68px;padding:6px;text-align:center;font-size:.85rem;display:flex;flex-direction:column;justify-content:center;color:var(--mut)}
+.slot.f{border:1px solid var(--ok);color:var(--tx);background:var(--bg)}.slot small{color:var(--mut)}
+</style>
+</head>
+<body>
+<header><h1>رحلة داخل الحاسوب: أجزاؤه وتركيبه ووحدات الذاكرة</h1><div class="pts">النقاط: <b id="pts">0</b></div>
+<div class="bar"><i id="bar"></i></div><div class="pc" id="pc"></div></header>
+<main>
+<div class="steps" id="steps"></div>
+<div class="panel" id="panel"></div>
+</main>
+<script>
+function $(i){return document.getElementById(i)}
+function sh(a){return a.map(function(x){return [Math.random(),x]}).sort(function(a,b){return a[0]-b[0]}).map(function(x){return x[1]})}
+function rnd(n){return Math.floor(Math.random()*n)}
+function ch(a){return '<div class="chips">'+a.map(function(x){return '<span>'+x+'</span>'}).join('')+'</div>'}
+var SZ={bit:1,o:8,Ko:8192,Mo:8388608,Go:8589934592,To:8796093022208};
+function cv(){var v=parseFloat($('cv').value),f=$('cf').value,t=$('ct').value;
+ $('co').textContent=isNaN(v)?'أدخل رقما أولا':v+' '+f+' = '+parseFloat((v*SZ[f]/SZ[t]).toPrecision(12))+' '+t}
+function tg(e){e.textContent=e.textContent==='0'?'1':'0'}
+var UO=Object.keys(SZ).map(function(u){return '<option>'+u+'</option>'}).join('');
+var BITS='<div class="bits">'+'00010011'.split('').map(function(b){return '<span onclick="tg(this)">'+b+'</span>'}).join('')+'</div>';
+var L=[
+{n:"ما هو الحاسوب",items:[
+["Ordinateur","تعريف الحاسوب","جهاز يسمح باستقبال المعلومات وتخزينها ومعالجتها وإخراج النتائج المطلوبة، باتباع برامج مخزنة مسبقا.",'<div class="t">مسار العمل</div><div class="flow"><b>إدخال</b><span>←</span><b>معالجة</b><span>←</span><b>إخراج</b></div><div class="t">والتخزين يحفظ المعلومات لاستعمالها لاحقا.</div>'],
+["Hardware و Software","مكونات نظام الحاسوب","يتكون نظام الحاسوب من جزأين: المكونات المادية (Hardware)، وهي الأجزاء التي يمكن رؤيتها ولمسها، وبعضها لا يظهر إلا برفع الغطاء الخارجي. والمكونات غير المادية (Software)، وهي التي لا نراها لكن نرى أثر عملها، مثل البرامج.",'<div class="t">مادي</div>'+ch(["الشاشة","لوحة المفاتيح","المعالج"])+'<div class="t">غير مادي</div>'+ch(["نظام التشغيل","برنامج الكتابة","لعبة"])],
+["الأساسيات","المكونات الأساسية للحاسوب","لا يكتمل الحاسوب بدون ثلاثة مكونات أساسية.",ch(["الوحدة المركزية Unité centrale","الشاشة Ecran","لوحة المفاتيح Clavier"])]],
+q:[["أي مما يلي يعد من المكونات غير المادية؟",["نظام التشغيل","الشاشة","لوحة المفاتيح"],0],
+["يعمل الحاسوب وفق:",["برامج مخزنة مسبقا","أوامر عشوائية","الإنترنت فقط"],0],
+["من المكونات الأساسية للحاسوب:",["الوحدة المركزية والشاشة ولوحة المفاتيح","الطابعة والماسح","الميكروفون والكاميرا"],0]]},
+{n:"وحدات الحاسوب",act:'sort',items:[
+["Entrée","وحدات الإدخال","تستخدم لإدخال البيانات إلى الحاسوب.",ch(["لوحة المفاتيح Clavier","الفأرة Souris","الماسح الضوئي Scanner","الميكروفون Microphone","الكاميرا Web Cam"])],
+["Sortie","وحدات الإخراج","تستخدم لإخراج النتائج من الحاسوب.",ch(["الشاشة Ecran","مكبر الصوت Haut-parleur","الطابعة Imprimante"])],
+["Stockage","وحدات التخزين","أقراص تحفظ فيها المعلومات بصفة دائمة.",ch(["القرص الصلب Disque dur","القرص المرن Disquette","القرص المضغوط CD-Rom","قرص فلاش Flash disque"])],
+["Traitement","وحدات المعالجة","مكونات تقوم بمعالجة البيانات.",ch(["المعالج المركزي Processeur","بطاقة الشاشة Carte graphique","بطاقة الصوت Carte son"])]],
+q:[["الماسح الضوئي Scanner هو وحدة:",["إدخال","إخراج","تخزين"],0],
+["الطابعة Imprimante هي وحدة:",["إخراج","إدخال","معالجة"],0],
+["بطاقة الشاشة Carte graphique هي وحدة:",["معالجة","تخزين","إدخال"],0]]},
+{n:"الوحدة المركزية",act:'build',items:[
+["Processeur","المعالج المركزي","هو العقل المفكر للحاسوب: ينفذ التعليمات ويعالج البيانات."],
+["Carte mère","البطاقة الأم","اللوحة الرئيسية التي تربط كل مكونات الحاسوب ببعضها."],
+["Mémoire vive","الذاكرة الحية","تحفظ مؤقتا البرامج والبيانات التي يعمل عليها المعالج الآن، وتمحى عند إطفاء الجهاز."],
+["Bloc alimentation","علبة التغذية","تحول الكهرباء وتوزعها على كل مكونات الوحدة المركزية."],
+["Disque dur","القرص الصلب","يخزن المعلومات والبرامج بصفة دائمة."],
+["إضافية","بطاقات إضافية حسب الحاجة","كارت الشاشة VGA، وبطاقة الصوت Sound Card، وبطاقة الشبكة Network Card.",ch(["VGA card","Sound Card","Network Card"])]],
+q:[["ما دور البطاقة الأم؟",["تربط كل المكونات ببعضها","تخزن الصور","تطبع الوثائق"],0],
+["ما دور علبة التغذية؟",["توزع الكهرباء على المكونات","تعالج البيانات","تعرض الصورة"],0],
+["أي مكون يخزن المعلومات بصفة دائمة؟",["القرص الصلب","الذاكرة الحية","المعالج"],0]]},
+{n:"وحدات الذاكرة",act:'conv',items:[
+["Bit","البت","أصغر وحدة للمعلومات، ويخزن قيمة واحدة من قيمتين: 0 أو 1."],
+["Octet / Byte","الأوكتي (البايت)","يتكون من ثمانية بتات، ويخزن حرفا واحدا أو رمزا واحدا فقط. اضغط على أي بت لتغير قيمته.",BITS],
+["المضاعفات","وحدات أكبر","كل وحدة تساوي 1024 مرة الوحدة التي قبلها (2 أس 10). ملاحظة: بعض الشركات تحسب سعة الأقراص بـ 1000 بدل 1024، ولهذا يظهر قرص 500 Go في النظام بسعة أقل قليلا.",ch(["1 o (Byte) = 8 bit","1 Ko (KB) = 1024 o","1 Mo (MB) = 1024 Ko","1 Go (GB) = 1024 Mo","1 To (TB) = 1024 Go"]).replace(/<span>/g,'<span dir="ltr">')],
+["قاعدة التحويل","كيف نحول بين الوحدات","للانتقال إلى وحدة أكبر نقسم على 1024، وللانتقال إلى وحدة أصغر نضرب في 1024. وبين الأوكتي والبت نضرب أو نقسم على 8.",'<div class="flow"><b>أكبر: ÷ 1024</b><b>أصغر: × 1024</b><b>بت و أوكتي: 8</b></div>'],
+["أداة","جرب المحول","أدخل رقما واختر الوحدتين لترى النتيجة.",'<div class="cvr"><input id="cv" type="number" value="1"><select id="cf">'+UO+'</select><span>=</span><select id="ct">'+UO.replace('<option>bit','<option selected>bit')+'</select><button class="btn" onclick="cv()">حول</button></div><div id="co" class="fb" dir="ltr" style="text-align:start"></div>']],
+q:[["كم بتا في الأوكتي الواحد؟",["8","10","1024"],0],
+["1 Ko يساوي:",["1024 o","1000 o","8 o"],0],
+["1 Mo يساوي:",["1024 Ko","1024 Go","8 Ko"],0]]},
+{n:"التحدي النهائي",items:[],q:[
+["أي وحدة تخزن المعلومات بصفة دائمة؟",["القرص الصلب","الذاكرة الحية","الشاشة"],0],
+["يستطيع الأوكتي تخزين:",["حرف واحد أو رمز واحد","صفحة كاملة","صورة"],0],
+["أي وحدة هي الأكبر؟",["Go","Mo","Ko"],0],
+["البت يخزن:",["الصفر أو الواحد","حرفا كاملا","ثمانية رموز"],0]]}
+];
+var D=[["لوحة المفاتيح","Clavier",0],["الفأرة","Souris",0],["الماسح الضوئي","Scanner",0],["الميكروفون","Microphone",0],["الشاشة","Ecran",1],["مكبر الصوت","Haut-parleur",1],["الطابعة","Imprimante",1],["القرص الصلب","Disque dur",2],["قرص فلاش","Flash disque",2],["القرص المضغوط","CD-Rom",2],["المعالج المركزي","Processeur",3],["بطاقة الصوت","Carte son",3]];
+var CT=["إدخال","إخراج","تخزين","معالجة"];
+var B=[["المعالج المركزي","ينفذ التعليمات","ثبت الجزء الذي ينفذ التعليمات في مقبسه على البطاقة الأم."],
+["الذاكرة الحية","تحفظ مؤقتا","ركب الذاكرة التي تحفظ مؤقتا ما يعمل عليه المعالج، على البطاقة الأم."],
+["البطاقة الأم","تربط الأجزاء","ضع اللوحة التي تربط كل الأجزاء ببعضها داخل علبة الوحدة المركزية."],
+["علبة التغذية","توزع الكهرباء","ركب الجزء الذي يوزع الكهرباء على المكونات."],
+["القرص الصلب","تخزين دائم","ركب الجزء الذي يحفظ المعلومات بصفة دائمة."],
+["بطاقة الصوت","بطاقة إضافية","أضف بطاقة إضافية عند الحاجة، لتشغيل الصوت."],
+["الشاشة ولوحة المفاتيح","أجزاء خارجية","أخيرا، صل الأجزاء الخارجية الأساسية بالوحدة المركزية."]];
+var S={lv:0,it:0,stage:'learn',ai:0,as:0,w:0,qi:0,sc:0,max:0,done:{},seen:{},pts:0,ex:null};
+var KEY='pc-progress-v1';
+try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv){S.max=sv.max||0;S.done=sv.done||{};S.pts=sv.pts||0;S.lv=Math.min(S.max,L.length-1)}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({max:S.max,done:S.done,pts:S.pts}))}catch(e){}}
+function addPts(n){if(!S.done[S.lv]){S.pts+=n;$('pts').textContent=S.pts}}
+function reset(){S.it=0;S.qi=0;S.sc=0;S.ai=0;S.as=0;S.w=0;S.ex=null;S.stage=L[S.lv].items.length?'learn':'quiz'}
+function renderTop(){
+ var n=Object.keys(S.done).length;
+ $('bar').style.width=(n/L.length*100)+'%';$('pc').textContent='أنهيت '+n+' من '+L.length+' مستويات';$('pts').textContent=S.pts;
+ var h='';L.forEach(function(l,i){var c=S.done[i]?'done':i===S.lv?'cur':i>S.max?'lock':'';
+  h+='<button class="st '+c+'" data-i="'+i+'">'+(i+1)+'. '+l.n+(S.done[i]?' ✓':'')+'</button>'});
+ $('steps').innerHTML=h}
+$('steps').onclick=function(e){var i=e.target.dataset&&e.target.dataset.i;if(i===undefined||+i>S.max)return;S.lv=+i;reset();draw()};
+function toQuiz(){S.stage='quiz';S.qi=0;S.sc=0;draw()}
+function draw(){
+ renderTop();var P=$('panel');P.style.animation='none';P.offsetHeight;P.style.animation='';
+ if(S.stage==='learn')learn();else if(S.stage==='act')act();else quiz()}
+function learn(){
+ var l=L[S.lv],it=l.items[S.it],P=$('panel'),h='<span class="tag">'+it[0]+'</span><h2>'+it[1]+'</h2><p>'+it[2]+'</p>'+(it[3]?'<div class="ex">'+it[3]+'</div>':'')+'<div class="dots">';
+ l.items.forEach(function(x,i){h+='<i class="'+(i===S.it?'cur':i<S.it?'on':'')+'"></i>'});
+ var last=S.it===l.items.length-1;
+ h+='</div><div class="pc" style="text-align:center">'+(S.it+1)+' من '+l.items.length+'</div><div class="row"><button class="btn g" id="pv"'+(S.it?'':' disabled')+'>السابق</button><button class="btn" id="nx">'+(!last?'فهمت، التالي':l.act?'انتقل إلى التطبيق':'ابدأ اختبار المستوى')+'</button></div>';
+ P.innerHTML=h;
+ var k=S.lv+'-'+S.it;if(!S.seen[k]){S.seen[k]=1;addPts(1)}
+ $('pv').onclick=function(){S.it--;draw()};
+ $('nx').onclick=function(){if(!last){S.it++;draw()}else if(l.act){S.stage='act';S.ai=0;S.as=0;S.w=0;draw()}else toQuiz()}}
+function fin(msg){$('panel').innerHTML='<div class="big"><span class="tag">انتهى التطبيق</span><h2>أحسنت</h2><p>'+msg+'</p><div class="row" style="justify-content:center"><button class="btn" id="tq">ابدأ اختبار المستوى</button></div></div>';$('tq').onclick=toQuiz}
+function act(){var a=L[S.lv].act;if(a==='sort')sortAct();else if(a==='build')buildAct();else convAct()}
+function sortAct(){
+ var P=$('panel');if(S.ai>=D.length)return fin('صنفت '+S.as+' أجهزة من أول محاولة من أصل '+D.length+'.');
+ var d=D[S.ai];
+ P.innerHTML='<span class="tag">صنف الجهاز '+(S.ai+1)+' من '+D.length+'</span><h2>'+d[0]+'</h2><p dir="ltr" style="color:var(--mut);text-align:right">'+d[1]+'</p><p>إلى أي نوع من الوحدات ينتمي؟</p><div class="g2" id="g"></div><div class="fb" id="fb"></div>';
+ CT.forEach(function(c,k){var b=document.createElement('button');b.className='opt';b.textContent=c;
+  b.onclick=function(){if(k===d[2]){if(!S.w){S.as++;addPts(1)}S.w=0;S.ai++;sortAct()}else{S.w=1;$('fb').textContent='ليس هذا النوع، جرب مرة أخرى'}};$('g').appendChild(b)})}
+function buildAct(){
+ var P=$('panel');if(S.ai>=B.length)return fin('ركبت الحاسوب كاملا بالترتيب الصحيح.');
+ var cur=B[S.ai],h='<span class="tag">تركيب الحاسوب</span><div class="case">';
+ B.forEach(function(b,i){h+='<div class="slot'+(i<S.ai?' f':'')+'">'+(i<S.ai?'<b>'+b[0]+'</b><small>'+b[1]+'</small>':i===S.ai?'؟':'')+'</div>'});
+ h+='</div><div class="ex"><b>الخطوة '+(S.ai+1)+' من '+B.length+':</b> '+cur[2]+'</div><div id="g"></div><div class="fb" id="fb"></div>';
+ P.innerHTML=h;
+ var o=sh(sh(B.map(function(x){return x[0]}).filter(function(x){return x!==cur[0]})).slice(0,2).concat([cur[0]]));
+ o.forEach(function(t){var b=document.createElement('button');b.className='opt';b.textContent=t;
+  b.onclick=function(){if(t===cur[0]){if(!S.w)addPts(1);S.w=0;S.ai++;buildAct()}else{S.w=1;$('fb').textContent='ليس مناسبا في هذه الخطوة، أعد قراءة التعليمة'}};$('g').appendChild(b)})}
+function gen(){
+ var U=['o','Ko','Mo','Go','To'],r=[],i,m;
+ for(var k=0;k<3;k++){i=rnd(4);m=2+rnd(4);
+  if(rnd(2)){r.push({q:(m*1024)+' '+U[i]+' = ؟ '+U[i+1],a:m,h:'للانتقال إلى وحدة أكبر نقسم على 1024'})}
+  else{r.push({q:m+' '+U[i+1]+' = ؟ '+U[i],a:m*1024,h:'للانتقال إلى وحدة أصغر نضرب في 1024'})}}
+ m=2+rnd(5);r.push({q:m+' o = ؟ bit',a:m*8,h:'نضرب في 8'});
+ m=2+rnd(5);r.push({q:(m*8)+' bit = ؟ o',a:m,h:'نقسم على 8'});
+ return r}
+function convAct(){
+ var P=$('panel');if(!S.ex)S.ex=gen();
+ if(S.ai>=S.ex.length)return fin('أجبت إجابة صحيحة عن '+S.as+' من '+S.ex.length+' تمارين.');
+ var e=S.ex[S.ai];
+ P.innerHTML='<span class="tag">تمرين '+(S.ai+1)+' من '+S.ex.length+'</span><h2 dir="ltr" style="text-align:right">'+e.q+'</h2><p>اكتب الناتج كرقم:</p><input class="inp" id="in" type="number" inputmode="numeric"> <button class="btn" id="ck">تحقق</button><div class="fb" id="fb"></div><div id="nz"></div>';
+ $('ck').onclick=function(){var v=parseFloat($('in').value);if(isNaN(v))return;
+  $('in').disabled=true;$('ck').disabled=true;
+  if(v===e.a){S.as++;addPts(1);$('fb').textContent='صحيح'}else $('fb').textContent='الجواب الصحيح: '+e.a+'. '+e.h;
+  $('nz').innerHTML='<div class="row" style="justify-content:flex-end"><button class="btn" id="nn">التالي</button></div>';
+  $('nn').onclick=function(){S.ai++;convAct()}}}
+function quiz(){
+ var l=L[S.lv],q=l.q[S.qi],P=$('panel');
+ if(!q){var need=l.q.length-1,ok=S.sc>=need,last=S.lv===L.length-1;
+  if(ok){var first=!S.done[S.lv];S.done[S.lv]=1;if(first){S.pts+=5}if(S.max<L.length-1&&S.max===S.lv)S.max++;save();renderTop()}
+  P.innerHTML='<div class="big"><h2>'+(ok?(last?'أحسنت، أكملت الرحلة':'أحسنت، أنهيت المستوى '+(S.lv+1)):'اقتربت من النجاح')+'</h2><p>نتيجتك: '+S.sc+' من '+l.q.length+'</p><p>'+(ok?(last?'مجموع نقاطك: '+S.pts+'. صرت تعرف أجزاء الحاسوب ووحدات الذاكرة.':'تم فتح المستوى التالي: '+L[S.lv+1].n):'تحتاج '+need+' إجابات صحيحة على الأقل. راجع الدرس ثم أعد المحاولة.')+'</p><div class="row" style="justify-content:center">'+(ok&&!last?'<button class="btn" id="go">المستوى التالي</button>':'')+(ok?'':'<button class="btn g" id="rv">مراجعة الدرس</button>')+'<button class="btn g" id="rt">إعادة الاختبار</button></div></div>';
+  if($('go'))$('go').onclick=function(){S.lv++;reset();draw()};
+  if($('rv'))$('rv').onclick=function(){S.it=0;S.stage='learn';draw()};
+  $('rt').onclick=function(){S.qi=0;S.sc=0;draw()};return}
+ P.innerHTML='<span class="tag">اختبار المستوى</span><p><b>السؤال '+(S.qi+1)+' من '+l.q.length+'</b></p><h2 style="font-size:1.15rem">'+q[0]+'</h2><div id="os"></div><div class="fb" id="fb"></div>';
+ var idx=sh([0,1,2,3].slice(0,q[1].length));
+ idx.forEach(function(i){var b=document.createElement('button');b.className='opt';b.textContent=q[1][i];
+  b.onclick=function(){var all=$('os').children;
+   for(var j=0;j<all.length;j++){all[j].disabled=true;if(all[j].textContent===q[1][q[2]])all[j].classList.add('ok')}
+   if(i===q[2]){S.sc++;addPts(2);$('fb').textContent='إجابة صحيحة'}else{b.classList.add('no');$('fb').textContent='الإجابة الصحيحة: '+q[1][q[2]]}
+   var n=document.createElement('button');n.className='btn';n.textContent='متابعة';n.onclick=function(){S.qi++;quiz()};
+   var d=document.createElement('div');d.className='row';d.style.justifyContent='flex-end';d.appendChild(n);P.appendChild(d)};
+  $('os').appendChild(b)})}
+reset();draw();
+</script>
+</body>
+</html>
