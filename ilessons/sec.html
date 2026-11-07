@@ -145,8 +145,8 @@ q:[["ما وظيفة برنامج الحماية؟",["يساعد على اكتش
 ];
 var S={lv:0,it:0,stage:'learn',ai:0,as:0,w:0,qi:0,sc:0,max:0,done:{},seen:{},pts:0};
 var KEY='security-progress-v2';
-try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv){S.max=sv.max||0;S.done=sv.done||{};S.pts=sv.pts||0;S.lv=Math.min(S.max,L.length-1)}}catch(e){}
-function save(){try{localStorage.setItem(KEY,JSON.stringify({max:S.max,done:S.done,pts:S.pts}))}catch(e){}}
+try{var sv=(function(){try{return JSON.parse(atob(location.hash.slice(1)))}catch(e){}return parent===window?JSON.parse(localStorage.getItem(KEY)||'null'):null})();if(sv){S.max=sv.max||0;S.done=sv.done||{};S.pts=sv.pts||0;S.lv=Math.min(S.max,L.length-1)}}catch(e){}
+function save(){var o={max:S.max,done:S.done,pts:S.pts};try{if(parent!==window)parent.postMessage({t:'prog',u:KEY,s:o},'*');else localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
 function addPts(n){if(!S.done[S.lv]){S.pts+=n;$('pts').textContent=S.pts}}
 function reset(){S.it=0;S.qi=0;S.sc=0;S.ai=0;S.as=0;S.w=0;S.stage=L[S.lv].items.length?'learn':'quiz'}
 function renderTop(){

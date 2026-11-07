@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>منصة تعلّم المعلوماتية</title>
+<style>
+:root{--bg:#f7f4ee;--card:#fffdf9;--tx:#2a2622;--mut:#6f675d;--pri:#1f5c4d;--acc:#b5532a;--ok:#2f7d4f;--bad:#b3392f;--bd:#e3dccf}
+@media(prefers-color-scheme:dark){:root{--bg:#1a1814;--card:#24211c;--tx:#efe9df;--mut:#b2a99a;--pri:#6fb59f;--bd:#3a352d}}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.8}
+.wrap{max-width:860px;margin:auto;padding:20px 14px 48px}
+h1{margin:0 0 4px;font-size:clamp(1.4rem,5vw,2rem)}
+.sub{color:var(--mut);margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:20px;margin-bottom:16px}
+label{display:block;font-weight:700;margin:12px 0 4px}
+select,input{width:100%;font:inherit;padding:10px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx)}
+select:focus,input:focus{outline:2px solid var(--pri)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.grid2{grid-template-columns:1fr}}
+.btn{font:inherit;border:0;border-radius:8px;padding:10px 22px;background:var(--pri);color:#fff;cursor:pointer}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.g{background:transparent;color:var(--tx);border:1px solid var(--bd)}
+.btn.big{padding:12px 30px;font-size:1.05rem}
+.hint{color:var(--mut);margin:10px 0 0;font-size:.95rem}
+.ok{color:var(--ok);margin:10px 0 0;font-weight:700}
+.warn{color:var(--bad);margin:10px 0 0}
+.cands{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.cand{font:inherit;font-size:.95rem;padding:6px 14px;border-radius:99px;border:1px solid var(--pri);background:transparent;color:var(--tx);cursor:pointer}
+.cand:hover{background:var(--pri);color:#fff}
+.list{max-height:260px;overflow:auto;border:1px solid var(--bd);border-radius:8px;padding:10px;margin-top:10px}
+.last{margin-top:14px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.who b{font-size:1.2rem}.who span{color:var(--mut)}
+.bar{height:10px;background:var(--bd);border-radius:99px;overflow:hidden;margin:8px 0 4px}
+.bar i{display:block;height:100%;background:var(--pri);transition:width .6s}
+.meta{display:flex;justify-content:space-between;color:var(--mut);font-size:.92rem;gap:10px;flex-wrap:wrap}
+.meta b{color:var(--acc)}
+.units{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.units{grid-template-columns:1fr}}
+.unit{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:16px;display:flex;flex-direction:column}
+.unit h3{margin:0 0 2px;font-size:1.1rem}
+.unit .n{color:var(--mut);font-size:.88rem}
+.ls{list-style:none;margin:10px 0 14px;padding:0;flex:1}
+.ls li{display:flex;gap:8px;align-items:center;padding:3px 0;font-size:.95rem;color:var(--mut)}
+.ls li.done{color:var(--ok)}
+.ls li.open{color:var(--tx);font-weight:700}
+.ls li.lock{opacity:.5}
+.ls .ic{width:1.4em;text-align:center}
+.lbar{display:flex;align-items:center;gap:12px;padding:8px 12px;background:var(--card);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:5}
+.lbar span{font-weight:700}
+#fr{display:block;width:100%;height:calc(100dvh - 54px);border:0}
+.full{height:100%}
+.sync{font-size:.85rem;color:var(--mut)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script src="students.js"></script>
+<script src="config.js"></script>
+<script>
+/* ---------- بيانات الوحدات ---------- */
+var UNITS=[
+ {k:'tic',f:'tic.html',ic:'📡',t:'تكنولوجيا الإعلام والاتصال',lessons:['المفاهيم','تطور الاتصال','أنظمة التشغيل','أجهزة الحاسوب','التحدي النهائي']},
+ {k:'pc',f:'pc.html',ic:'🖥️',t:'الحاسوب: أجزاؤه وتركيبه',lessons:['ما هو الحاسوب','وحدات الحاسوب','الوحدة المركزية','وحدات الذاكرة','التحدي النهائي']},
+ {k:'os',f:'os.html',ic:'💿',t:'نظام التشغيل: تعريفه وتثبيته',lessons:['ما هو نظام التشغيل','التثبيت والتهيئة','إعداد البيوس BIOS','تثبيت Windows 7','التحدي النهائي']},
+ {k:'sec',f:'sec.html',ic:'🛡️',t:'لوحة التحكم وأمن الحاسوب',lessons:['لوحة التحكم','حسابات المستخدمين','البرامج الضارة وأنواعها','الأعراض والأنواع','الوقاية والحماية','التحدي النهائي']},
+ {k:'net',f:'net.html',ic:'🌐',t:'الشبكات: أنواعها وطرق ربطها',lessons:['ما هي الشبكة','أنواع الشبكات','الخادم والزبون','طوبولوجيا الربط','التحدي النهائي']}
+];
+
+/* ---------- أدوات ---------- */
+var app=document.getElementById('app');
+var cur=null,curU=null,view='login',mem={};
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function norm(s){return String(s||'').replace(/[\u064B-\u065F\u0670\u0640]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/ؤ/g,'و').replace(/ئ/g,'ي').replace(/\s+/g,' ').trim()}
+function sid(s){return s.className+'|'+s.fullName}
+function ls(k,v){
+  try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); return null }
+  catch(e){ if(v===undefined) return mem[k]===undefined?null:mem[k]; mem[k]=v; return null }
+}
+function getProg(){try{return JSON.parse(ls('ts_prog:'+sid(cur))||'{}')||{}}catch(e){return{}}}
+function setUnit(k,st){var p=getProg();p[k]=st;ls('ts_prog:'+sid(cur),JSON.stringify(p));pushUnit(k,st)}
+
+/* ---------- Supabase ---------- */
+var syncState='';
+var SYNC_TXT={busy:'⏳ جارٍ الحفظ…',ok:'☁️ تم حفظ تقدمك',err:'⚠️ لا يوجد اتصال، سيُحفظ تقدمك لاحقا'};
+function setSync(s){syncState=s;var e=$('sync');if(e)e.textContent=SYNC_TXT[s]||''}
+function sb(path,method,body,prefer){
+  var h={apikey:SUPABASE_ANON,Authorization:'Bearer '+SUPABASE_ANON,'Content-Type':'application/json'};
+  if(prefer)h.Prefer=prefer;
+  return fetch(SUPABASE_URL+'/rest/v1/'+path,{method:method,headers:h,body:body?JSON.stringify(body):undefined}).then(function(r){
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    return method==='GET'?r.json():null;
+  });
+}
+function registerStudent(s){
+  return sb('students?on_conflict=id','POST',{id:sid(s),class_name:s.className,last_name:s.lastName,first_name:s.firstName,last_seen:new Date().toISOString()},'resolution=merge-duplicates,return=minimal');
+}
+function pushUnit(k,st){
+  if(!cur)return Promise.resolve();
+  setSync('busy');
+  return sb('progress?on_conflict=student_id,unit','POST',{student_id:sid(cur),unit:k,max:st.max||0,done:st.done||{},pts:st.pts||0,updated_at:new Date().toISOString()},'resolution=merge-duplicates,return=minimal')
+    .then(function(){setSync('ok')},function(){setSync('err')});
+}
+function mergeState(a,b){
+  a=a||{};b=b||{};
+  return{max:Math.max(a.max||0,b.max||0),done:Object.assign({},a.done||{},b.done||{}),pts:Math.max(a.pts||0,b.pts||0)};
+}
+/* تحميل التقدم من السحابة، دمجه مع المحلي، ثم رفع المدمج */
+function syncStudent(s){
+  return registerStudent(s)
+   .then(function(){return sb('progress?student_id=eq.'+encodeURIComponent(sid(s))+'&select=unit,max,done,pts','GET')})
+   .then(function(rows){
+     var local=getProg(),merged={};
+     UNITS.forEach(function(u){merged[u.k]=local[u.k]||null});
+     rows.forEach(function(r){merged[r.unit]=mergeState(merged[r.unit],{max:r.max,done:r.done,pts:r.pts})});
+     ls('ts_prog:'+sid(s),JSON.stringify(Object.keys(merged).reduce(function(o,k){if(merged[k])o[k]=merged[k];return o},{})));
+     var jobs=[];
+     UNITS.forEach(function(u){if(merged[u.k])jobs.push(pushUnit(u.k,merged[u.k]))});
+     return Promise.all(jobs).then(function(){setSync('ok')});
+   });
+}
+function enter(s){
+  cur=s;ls('ts_last',sid(s));
+  app.innerHTML='<div class="wrap"><p class="sub">⏳ جارٍ تحميل تقدمك…</p></div>';
+  syncStudent(s).then(showDash,function(){setSync('err');showDash()});
+}
+
+/* ---------- شاشة الدخول ---------- */
+function showLogin(){
+  view='login';cur=null;curU=null;
+  var lastId=ls('ts_last'),lastS=null;
+  if(lastId){lastS=students.filter(function(s){return sid(s)===lastId})[0]||null}
+  var opts=Object.keys(classesData).map(function(c){return '<option value="'+esc(c)+'">'+esc(c)+'</option>'}).join('');
+  app.innerHTML='<div class="wrap">'+
+   '<h1>👋 مرحبا بك في رحلة المعلوماتية</h1>'+
+   '<p class="sub">اختر قسمك ثم اكتب لقبك واسمك ليبدأ التعلم ويُحفظ تقدمك.</p>'+
+   (lastS?'<div class="card"><div class="hint" style="margin:0 0 8px">آخر تلميذ استعمل هذا الجهاز:</div><button class="btn" id="cont">متابعة كـ '+esc(lastS.fullName)+'</button></div>':'')+
+   '<div class="card">'+
+   '<label for="cls">1) القسم</label><select id="cls"><option value="">— اختر القسم —</option>'+opts+'</select>'+
+   '<div class="grid2"><div><label for="ln">2) اللقب</label><input id="ln" autocomplete="off" placeholder="مثال: بلحوت"></div>'+
+   '<div><label for="fn">3) الاسم</label><input id="fn" autocomplete="off" placeholder="مثال: مريم"></div></div>'+
+   '<div id="cand"></div>'+
+   '<div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn big" id="go" disabled>ابدأ التعلم</button>'+
+   '<button class="btn g" id="showall">لا أجد اسمي: اعرض أسماء القسم</button></div>'+
+   '<div id="all"></div></div></div>';
+  var sel=null,cands=[];
+  function fill(s){$('ln').value=s.lastName;$('fn').value=s.firstName;upd()}
+  function match(s,a,b){return(!a||norm(s.lastName).indexOf(a)>-1)&&(!b||norm(s.firstName).indexOf(b)>-1)}
+  function upd(){
+    var c=$('cls').value,ln=norm($('ln').value),fn=norm($('fn').value),box=$('cand'),go=$('go');
+    sel=null;go.disabled=true;cands=[];
+    if(!c){box.innerHTML='<p class="hint">اختر قسمك أولا.</p>';return}
+    var pool=students.filter(function(s){return s.className===c});
+    var exact=pool.filter(function(s){return norm(s.lastName)===ln&&norm(s.firstName)===fn})[0]||
+              pool.filter(function(s){return ln&&fn&&norm(s.lastName)===fn&&norm(s.firstName)===ln})[0];
+    if(exact){sel=exact;go.disabled=false;box.innerHTML='<p class="ok">✓ وجدنا اسمك: '+esc(exact.fullName)+' ('+esc(exact.className)+')</p>';return}
+    if(!ln&&!fn){box.innerHTML='<p class="hint">اكتب أول حروف لقبك أو اسمك فتظهر لك الأسماء المطابقة، ثم اضغط على اسمك.</p>';return}
+    var m=pool.filter(function(s){return match(s,ln,fn)||match(s,fn,ln)});
+    if(!m.length){
+      var other=students.filter(function(s){return s.className!==c&&((norm(s.lastName)===ln&&norm(s.firstName)===fn)||(norm(s.lastName)===fn&&norm(s.firstName)===ln))});
+      if(other.length){
+        box.innerHTML='<p class="warn">هذا الاسم غير موجود في هذا القسم، لكنه موجود في:</p><div class="cands">'+
+          other.map(function(s,i){return '<button class="cand" data-o="'+i+'">'+esc(s.fullName)+' — '+esc(s.className)+'</button>'}).join('')+'</div>';
+        Array.prototype.forEach.call(box.querySelectorAll('[data-o]'),function(b){b.onclick=function(){var s=other[+b.dataset.o];$('cls').value=s.className;fill(s)}});
+      }else{
+        box.innerHTML='<p class="warn">لا يوجد اسم مطابق في هذا القسم. تأكد من القسم ومن كتابة اللقب والاسم، أو اضغط «لا أجد اسمي».</p>';
+      }
+      return}
+    m.sort(function(a,b){var x=norm(a.lastName).indexOf(ln)===0?0:1,y=norm(b.lastName).indexOf(ln)===0?0:1;return x-y});
+    cands=m.slice(0,8);
+    box.innerHTML='<p class="hint">هل تقصد أحد هؤلاء؟'+(m.length>8?' (اكتب المزيد لتضييق النتائج)':'')+'</p><div class="cands">'+
+      cands.map(function(s,i){return '<button class="cand" data-i="'+i+'">'+esc(s.fullName)+'</button>'}).join('')+'</div>';
+    Array.prototype.forEach.call(box.querySelectorAll('[data-i]'),function(b){b.onclick=function(){fill(cands[+b.dataset.i])}});
+  }
+  $('cls').onchange=function(){$('all').innerHTML='';upd()};
+  $('ln').oninput=upd;$('fn').oninput=upd;
+  $('showall').onclick=function(){
+    var c=$('cls').value;
+    if(!c){$('cand').innerHTML='<p class="warn">اختر القسم أولا لتظهر أسماؤه.</p>';return}
+    var pool=students.filter(function(s){return s.className===c});
+    $('all').innerHTML='<div class="list"><div class="cands">'+pool.map(function(s,i){return '<button class="cand" data-a="'+i+'">'+esc(s.fullName)+'</button>'}).join('')+'</div></div>';
+    Array.prototype.forEach.call($('all').querySelectorAll('[data-a]'),function(b){b.onclick=function(){fill(pool[+b.dataset.a]);$('all').innerHTML=''}});
+  };
+  $('go').onclick=function(){if(sel)enter(sel)};
+  if(lastS){$('cont').onclick=function(){enter(lastS)}}
+  upd();
+}
+
+/* ---------- لوحة التقدم ---------- */
+function showDash(){
+  view='dash';curU=null;
+  var p=getProg(),tot=0,done=0,pts=0,next=null;
+  var cards=UNITS.map(function(u){
+    var st=p[u.k]||{max:0,done:{},pts:0},n=u.lessons.length,d=Object.keys(st.done||{}).length;
+    tot+=n;done+=d;pts+=st.pts||0;
+    if(!next&&d<n)next=u;
+    var rows=u.lessons.map(function(t,i){
+      var dn=st.done&&st.done[i],open=i<=(st.max||0);
+      var cl=dn?'done':open?'open':'lock',ic=dn?'✅':open?'▶️':'🔒';
+      return '<li class="'+cl+'"><span class="ic">'+ic+'</span>'+(i+1)+'. '+esc(t)+'</li>';
+    }).join('');
+    var pc=Math.round(d/n*100);
+    var label=d===0?'ابدأ الوحدة':d<n?'تابع الوحدة':'راجع الوحدة';
+    return '<div class="unit"><h3>'+u.ic+' '+esc(u.t)+'</h3><div class="n">'+d+' من '+n+' دروس</div>'+
+      '<div class="bar"><i style="width:'+pc+'%"></i></div><div class="meta"><span>'+pc+'%</span><span>النقاط: <b>'+(st.pts||0)+'</b></span></div>'+
+      '<ul class="ls">'+rows+'</ul><button class="btn" data-u="'+u.k+'">'+label+'</button></div>';
+  }).join('');
+  var pc=Math.round(done/tot*100);
+  app.innerHTML='<div class="wrap">'+
+   '<div class="top"><div class="who"><b>مرحبا '+esc(cur.firstName+' '+cur.lastName)+'</b><br><span>'+esc(cur.className)+'</span></div>'+
+   '<span class="sync" id="sync"></span><button class="btn g" id="out">تغيير التلميذ</button></div>'+
+   '<div class="card"><h1 style="font-size:1.3rem">تقدمك في جميع الدروس</h1>'+
+   '<div class="bar" style="height:14px"><i style="width:'+pc+'%"></i></div>'+
+   '<div class="meta"><span>أنهيت <b>'+done+'</b> من '+tot+' درسا ('+pc+'%)</span><span>مجموع النقاط: <b>'+pts+'</b></span></div>'+
+   '<div style="margin-top:14px">'+(next?'<button class="btn big" id="cont2">'+(done?'تابع من حيث توقفت':'ابدأ التعلم')+'</button>':'<p class="ok" style="margin:0">🎉 أحسنت! أنهيت جميع الوحدات.</p>')+'</div></div>'+
+   '<h2 style="margin:18px 0 10px;font-size:1.2rem">اختر الوحدة التي تريد دراستها</h2>'+
+   '<div class="units">'+cards+'</div></div>';
+  $('out').onclick=showLogin;setSync(syncState);
+  if(next)$('cont2').onclick=function(){openUnit(next)};
+  Array.prototype.forEach.call(app.querySelectorAll('[data-u]'),function(b){
+    b.onclick=function(){openUnit(UNITS.filter(function(u){return u.k===b.dataset.u})[0])};
+  });
+  window.scrollTo(0,0);
+}
+
+/* ---------- عرض الدرس ---------- */
+function openUnit(u){
+  view='lesson';curU=u;
+  var st=getProg()[u.k],h='';
+  if(st){try{h='#'+btoa(JSON.stringify({max:st.max||0,done:st.done||{},pts:st.pts||0}))}catch(e){}}
+  app.innerHTML='<div class="lbar"><button class="btn g" id="back">→ الرئيسية</button><span>'+u.ic+' '+esc(u.t)+'</span></div>'+
+    '<iframe id="fr" title="'+esc(u.t)+'" src="'+u.f+h+'"></iframe>';
+  $('back').onclick=showDash;
+}
+
+window.addEventListener('message',function(e){
+  var d=e.data,fr=$('fr');
+  if(!d||d.t!=='prog'||view!=='lesson'||!curU||!cur||!fr||e.source!==fr.contentWindow)return;
+  if(d.s&&typeof d.s==='object'){
+    setUnit(curU.k,{max:+d.s.max||0,done:d.s.done||{},pts:+d.s.pts||0});
+  }
+});
+
+showLogin();
+</script>
+</body>
+</html>
