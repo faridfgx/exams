@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>رحلة داخل نظام التشغيل</title>
+<style>
+:root{--bg:#f7f4ee;--card:#fffdf9;--tx:#2a2622;--mut:#6f675d;--pri:#1f5c4d;--acc:#b5532a;--ok:#2f7d4f;--bad:#b3392f;--bd:#e3dccf;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1814;--card:#24211c;--tx:#efe9df;--mut:#b2a99a;--pri:#6fb59f;--bd:#3a352d}}
+:root[data-theme="dark"]{--bg:#1a1814;--card:#24211c;--tx:#efe9df;--mut:#b2a99a;--pri:#6fb59f;--bd:#3a352d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.8}
+header{max-width:760px;margin:auto;padding:22px 14px 10px;border-bottom:1px solid var(--bd)}
+h1{margin:0;font-size:clamp(1.3rem,4.5vw,1.8rem)}
+.pts{color:var(--mut)}.pts b{color:var(--acc)}
+main{max-width:760px;margin:auto;padding:8px 14px 40px}
+.bar{height:6px;background:var(--bd);border-radius:3px;overflow:hidden;margin-top:14px}
+.bar i{display:block;height:100%;width:0;background:var(--pri);transition:width .6s}
+.pc{font-size:.85rem;color:var(--mut);margin:4px 0}
+.steps{display:flex;gap:6px;margin:12px 0}
+.st{flex:1;font:inherit;font-size:.82rem;padding:8px 4px;border-radius:6px;border:1px solid var(--bd);background:var(--card);color:var(--mut);cursor:pointer}
+.st.cur{border:2px solid var(--pri);color:var(--tx);font-weight:700}
+.st.done{background:var(--ok);border-color:var(--ok);color:#fff}
+.st.lock{opacity:.45;cursor:not-allowed}
+.panel{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:24px;min-height:290px;animation:in .35s}
+@keyframes in{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+.tag{display:inline-block;color:var(--acc);border:1px solid var(--acc);border-radius:4px;padding:0 10px;font-size:.85rem}
+.panel h2{margin:10px 0 6px}.panel p{font-size:1.06rem;margin:6px 0}
+.dots{display:flex;gap:5px;justify-content:center;margin:14px 0 4px}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--bd)}.dots i.on{background:var(--pri)}.dots i.cur{background:var(--acc)}
+.row{display:flex;justify-content:space-between;gap:10px;margin-top:16px}
+.btn{font:inherit;border:0;border-radius:6px;padding:10px 22px;background:var(--pri);color:#fff;cursor:pointer}
+.btn.g{background:var(--bd);color:var(--tx)}.btn[disabled]{opacity:.4;cursor:default}
+.opt{display:block;width:100%;text-align:start;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:10px;margin:8px 0;cursor:pointer}
+.opt:hover{border-color:var(--pri)}
+.opt.ok{background:var(--ok);color:#fff;border-color:var(--ok)}.opt.no{background:var(--bad);color:#fff;border-color:var(--bad)}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.big{text-align:center}.big h2{font-size:1.5rem}
+.fb{min-height:1.6em;font-weight:700;margin-top:6px}
+.ex{background:var(--bg);border-inline-start:4px solid var(--acc);border-radius:4px;padding:12px;margin:10px 0;font-size:.98rem}
+.ex .t{color:var(--mut);font-size:.85rem;margin:4px 0}
+.chips span{display:inline-block;background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:2px 12px;margin:3px;font-weight:700}
+.flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0}
+.flow b{background:var(--pri);color:#fff;border-radius:6px;padding:4px 12px;font-size:.9rem}
+.disk{display:flex;height:44px;border:1px solid var(--pri);border-radius:6px;overflow:hidden;direction:ltr;margin:8px 0;font-weight:700}
+.disk div{display:flex;align-items:center;justify-content:center;color:#fff}
+.case{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin:10px 0}
+.slot{border:1px dashed var(--bd);border-radius:6px;min-height:60px;padding:6px;text-align:center;font-size:.8rem;display:flex;flex-direction:column;justify-content:center;color:var(--mut)}
+.slot.f{border:1px solid var(--ok);color:var(--tx);background:var(--bg)}.slot small{color:var(--mut)}
+</style>
+</head>
+<body>
+<header><h1>رحلة داخل نظام التشغيل: تعريفه وتثبيته</h1><div class="pts">النقاط: <b id="pts">0</b></div>
+<div class="bar"><i id="bar"></i></div><div class="pc" id="pc"></div></header>
+<main>
+<div class="steps" id="steps"></div>
+<div class="panel" id="panel"></div>
+</main>
+<script>
+function $(i){return document.getElementById(i)}
+function sh(a){return a.map(function(x){return [Math.random(),x]}).sort(function(a,b){return a[0]-b[0]}).map(function(x){return x[1]})}
+function ch(a,l){return '<div class="chips"'+(l?' dir="ltr"':'')+'>'+a.map(function(x){return '<span>'+x+'</span>'}).join('')+'</div>'}
+function pt(){var c=+$('rg').value;$('dk').innerHTML='<div style="width:'+c/5+'%;background:var(--pri)">C: '+c+' Go</div><div style="width:'+(100-c/5)+'%;background:var(--acc)">D: '+(500-c)+' Go</div>'}
+var L=[
+{n:"ما هو نظام التشغيل",items:[
+["Système d’exploitation","تعريف نظام التشغيل","مجموعة من الملفات والبرمجيات المتكاملة التي تسمح بإعداد الحاسوب لبدء التشغيل، وبتنظيم البرامج وتنفيذها.",'<div class="t">من أشهر أنظمة التشغيل</div>'+ch(["Windows","Linux","MacOS"],1)],
+["أمثلة","Windows وLinux وMacOS","Windows له نسخ كثيرة: 95 و98 وME وXP و7 و8 و10 و11. وLinux له إصدارات كثيرة مثل Ubuntu وDebian وFedora. أما MacOS فهو خاص بشركة Apple.",ch(["Windows 7 / 10 / 11","Ubuntu","Debian","Fedora","MacOS (Apple)"],1)],
+["الميزة الأولى","واجهة بيانية سهلة الاستخدام","يتعامل المستخدم مع النوافذ والأيقونات والقوائم بدل كتابة الأوامر."],
+["الميزة الثانية","الوسيط بين المستخدم والحاسوب","ننقل طلباتنا إلى العتاد عن طريق نظام التشغيل.",'<div class="flow"><b>المستخدم</b><span>←</span><b>نظام التشغيل</b><span>←</span><b>الحاسوب</b></div>'],
+["الميزة الثالثة","تنفيذ أكثر من برنامج في نفس الوقت","يستطيع المستخدم مثلا الكتابة في برنامج ومشاهدة فيديو في آن واحد، وهو المسؤول عن توزيع الموارد بينهما."],
+["الميزة الرابعة","حماية الملفات","يحمي النظام الملفات حسب صلاحية الوصول، فلا يفتح كل مستخدم كل الملفات."]],
+q:[["أي نظام تشغيل خاص بشركة Apple؟",["MacOS","Windows","Linux"],0],
+["من هو الوسيط بين المستخدم والحاسوب؟",["نظام التشغيل","الطابعة","الشاشة"],0],
+["Ubuntu وDebian وFedora هي إصدارات من:",["Linux","Windows","MacOS"],0]]},
+{n:"التثبيت والتهيئة",act:'sort',tl:"صنف العبارة",fm:"صنفت {s} عبارات من أول محاولة من أصل {n}.",sc:["تثبيت","تقسيم","فرمتة"],sd:[
+["نسخ الملفات والبرامج على القرص الصلب من برنامج إقلاع","",0],
+["تحويل القرص الواحد ماديا إلى أقراص افتراضية C وD وE","",1],
+["حذف جميع الملفات القديمة من القرص الافتراضي","",2],
+["تنصيب عدة أنظمة تشغيل على نفس الجهاز","",1],
+["إعادة بناء نظام الملفات الخاص بالقرص","",2],
+["الانطلاق من قرص مضغوط أو فلاش أو شبكة فيه برنامج إقلاع","",0],
+["تنظيم الملفات وتفادي ضياعها","",1],
+["تهيئة القرص قبل وضع النظام فيه","",2]],
+q:[["ماذا يحدث عند فرمتة القرص؟",["تحذف جميع الملفات القديمة ويعاد بناء نظام الملفات","تتسارع الشاشة","تنسخ الملفات إلى الطابعة"],0],
+["القرص الصلب من الناحية المادية:",["واحد ويمكن تقسيمه افتراضيا","عدة أقراص دائما","لا يمكن تقسيمه"],0],
+["من أين ينطلق برنامج التثبيت؟",["برنامج إقلاع في قرص مضغوط أو فلاش أو شبكة","من الشاشة","من الطابعة"],0]],
+items:[
+["Installation","مفهوم تثبيت نظام التشغيل","مجموعة من الخطوات والمراحل تتم فيها عملية نسخ الملفات والبرامج على القرص الصلب، انطلاقا من برنامج إقلاع (Bootable)، أي وسيلة يستطيع الجهاز أن يقلع منها، نجدها في قرص مضغوط أو فلاش أو شبكة.",'<div class="flow"><b>وسيلة إقلاع</b><span>←</span><b>نسخ الملفات</b><span>←</span><b>القرص الصلب</b></div>'],
+["Partition","تقسيم القرص الصلب","القرص من الناحية المادية واحد، لكن يمكن تقسيمه افتراضيا إلى عدة أقراص (C وD وE...) بهدف تنظيم الملفات، أو تنصيب عدة أنظمة تشغيل، أو تفادي ضياع الملفات. اسحب الشريط لترى التقسيم.",'<input type="range" id="rg" min="50" max="450" step="50" value="250" oninput="pt()" style="width:100%"><div class="disk" id="dk"><div style="width:50%;background:var(--pri)">C: 250 Go</div><div style="width:50%;background:var(--acc)">D: 250 Go</div></div><div class="t" dir="ltr">قرص صلب واحد = 500 Go</div>'],
+["Formatage","فرمتة القرص الصلب","قبل تثبيت النظام نهيئ القرص (formatage)، فيعيد البرنامج بناء نظام الملفات الخاص بالقرص الافتراضي، وتحذف جميع الملفات القديمة. لذلك ننسخ ملفاتنا المهمة قبل الفرمتة.",'<div class="flow"><b>فرمتة</b><span>←</span><b>حذف الملفات القديمة</b><span>←</span><b>نظام ملفات جديد</b></div>']]},
+{n:"إعداد البيوس BIOS",act:'build',tl:"البيوس",fm:"أعددت البيوس للإقلاع من وسيلة التثبيت.",steps:[
+["Delete أو Suppr","فتح البيوس","اضغط بعد بدء تشغيل الجهاز مباشرة على المفتاح الذي يدخلك إلى إعدادات BIOS.",["Alt","Shift"]],
+["قائمة ترتيب الإقلاع","Boot","ابحث عن القسم الذي يحدد الأجهزة التي يقلع منها الحاسوب وترتيبها.",["قائمة الصوت","قائمة الطباعة"]],
+["القرص المضغوط أو USB أولا","وسيلة التثبيت","ضع الوسيلة التي تحتوي على برنامج التثبيت في أول الترتيب.",["القرص الصلب أولا","الطابعة أولا"]],
+["حفظ وخروج","Save and Exit","طبق التغيير ليعيد الجهاز التشغيل بالترتيب الجديد.",["الخروج دون حفظ","إطفاء الجهاز مباشرة"]]],
+items:[
+["BIOS","لماذا نحتاج إلى البيوس؟","البيوس (BIOS) برنامج أساسي مخزن على البطاقة الأم، يعمل أول ما نشغل الجهاز. وعند التشغيل المباشر يقلع الجهاز من القرص الصلب، وهذا راجع إلى ترتيب الإقلاع المحفوظ في البيوس."],
+["تغيير الإقلاع","تغيير ترتيب الإقلاع","إذا أردنا الإقلاع من جهة أخرى (قرص مضغوط أو ذاكرة متصلة بمنفذ USB) فعلينا تغيير ترتيب الإقلاع في البيوس.",ch(["القرص الصلب","القرص المضغوط","USB"])],
+["الدخول","كيف ندخل إلى البيوس؟","نضغط على المفتاح Delete (أو Suppr) بعد بدء تشغيل الجهاز للدخول إلى BIOS، ثم نحدد ترتيب الإقلاع حسب وسيلة التثبيت المتوفرة. ملاحظة: يختلف المفتاح أحيانا حسب الشركة المصنعة، فقد يكون F2 أو F10 أو Esc.",'<div class="flow"><b>تشغيل الجهاز</b><span>←</span><b>Delete / Suppr</b><span>←</span><b>BIOS</b></div>']],
+q:[["بأي مفتاح ندخل إلى البيوس؟",["Delete أو Suppr","Alt","Tab"],0],
+["لماذا نغير ترتيب الإقلاع؟",["ليقلع الجهاز من القرص المضغوط أو USB","ليتوقف الجهاز","لحذف البيوس"],0],
+["الجهاز يقلع مباشرة من:",["القرص الصلب","الطابعة","الشاشة"],0]]},
+{n:"تثبيت Windows 7",act:'build',tl:"تثبيت Windows 7",fm:"أتممت مراحل تثبيت Windows 7 بالترتيب الصحيح.",steps:[
+["وضع القرص أو USB","وسيلة التثبيت","ابدأ بتجهيز وسيلة التثبيت: ضع قرص النظام في القارئ أو الذاكرة في المنفذ."],
+["تشغيل الجهاز","الضغط على مفتاح","شغل الجهاز، وسيطلب منك الضغط على أي مفتاح من لوحة المفاتيح."],
+["جمع ونسخ الملفات","تحميل ملفات التثبيت","بعد الضغط على المفتاح، ماذا يبدأ الجهاز بفعله؟"],
+["اختيار لغة التثبيت","نافذة اللغة","تظهر نافذة أولى، ما الذي نختاره فيها؟"],
+["قبول شروط الاستعمال","المصادقة","بعد اللغة، ما الذي نصادق عليه؟"],
+["نوع التثبيت","ترقية أو تخصيص","نختار بين الترقية (نظام مثبت من قبل) والتخصيص (تثبيت جديد)."],
+["موضع التثبيت","القرص أو القسم","نحدد القرص أو القسم الذي سيوضع فيه النظام."],
+["نسخ وفك الملفات","التثبيت الفعلي","تبدأ العملية الفعلية: نسخ وفك ملفات ويندوز."],
+["إعادة التشغيل","دون ضغط مفتاح","بعد انتهاء النسخ يعيد الجهاز التشغيل. ماذا نفعل عندما يطلب مفتاحا؟ لا نضغط شيئا."],
+["اسم المستعمل وكلمة المرور","الحساب","نعد حساب المستخدم."],
+["المنطقة الزمنية","اختيار المنطقة","نحدد المنطقة الزمنية."],
+["ضبط الوقت والشبكة","الخطوة الأخيرة","نضبط الوقت والساعة ونعد الشبكة."]],
+items:[
+["الخطوات 1 إلى 3","تجهيز الإقلاع","نضع قرص النظام المضغوط في القارئ أو ذاكرة USB في المنفذ، ثم نشغل الجهاز فيطلب منا الضغط على أي مفتاح، وبعد الضغط تبدأ عملية جمع ونسخ الملفات."],
+["الخطوات 4 إلى 7","اللغة والشروط والنوع والموضع","نختار لغة التثبيت، ثم نصادق على شروط الاستعمال، ثم نختار نوع التثبيت: ترقية في حالة وجود نظام مثبت من قبل، أو تخصيص أي تثبيت جديد، ثم نختار موضع التثبيت في الأقراص المتوفرة."],
+["الخطوتان 8 و9","النسخ وإعادة التشغيل","تبدأ عملية التثبيت ونسخ وفك ملفات ويندوز، ثم يعاد التشغيل. ملاحظة مهمة: لا نضغط على أي مفتاح عند إعادة التشغيل، حتى لا يبدأ التثبيت من جديد."],
+["الخطوات 10 إلى 12","الإعدادات الأخيرة","ندخل اسم المستعمل وكلمة المرور، ثم نختار المنطقة الزمنية، ثم نضبط الوقت والساعة ونعد الشبكة."]],
+q:[["ماذا نفعل عند إعادة التشغيل أثناء التثبيت؟",["لا نضغط على أي مفتاح","نضغط Delete","نطفئ الجهاز"],0],
+["التثبيت الجديد في ويندوز يسمى:",["تخصيص","ترقية","فرمتة"],0],
+["بعد اختيار لغة التثبيت نقوم بـ:",["المصادقة على شروط الاستعمال","ضبط الشبكة","إدخال كلمة المرور"],0]]},
+{n:"التحدي النهائي",items:[],q:[
+["نظام التشغيل هو:",["ملفات وبرمجيات تعد الحاسوب للتشغيل وتنظم تنفيذ البرامج","جهاز إدخال","وحدة تخزين"],0],
+["أي مما يلي من مميزات نظام التشغيل؟",["تنفيذ أكثر من برنامج في نفس الوقت","طباعة الوثائق","شحن البطارية"],0],
+["نقسم القرص الصلب من أجل:",["تنظيم الملفات أو تنصيب عدة أنظمة","حذف الملفات","تسريع الشاشة"],0],
+["قبل تثبيت النظام في القرص نقوم بـ:",["تهيئته (الفرمتة)","طباعته","فصل الشاشة"],0]]}
+];
+var S={lv:0,it:0,stage:'learn',ai:0,as:0,w:0,qi:0,sc:0,max:0,done:{},seen:{},pts:0};
+var KEY='os-progress-v1';
+try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv){S.max=sv.max||0;S.done=sv.done||{};S.pts=sv.pts||0;S.lv=Math.min(S.max,L.length-1)}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({max:S.max,done:S.done,pts:S.pts}))}catch(e){}}
+function addPts(n){if(!S.done[S.lv]){S.pts+=n;$('pts').textContent=S.pts}}
+function reset(){S.it=0;S.qi=0;S.sc=0;S.ai=0;S.as=0;S.w=0;S.stage=L[S.lv].items.length?'learn':'quiz'}
+function renderTop(){
+ var n=Object.keys(S.done).length;
+ $('bar').style.width=(n/L.length*100)+'%';$('pc').textContent='أنهيت '+n+' من '+L.length+' مستويات';$('pts').textContent=S.pts;
+ var h='';L.forEach(function(l,i){var c=S.done[i]?'done':i===S.lv?'cur':i>S.max?'lock':'';
+  h+='<button class="st '+c+'" data-i="'+i+'">'+(i+1)+'. '+l.n+(S.done[i]?' ✓':'')+'</button>'});
+ $('steps').innerHTML=h}
+$('steps').onclick=function(e){var i=e.target.dataset&&e.target.dataset.i;if(i===undefined||+i>S.max)return;S.lv=+i;reset();draw()};
+function toQuiz(){S.stage='quiz';S.qi=0;S.sc=0;draw()}
+function draw(){
+ renderTop();var P=$('panel');P.style.animation='none';P.offsetHeight;P.style.animation='';
+ if(S.stage==='learn')learn();else if(S.stage==='act')act();else quiz()}
+function learn(){
+ var l=L[S.lv],it=l.items[S.it],P=$('panel'),h='<span class="tag">'+it[0]+'</span><h2>'+it[1]+'</h2><p>'+it[2]+'</p>'+(it[3]?'<div class="ex">'+it[3]+'</div>':'')+'<div class="dots">';
+ l.items.forEach(function(x,i){h+='<i class="'+(i===S.it?'cur':i<S.it?'on':'')+'"></i>'});
+ var last=S.it===l.items.length-1;
+ h+='</div><div class="pc" style="text-align:center">'+(S.it+1)+' من '+l.items.length+'</div><div class="row"><button class="btn g" id="pv"'+(S.it?'':' disabled')+'>السابق</button><button class="btn" id="nx">'+(!last?'فهمت، التالي':l.act?'انتقل إلى التطبيق':'ابدأ اختبار المستوى')+'</button></div>';
+ P.innerHTML=h;
+ var k=S.lv+'-'+S.it;if(!S.seen[k]){S.seen[k]=1;addPts(1)}
+ $('pv').onclick=function(){S.it--;draw()};
+ $('nx').onclick=function(){if(!last){S.it++;draw()}else if(l.act){S.stage='act';S.ai=0;S.as=0;S.w=0;draw()}else toQuiz()}}
+function fin(msg){$('panel').innerHTML='<div class="big"><span class="tag">انتهى التطبيق</span><h2>أحسنت</h2><p>'+msg+'</p><div class="row" style="justify-content:center"><button class="btn" id="tq">ابدأ اختبار المستوى</button></div></div>';$('tq').onclick=toQuiz}
+function act(){if(L[S.lv].act==='sort')sortAct();else buildAct()}
+function sortAct(){
+ var l=L[S.lv],D=l.sd,P=$('panel');
+ if(S.ai>=D.length)return fin(l.fm.replace('{s}',S.as).replace('{n}',D.length));
+ var d=D[S.ai];
+ P.innerHTML='<span class="tag">'+l.tl+' '+(S.ai+1)+' من '+D.length+'</span><h2 style="font-size:1.2rem">'+d[0]+'</h2><p>هل هذه العبارة تخص:</p><div class="g3" id="g"></div><div class="fb" id="fb"></div>';
+ l.sc.forEach(function(c,k){var b=document.createElement('button');b.className='opt';b.style.textAlign='center';b.textContent=c;
+  b.onclick=function(){if(k===d[2]){if(!S.w){S.as++;addPts(1)}S.w=0;S.ai++;sortAct()}else{S.w=1;$('fb').textContent='ليس هذا الاختيار، جرب مرة أخرى'}};$('g').appendChild(b)})}
+function buildAct(){
+ var l=L[S.lv],B=l.steps,P=$('panel');
+ if(S.ai>=B.length)return fin(l.fm);
+ var cur=B[S.ai],h='<span class="tag">'+l.tl+'</span><div class="case">';
+ B.forEach(function(b,i){h+='<div class="slot'+(i<S.ai?' f':'')+'">'+(i<S.ai?'<b>'+b[0]+'</b><small>'+b[1]+'</small>':i===S.ai?'؟':'')+'</div>'});
+ h+='</div><div class="ex"><b>الخطوة '+(S.ai+1)+' من '+B.length+':</b> '+cur[2]+'</div><div id="g"></div><div class="fb" id="fb"></div>';
+ P.innerHTML=h;
+ var wr=cur[3]||sh(B.map(function(x){return x[0]}).filter(function(x){return x!==cur[0]})).slice(0,2);
+ sh(wr.concat([cur[0]])).forEach(function(t){var b=document.createElement('button');b.className='opt';b.textContent=t;
+  b.onclick=function(){if(t===cur[0]){if(!S.w)addPts(1);S.w=0;S.ai++;buildAct()}else{S.w=1;$('fb').textContent='ليس مناسبا في هذه الخطوة، أعد قراءة التعليمة'}};$('g').appendChild(b)})}
+function quiz(){
+ var l=L[S.lv],q=l.q[S.qi],P=$('panel');
+ if(!q){var need=l.q.length-1,ok=S.sc>=need,last=S.lv===L.length-1;
+  if(ok){var first=!S.done[S.lv];S.done[S.lv]=1;if(first){S.pts+=5}if(S.max<L.length-1&&S.max===S.lv)S.max++;save();renderTop()}
+  P.innerHTML='<div class="big"><h2>'+(ok?(last?'أحسنت، أكملت الرحلة':'أحسنت، أنهيت المستوى '+(S.lv+1)):'اقتربت من النجاح')+'</h2><p>نتيجتك: '+S.sc+' من '+l.q.length+'</p><p>'+(ok?(last?'مجموع نقاطك: '+S.pts+'. صرت تعرف نظام التشغيل وخطوات تثبيته.':'تم فتح المستوى التالي: '+L[S.lv+1].n):'تحتاج '+need+' إجابات صحيحة على الأقل. راجع الدرس ثم أعد المحاولة.')+'</p><div class="row" style="justify-content:center">'+(ok&&!last?'<button class="btn" id="go">المستوى التالي</button>':'')+(ok?'':'<button class="btn g" id="rv">مراجعة الدرس</button>')+'<button class="btn g" id="rt">إعادة الاختبار</button></div></div>';
+  if($('go'))$('go').onclick=function(){S.lv++;reset();draw()};
+  if($('rv'))$('rv').onclick=function(){S.it=0;S.stage='learn';draw()};
+  $('rt').onclick=function(){S.qi=0;S.sc=0;draw()};return}
+ P.innerHTML='<span class="tag">اختبار المستوى</span><p><b>السؤال '+(S.qi+1)+' من '+l.q.length+'</b></p><h2 style="font-size:1.15rem">'+q[0]+'</h2><div id="os"></div><div class="fb" id="fb"></div>';
+ sh([0,1,2]).forEach(function(i){var b=document.createElement('button');b.className='opt';b.textContent=q[1][i];
+  b.onclick=function(){var all=$('os').children;
+   for(var j=0;j<all.length;j++){all[j].disabled=true;if(all[j].textContent===q[1][q[2]])all[j].classList.add('ok')}
+   if(i===q[2]){S.sc++;addPts(2);$('fb').textContent='إجابة صحيحة'}else{b.classList.add('no');$('fb').textContent='الإجابة الصحيحة: '+q[1][q[2]]}
+   var n=document.createElement('button');n.className='btn';n.textContent='متابعة';n.onclick=function(){S.qi++;quiz()};
+   var d=document.createElement('div');d.className='row';d.style.justifyContent='flex-end';d.appendChild(n);P.appendChild(d)};
+  $('os').appendChild(b)})}
+reset();draw();
+</script>
+</body>
+</html>

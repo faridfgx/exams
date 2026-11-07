@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>رحلة داخل الشبكات</title>
+<style>
+:root{--bg:#f7f4ee;--card:#fffdf9;--tx:#2a2622;--mut:#6f675d;--pri:#1f5c4d;--acc:#b5532a;--ok:#2f7d4f;--bad:#b3392f;--bd:#e3dccf;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1814;--card:#24211c;--tx:#efe9df;--mut:#b2a99a;--pri:#6fb59f;--bd:#3a352d}}
+:root[data-theme="dark"]{--bg:#1a1814;--card:#24211c;--tx:#efe9df;--mut:#b2a99a;--pri:#6fb59f;--bd:#3a352d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.8}
+header{max-width:760px;margin:auto;padding:22px 14px 10px;border-bottom:1px solid var(--bd)}
+h1{margin:0;font-size:clamp(1.3rem,4.5vw,1.8rem)}
+.pts{color:var(--mut)}.pts b{color:var(--acc)}
+main{max-width:760px;margin:auto;padding:8px 14px 40px}
+.bar{height:6px;background:var(--bd);border-radius:3px;overflow:hidden;margin-top:14px}
+.bar i{display:block;height:100%;width:0;background:var(--pri);transition:width .6s}
+.pc{font-size:.85rem;color:var(--mut);margin:4px 0}
+.steps{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.st{flex:1;min-width:100px;font:inherit;font-size:.8rem;padding:8px 4px;border-radius:6px;border:1px solid var(--bd);background:var(--card);color:var(--mut);cursor:pointer}
+.st.cur{border:2px solid var(--pri);color:var(--tx);font-weight:700}
+.st.done{background:var(--ok);border-color:var(--ok);color:#fff}
+.st.lock{opacity:.45;cursor:not-allowed}
+.panel{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:24px;min-height:290px;animation:in .35s}
+@keyframes in{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+.tag{display:inline-block;color:var(--acc);border:1px solid var(--acc);border-radius:4px;padding:0 10px;font-size:.85rem}
+.panel h2{margin:10px 0 6px}.panel p{font-size:1.06rem;margin:6px 0}
+.dots{display:flex;gap:5px;justify-content:center;margin:14px 0 4px}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--bd)}.dots i.on{background:var(--pri)}.dots i.cur{background:var(--acc)}
+.row{display:flex;justify-content:space-between;gap:10px;margin-top:16px}
+.btn{font:inherit;border:0;border-radius:6px;padding:10px 22px;background:var(--pri);color:#fff;cursor:pointer}
+.btn.g{background:var(--bd);color:var(--tx)}.btn[disabled]{opacity:.4;cursor:default}
+.opt{display:block;width:100%;text-align:start;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:10px;margin:8px 0;cursor:pointer}
+.opt:hover{border-color:var(--pri)}
+.opt.ok{background:var(--ok);color:#fff;border-color:var(--ok)}.opt.no{background:var(--bad);color:#fff;border-color:var(--bad)}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.big{text-align:center}.big h2{font-size:1.5rem}
+.fb{min-height:1.6em;font-weight:700;margin-top:6px}
+.ex{background:var(--bg);border-inline-start:4px solid var(--acc);border-radius:4px;padding:12px;margin:10px 0;font-size:.98rem}
+.ex .t{color:var(--mut);font-size:.85rem;margin:4px 0}
+.chips span{display:inline-block;background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:2px 12px;margin:3px;font-weight:700}
+.flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0}
+.flow b{background:var(--pri);color:#fff;border-radius:6px;padding:4px 12px;font-size:.9rem}
+</style>
+</head>
+<body>
+<header><h1>رحلة داخل الشبكات: أنواعها وعلاقاتها وطرق ربطها</h1><div class="pts">النقاط: <b id="pts">0</b></div>
+<div class="bar"><i id="bar"></i></div><div class="pc" id="pc"></div></header>
+<main>
+<div class="steps" id="steps"></div>
+<div class="panel" id="panel"></div>
+</main>
+<script>
+function $(i){return document.getElementById(i)}
+function sh(a){return a.map(function(x){return [Math.random(),x]}).sort(function(a,b){return a[0]-b[0]}).map(function(x){return x[1]})}
+function ch(a){return '<div class="chips">'+a.map(function(x){return '<span>'+x+'</span>'}).join('')+'</div>'}
+function fl(a){return '<div class="flow">'+a.map(function(x,i){return (i?'<span>←</span>':'')+'<b>'+x+'</b>'}).join('')+'</div>'}
+function topo(t){
+ var s='',i,a,x,y,N=function(x,y,r,c){return '<circle cx="'+x+'" cy="'+y+'" r="'+(r||10)+'" style="fill:var('+(c||'--pri')+')"/>'},
+ Ln=function(a,b,c,d){return '<line x1="'+a+'" y1="'+b+'" x2="'+c+'" y2="'+d+'"/>'};
+ if(t==='bus'){s+=Ln(15,35,225,35);[30,75,120,165,210].forEach(function(x){s+=Ln(x,35,x,85)+N(x,95)})}
+ else if(t==='ring'){s+='<circle cx="120" cy="65" r="48"/>';for(i=0;i<5;i++){a=i*2*Math.PI/5-Math.PI/2;s+=N(120+48*Math.cos(a),65+48*Math.sin(a))}}
+ else{for(i=0;i<5;i++){a=i*2*Math.PI/5-Math.PI/2;x=120+50*Math.cos(a);y=65+50*Math.sin(a);s+=Ln(120,65,x,y)+N(x,y)}s+=N(120,65,13,'--acc')}
+ return '<svg viewBox="0 0 240 130" style="width:100%;max-width:300px;display:block;margin:auto;stroke:var(--mut);stroke-width:2;fill:none">'+s+'</svg>'}
+var L=[
+{n:"ما هي الشبكة",act:1,tl:"أي فائدة هذا؟",fm:"صنفت {s} أمثلة من أول محاولة من أصل {n}.",sc:["مشاركة الملفات والبرامج","مشاركة الأجهزة","التواصل"],sd:[
+["نسخ ملف من حاسوب إلى آخر عبر الشبكة","",0],["طباعة عدة حواسيب على طابعة واحدة","",1],["إرسال بريد إلكتروني إلى صديق","",2],["استعمال برنامج موجود على حاسوب آخر","",0],["الاستفادة من قرص مشترك بين الحواسيب","",1],["الدردشة عبر مواقع التواصل الاجتماعي","",2],["تبادل ملفات الدرس بين التلاميذ","",0],["استعمال طابعة القسم من أي حاسوب","",1]],
+items:[
+["Réseau","تعريف الشبكة","مجموعة من أجهزة الحاسوب (جهازان على الأقل) متصلة ببعضها البعض.",fl(["جهاز","ربط","جهاز"])],
+["الفائدة الأولى","مشاركة الملفات والبرامج","تستطيع الأجهزة المتصلة تبادل الملفات واستعمال البرامج بينها."],
+["الفائدة الثانية","المشاركة في الأجهزة","مثل استعمال طابعة واحدة أو أقراص مشتركة من عدة حواسيب."],
+["الفائدة الثالثة","التواصل بين المستخدمين","مثل البريد الإلكتروني وأدوات التواصل الاجتماعي.",ch(["البريد الإلكتروني","التواصل الاجتماعي"])]],
+q:[["أقل عدد من الحواسيب لتكوين شبكة:",["جهازان","جهاز واحد","ثلاثة أجهزة"],0],
+["استعمال طابعة واحدة من عدة حواسيب هو:",["مشاركة الأجهزة","مشاركة البرامج","التواصل"],0],
+["البريد الإلكتروني مثال على:",["التواصل بين المستخدمين","مشاركة الأقراص","مشاركة الطابعة"],0]]},
+{n:"أنواع الشبكات",act:1,tl:"أي شبكة هذه؟",fm:"صنفت {s} أمثلة من أول محاولة من أصل {n}.",sc:["PAN","LAN","MAN","WAN"],sd:[
+["شبكة بين أجهزتك في غرفتك","",0],["شبكة قاعة المعلوماتية","",1],["شبكة مقهى الإنترنت","",1],["شبكة جامعة","",2],["شبكة تربط أجهزة مدينة","",2],["الإنترنت","",3],["شبكة تربط بين دول وقارات","",3],["شبكة شخصية في البيت","",0]],
+items:[
+["حسب وسيلة الربط","شبكة سلكية","تربط الأجهزة بالكابل أو بالألياف البصرية.",ch(["الكابل","الألياف البصرية"])],
+["حسب وسيلة الربط","شبكة لاسلكية Wi-Fi","تربط الأجهزة دون أسلاك. وWi-Fi تسمية تجارية، وتشرح عادة بعبارة Wireless Fidelity."],
+["PAN","الشبكة الشخصية","شبكة صغيرة جدا في البيت أو في الغرفة."],
+["LAN","الشبكة المحلية","شبكة في قاعة المعلوماتية أو في مقهى الإنترنت."],
+["MAN","الشبكة الإقليمية","شبكة أوسع مثل شبكة الجامعات أو المدن (وتسمى أيضا الحضرية)."],
+["WAN","الشبكة الواسعة","شبكة تمتد عبر القارات أو الدول، وأكبرها الشبكة العالمية (الإنترنت).",fl(["PAN","LAN","MAN","WAN"])]],
+q:[["شبكة قاعة المعلوماتية هي:",["LAN","WAN","PAN"],0],
+["أكبر شبكة واسعة هي:",["الإنترنت","شبكة الغرفة","شبكة المقهى"],0],
+["Wi-Fi شبكة:",["لاسلكية","سلكية بالكابل","سلكية بالألياف"],0]]},
+{n:"الخادم والزبون",act:1,tl:"أي علاقة هذه؟",fm:"صنفت {s} عبارات من أول محاولة من أصل {n}.",sc:["خادم وزبون","ند للند"],sd:[
+["جهاز بمواصفات عالية يقدم الخدمات لبقية الأجهزة","",0],["كل حاسوب خادم وزبون في نفس الوقت","",1],["الأجهزة التي تطلب الخدمات تسمى زبائن","",0],["لا يوجد جهاز رئيسي واحد","",1],["Serveur هو الجهاز الذي يقدم الموارد","",0],["Peer to Peer","",1]],
+items:[
+["Serveur و Client","الخادم والزبون","الخادم (Serveur) جهاز بمواصفات عالية يقدم الخدمات والموارد لبقية أجهزة الحاسوب، وتسمى هذه الأجهزة الزبائن (Clients).",fl(["الخادم","يقدم الخدمة","الزبائن"])],
+["Peer to Peer","الند للند","في هذه الشبكة تكون كل الحواسيب خادما وزبونا في نفس الوقت، فلا يوجد جهاز رئيسي.",ch(["كل جهاز خادم","كل جهاز زبون"])]],
+q:[["في الشبكة، الجهاز الذي يقدم الخدمات يسمى:",["الخادم","الزبون","المحول"],0],
+["في شبكة الند للند:",["كل حاسوب خادم وزبون في الوقت نفسه","يوجد خادم واحد فقط","لا يوجد اتصال"],0],
+["Client تعني:",["الزبون","الخادم","الموزع"],0]]},
+{n:"طوبولوجيا الربط",act:1,tl:"أي طوبولوجيا؟",fm:"صنفت {s} عبارات من أول محاولة من أصل {n}.",sc:["الباص","الحلقة","النجمة"],sd:[
+["كل الأجهزة مرتبطة بخط واحد","",0],["الأول يرتبط بالموالي والأخير بالأول","",1],["جهاز مركزي مثل Switch أو Hub","",2],["قطع الكابل الرئيسي يوقف الاتصال","",0],["البيانات تمر بالتتابع عبر جميع الأجهزة","",1],["تعطل جهاز واحد لا يوقف البقية، وتعطل المحول يوقف الشبكة","",2]],
+items:[
+["Bus","طوبولوجيا الباص","ترتبط أجهزة الحاسوب بخط واحد (كابل رئيسي). إذا انقطع هذا الكابل توقف الاتصال بين الأجهزة.",topo('bus')],
+["Ring","طوبولوجيا الحلقة","ترتبط أجهزة الحاسوب على شكل حلقة: الأول بالموالي والأخير بالأول، فتنتقل البيانات عبر جميع الأجهزة.",topo('ring')],
+["Star","طوبولوجيا النجمة","ترتبط أجهزة الحاسوب عبر توصيل مركزي مثل المحول (Switch) أو الموزع (Hub)، ومنه تتبادل الأجهزة البيانات. تعطل جهاز واحد لا يوقف البقية، لكن تعطل الجهاز المركزي يوقف الشبكة.",topo('star')]],
+q:[["أي طوبولوجيا تستعمل محولا Switch أو موزعا Hub؟",["النجمة","الباص","الحلقة"],0],
+["في طوبولوجيا الحلقة، الجهاز الأخير يرتبط بـ:",["الجهاز الأول","الخادم","الطابعة"],0],
+["في طوبولوجيا الباص، قطع الكابل الرئيسي:",["يوقف الاتصال بين الأجهزة","لا يؤثر","يسرع الشبكة"],0]]},
+{n:"التحدي النهائي",items:[],q:[
+["مجموعة حواسيب (جهازان على الأقل) متصلة ببعضها تسمى:",["شبكة","برنامجا","ملفا"],0],
+["الشبكة المحلية LAN تكون عادة في:",["قاعة المعلوماتية أو مقهى الإنترنت","بين القارات","بين الدول فقط"],0],
+["الجهاز المركزي في طوبولوجيا النجمة:",["المحول Switch أو الموزع Hub","الطابعة","الماسح"],0],
+["في شبكة الند للند:",["كل حاسوب خادم وزبون","كل الحواسيب زبائن فقط","كل الحواسيب خوادم فقط"],0]]}
+];
+var S={lv:0,it:0,stage:'learn',ai:0,as:0,w:0,qi:0,sc:0,max:0,done:{},seen:{},pts:0};
+var KEY='net-progress-v1';
+try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv){S.max=sv.max||0;S.done=sv.done||{};S.pts=sv.pts||0;S.lv=Math.min(S.max,L.length-1)}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({max:S.max,done:S.done,pts:S.pts}))}catch(e){}}
+function addPts(n){if(!S.done[S.lv]){S.pts+=n;$('pts').textContent=S.pts}}
+function reset(){S.it=0;S.qi=0;S.sc=0;S.ai=0;S.as=0;S.w=0;S.stage=L[S.lv].items.length?'learn':'quiz'}
+function renderTop(){
+ var n=Object.keys(S.done).length;
+ $('bar').style.width=(n/L.length*100)+'%';$('pc').textContent='أنهيت '+n+' من '+L.length+' مستويات';$('pts').textContent=S.pts;
+ var h='';L.forEach(function(l,i){var c=S.done[i]?'done':i===S.lv?'cur':i>S.max?'lock':'';
+  h+='<button class="st '+c+'" data-i="'+i+'">'+(i+1)+'. '+l.n+(S.done[i]?' ✓':'')+'</button>'});
+ $('steps').innerHTML=h}
+$('steps').onclick=function(e){var i=e.target.dataset&&e.target.dataset.i;if(i===undefined||+i>S.max)return;S.lv=+i;reset();draw()};
+function toQuiz(){S.stage='quiz';S.qi=0;S.sc=0;draw()}
+function draw(){
+ renderTop();var P=$('panel');P.style.animation='none';P.offsetHeight;P.style.animation='';
+ if(S.stage==='learn')learn();else if(S.stage==='act')sortAct();else quiz()}
+function learn(){
+ var l=L[S.lv],it=l.items[S.it],P=$('panel'),h='<span class="tag">'+it[0]+'</span><h2>'+it[1]+'</h2><p>'+it[2]+'</p>'+(it[3]?'<div class="ex">'+it[3]+'</div>':'')+'<div class="dots">';
+ l.items.forEach(function(x,i){h+='<i class="'+(i===S.it?'cur':i<S.it?'on':'')+'"></i>'});
+ var last=S.it===l.items.length-1;
+ h+='</div><div class="pc" style="text-align:center">'+(S.it+1)+' من '+l.items.length+'</div><div class="row"><button class="btn g" id="pv"'+(S.it?'':' disabled')+'>السابق</button><button class="btn" id="nx">'+(!last?'فهمت، التالي':l.act?'انتقل إلى التطبيق':'ابدأ اختبار المستوى')+'</button></div>';
+ P.innerHTML=h;
+ var k=S.lv+'-'+S.it;if(!S.seen[k]){S.seen[k]=1;addPts(1)}
+ $('pv').onclick=function(){S.it--;draw()};
+ $('nx').onclick=function(){if(!last){S.it++;draw()}else if(l.act){S.stage='act';S.ai=0;S.as=0;S.w=0;draw()}else toQuiz()}}
+function fin(msg){$('panel').innerHTML='<div class="big"><span class="tag">انتهى التطبيق</span><h2>أحسنت</h2><p>'+msg+'</p><div class="row" style="justify-content:center"><button class="btn" id="tq">ابدأ اختبار المستوى</button></div></div>';$('tq').onclick=toQuiz}
+function sortAct(){
+ var l=L[S.lv],D=l.sd,P=$('panel');
+ if(S.ai>=D.length)return fin(l.fm.replace('{s}',S.as).replace('{n}',D.length));
+ var d=D[S.ai];
+ P.innerHTML='<span class="tag">'+l.tl+' ('+(S.ai+1)+' من '+D.length+')</span><h2 style="font-size:1.2rem">'+d[0]+'</h2><div class="g3" id="g"></div><div class="fb" id="fb"></div>';
+ l.sc.forEach(function(c,k){var b=document.createElement('button');b.className='opt';b.style.textAlign='center';b.textContent=c;
+  b.onclick=function(){if(k===d[2]){if(!S.w){S.as++;addPts(1)}S.w=0;S.ai++;sortAct()}else{S.w=1;$('fb').textContent='ليس هذا الاختيار، جرب مرة أخرى'}};$('g').appendChild(b)})}
+function quiz(){
+ var l=L[S.lv],q=l.q[S.qi],P=$('panel');
+ if(!q){var need=l.q.length-1,ok=S.sc>=need,last=S.lv===L.length-1;
+  if(ok){var first=!S.done[S.lv];S.done[S.lv]=1;if(first){S.pts+=5}if(S.max<L.length-1&&S.max===S.lv)S.max++;save();renderTop()}
+  P.innerHTML='<div class="big"><h2>'+(ok?(last?'أحسنت، أكملت الرحلة':'أحسنت، أنهيت المستوى '+(S.lv+1)):'اقتربت من النجاح')+'</h2><p>نتيجتك: '+S.sc+' من '+l.q.length+'</p><p>'+(ok?(last?'مجموع نقاطك: '+S.pts+'. صرت تعرف أنواع الشبكات وطرق ربطها.':'تم فتح المستوى التالي: '+L[S.lv+1].n):'تحتاج '+need+' إجابات صحيحة على الأقل. راجع الدرس ثم أعد المحاولة.')+'</p><div class="row" style="justify-content:center">'+(ok&&!last?'<button class="btn" id="go">المستوى التالي</button>':'')+(ok?'':'<button class="btn g" id="rv">مراجعة الدرس</button>')+'<button class="btn g" id="rt">إعادة الاختبار</button></div></div>';
+  if($('go'))$('go').onclick=function(){S.lv++;reset();draw()};
+  if($('rv'))$('rv').onclick=function(){S.it=0;S.stage='learn';draw()};
+  $('rt').onclick=function(){S.qi=0;S.sc=0;draw()};return}
+ P.innerHTML='<span class="tag">اختبار المستوى</span><p><b>السؤال '+(S.qi+1)+' من '+l.q.length+'</b></p><h2 style="font-size:1.15rem">'+q[0]+'</h2><div id="os"></div><div class="fb" id="fb"></div>';
+ sh([0,1,2]).forEach(function(i){var b=document.createElement('button');b.className='opt';b.textContent=q[1][i];
+  b.onclick=function(){var all=$('os').children;
+   for(var j=0;j<all.length;j++){all[j].disabled=true;if(all[j].textContent===q[1][q[2]])all[j].classList.add('ok')}
+   if(i===q[2]){S.sc++;addPts(2);$('fb').textContent='إجابة صحيحة'}else{b.classList.add('no');$('fb').textContent='الإجابة الصحيحة: '+q[1][q[2]]}
+   var n=document.createElement('button');n.className='btn';n.textContent='متابعة';n.onclick=function(){S.qi++;quiz()};
+   var d=document.createElement('div');d.className='row';d.style.justifyContent='flex-end';d.appendChild(n);P.appendChild(d)};
+  $('os').appendChild(b)})}
+reset();draw();
+</script>
+</body>
+</html>

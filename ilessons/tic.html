@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>رحلة تكنولوجيا الإعلام والاتصال</title>
+<style>
+:root{--bg:#f4f6ff;--card:#fff;--tx:#1d2340;--mut:#5b6286;--pri:#5b4bff;--acc:#ff8a3d;--ok:#1fa971;--bad:#e5484d;--bd:#dfe3f5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12142a;--card:#1c1f3d;--tx:#eef0ff;--mut:#a3a9d6;--pri:#8a7dff;--bd:#2d3160}}
+:root[data-theme="dark"]{--bg:#12142a;--card:#1c1f3d;--tx:#eef0ff;--mut:#a3a9d6;--pri:#8a7dff;--bd:#2d3160}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.8}
+header{text-align:center;padding:18px 14px 4px}
+h1{margin:0;font-size:clamp(1.3rem,5vw,2rem)}
+.pts{color:var(--mut)}.pts b{color:var(--acc)}
+main{max-width:760px;margin:auto;padding:8px 14px 40px}
+.bar{height:12px;background:var(--bd);border-radius:99px;overflow:hidden;margin:10px 0 4px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pri),var(--acc));transition:width .6s}
+.pc{font-size:.85rem;color:var(--mut);text-align:end}
+.steps{display:flex;gap:6px;margin:12px 0}
+.st{flex:1;font:inherit;font-size:.85rem;padding:8px 4px;border-radius:12px;border:2px solid var(--bd);background:var(--card);color:var(--mut);cursor:pointer}
+.st.cur{border-color:var(--pri);color:var(--tx);font-weight:700}
+.st.done{background:var(--ok);border-color:var(--ok);color:#fff}
+.st.lock{opacity:.45;cursor:not-allowed}
+.panel{background:var(--card);border:2px solid var(--bd);border-radius:18px;padding:20px;min-height:280px;animation:in .35s}
+@keyframes in{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+.tag{display:inline-block;background:var(--pri);color:#fff;border-radius:99px;padding:0 14px;font-size:.85rem}
+.panel h2{margin:10px 0 6px}
+.panel p{font-size:1.08rem;margin:6px 0}
+.dots{display:flex;gap:5px;justify-content:center;margin:14px 0 4px}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--bd)}
+.dots i.on{background:var(--pri)}.dots i.cur{background:var(--acc);transform:scale(1.3)}
+.row{display:flex;justify-content:space-between;gap:10px;margin-top:16px}
+.btn{font:inherit;border:0;border-radius:12px;padding:10px 22px;background:var(--pri);color:#fff;cursor:pointer}
+.btn.g{background:var(--bd);color:var(--tx)}.btn[disabled]{opacity:.4;cursor:default}
+.opt{display:block;width:100%;text-align:start;font:inherit;color:var(--tx);background:var(--bg);border:2px solid var(--bd);border-radius:12px;padding:10px;margin:8px 0;cursor:pointer}
+.opt.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+.opt.no{background:var(--bad);color:#fff;border-color:var(--bad)}
+.big{text-align:center}.big h2{font-size:1.5rem}
+.fb{min-height:1.6em;font-weight:700}
+.ico{font-size:2.6rem;line-height:1.2}.ex{background:var(--bg);border:2px dashed var(--pri);border-radius:14px;padding:12px;margin:10px 0;font-size:.98rem}.ex .t{color:var(--mut);font-size:.85rem;margin:4px 0}.chips span{display:inline-block;background:var(--card);border:2px solid var(--bd);border-radius:10px;padding:2px 12px;margin:3px;font-weight:700}.flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0}.flow b{background:var(--pri);color:#fff;border-radius:10px;padding:4px 10px;font-size:.9rem}.res2{background:var(--ok);color:#fff;border-radius:12px;padding:10px;margin-top:8px;font-weight:700;animation:in .4s}
+:root{--bg:#f7f4ee;--card:#fffdf9;--tx:#2a2622;--mut:#6f675d;--pri:#1f5c4d;--acc:#b5532a;--ok:#2f7d4f;--bad:#b3392f;--bd:#e3dccf}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1814;--card:#24211c;--tx:#efe9df;--mut:#b2a99a;--pri:#6fb59f;--bd:#3a352d}}
+:root[data-theme="dark"]{--bg:#1a1814;--card:#24211c;--tx:#efe9df;--mut:#b2a99a;--pri:#6fb59f;--bd:#3a352d}
+header{text-align:start;max-width:760px;margin:auto;padding:22px 14px 10px;border-bottom:1px solid var(--bd)}
+h1{font-size:clamp(1.3rem,4.5vw,1.8rem)}
+.bar{height:6px;border-radius:3px;margin-top:14px}.bar i{background:var(--pri);border-radius:3px}
+.panel{border-radius:8px;border-width:1px;padding:24px}
+.st,.btn,.opt{border-radius:6px}.st{border-width:1px}
+.st.cur{border-color:var(--pri);border-width:2px}.btn{background:var(--pri)}.btn.g{background:var(--bd);color:var(--tx)}
+.tag{background:transparent;color:var(--acc);border:1px solid var(--acc);border-radius:4px;padding:0 10px}
+.ex{border:0;border-inline-start:4px solid var(--acc);border-radius:4px;background:var(--bg)}
+.chips span{border-radius:6px;border-width:1px}.flow b{border-radius:6px}.res2{border-radius:6px}
+.dots i{width:8px;height:8px}.dots i.cur{background:var(--acc)}
+</style>
+</head>
+<body>
+<header><h1>رحلة تكنولوجيا الإعلام والاتصال</h1><div class="pts">النقاط: <b id="pts">0</b></div></header>
+<main>
+<div class="bar"><i id="bar"></i></div><div class="pc" id="pc"></div>
+<div class="steps" id="steps"></div>
+<div class="panel" id="panel"></div>
+</main>
+<script>
+var L=[
+{n:"المفاهيم",items:[
+["Données","البيانات","مجموعة قيم أولية لموضوع ما، وتتكون من أرقام أو حروف أو كلمات أو صور."],
+["Informations","المعلومات","هي البيانات التي تمت معالجتها لتصبح ذات معنى. مثال: الرقم 15 وحده بيان، أما عبارة «علامتك في الاختبار 15 من 20» فهي معلومة."],
+["Technique","التقنية","معرفة الشخص وقدرته على إنجاز الأعمال والنشاطات بمهارة فنية وعلى أساس علمي."],
+["Technologie","التكنولوجيا","كلمة يونانية من تكنو (المهارة الفنية) ولوجيا (علم). هي علم المهارات الفنية المعتمد على المعارف العلمية والتقنية لتحقيق الأهداف المطلوبة."],
+["Informatique","المعلوماتية","علم حديث يعالج المعلومات ويبني البرامج بطريقة آلية باستعمال الحاسوب وبرامج خاصة. وهي أيضا المنظومة التي تجمع كل ما يتعلق بأجهزة الحاسوب."],
+["Communication","الاتصال","نقل المعلومات بين المرسل والمستقبل، مثل المحاضرات والندوات."],
+["Information","الإعلام","الإخبار وتقديم المعلومات من المرسل إلى المستقبل."],
+["TIC","تكنولوجيا الإعلام والاتصال","كل التقنيات والأجهزة السمعية البصرية والوسائط المتعددة والإنترنت والاتصالات، أي الدمج بين الحواسيب والعتاد والبرمجيات وشبكات الاتصال."],
+["مجالات الاستعمال","مجالات استعمال TIC","كل المجالات تأثرت بها: الإدارة والصحة والنقل والاقتصاد (التجارة الإلكترونية والبورصة) والمجال العسكري، والتعليم حيث يتحكم التلميذ في المعلومات ويخزنها ويجري العمليات بسرعة."]],
+q:[["ما الفرق بين البيانات والمعلومات؟",["المعلومات بيانات تمت معالجتها فصار لها معنى","لا فرق بينهما","البيانات أهم دائما"],0],
+["كلمة تكنولوجيا مكونة من:",["تكنو + لوجيا (مهارة + علم)","تقنية + اتصال","حاسوب + شبكة"],0],
+["نقل المعلومات بين المرسل والمستقبل يسمى:",["الاتصال","البيانات","العتاد"],0]]},
+{n:"تطور الاتصال",items:[
+["قديما","الإشارات والطبول","استعمل الإنسان الدخان والنار والطبول لإرسال رسائل بسيطة لمسافات قصيرة."],
+["قديما","الحمام الزاجل والبريد","نُقلت الرسائل المكتوبة بالحمام وبالخيالة، وكانت تستغرق أياما أو أسابيع."],
+["1837","التلغراف","طور صامويل مورس التلغراف وشفرته المعروفة بشفرة مورس، فانتقلت الرسائل عبر الأسلاك في لحظات."],
+["1876","الهاتف","اخترع غراهام بيل الهاتف، فصار الصوت ينتقل بين شخصين بعيدين."],
+["حوالي 1895","الراديو","أرسل ماركوني الإشارات اللاسلكية، ثم انتشر الراديو لنقل الأخبار للجميع."],
+["حوالي 1930","التلفاز","ظهر البث التلفزيوني في الثلاثينيات ثم انتشر في البيوت، فصار الناس يرون الصوت والصورة معا."],
+["1969","الإنترنت","بدأت شبكة أربانت (ARPANET) بربط حواسيب الجامعات، ثم تحولت إلى الإنترنت العالمي."],
+["1973","الهاتف المحمول","أول مكالمة بهاتف محمول، ثم تطور إلى الهواتف الذكية بعد 2007."],
+["اليوم","التواصل الاجتماعي","رسائل فورية ومكالمات فيديو وشبكات اجتماعية تربط العالم في ثوان."]],
+q:[["من اخترع الهاتف؟",["غراهام بيل","صامويل مورس","ماركوني"],0],
+["أي وسيلة جاءت أولا؟",["الحمام الزاجل","التلفاز","الإنترنت"],0],
+["الشبكة التي مهدت للإنترنت هي:",["ARPANET","التلغراف","الراديو"],0]]},
+{n:"أنظمة التشغيل",items:[
+["قبل 1950","بدون نظام تشغيل","كان المبرمجون يتحكمون في الآلة مباشرة بالبطاقات المثقبة."],
+["1950 تقريبا","المعالجة بالدفعات","أنظمة بسيطة تنفذ مجموعة برامج واحدا تلو الآخر."],
+["1969","يونكس UNIX","نظام قوي متعدد المستخدمين، وهو أصل أنظمة كثيرة اليوم."],
+["1981","MS-DOS","نظام يعتمد على كتابة الأوامر بلوحة المفاتيح، استعمله حاسوب IBM PC."],
+["1984","ماك Mac OS","أول نظام واسع الانتشار تجاريا بواجهة رسومية فيها نوافذ وأيقونات وفأرة."],
+["1985","ويندوز 1.0","جلبت مايكروسوفت الواجهة الرسومية لحواسيب IBM PC، وكانت تعمل فوق نظام DOS."],
+["1991","لينكس Linux","نظام مفتوح المصدر أنشأه لينوس تورفالدز ويستعمله العالم في الخوادم."],
+["1995 - 2001","ويندوز 95 و XP","جعلا الحاسوب شائعا في البيوت بقائمة ابدأ وشريط المهام."],
+["2007 - 2008","iOS وأندرويد","أنظمة الهواتف الذكية اللمسية."],
+["اليوم","أنظمة حديثة","ويندوز 11 وغيره، مع الحوسبة السحابية والذكاء الاصطناعي."]],
+q:[["أول نظام واسع الانتشار تجاريا بواجهة رسومية:",["Mac OS","MS-DOS","لينكس"],0],
+["نظام مفتوح المصدر أنشأه لينوس تورفالدز:",["Linux","Windows","iOS"],0],
+["نظام يعمل بكتابة الأوامر فقط:",["MS-DOS","Windows 11","Android"],0]]},
+{n:"أجهزة الحاسوب",items:[
+["1946","الجيل الأول: الصمامات","حاسوب ENIAC ضخم بحجم غرفة، يستهلك كهرباء كثيرة ويسخن بسرعة."],
+["1950 - 1960","الجيل الثاني: الترانزستور","أصغر وأسرع وأقل استهلاكا للطاقة من الصمامات."],
+["1960 - 1970","الجيل الثالث: الدارات المتكاملة","جمع عددا من الترانزستورات في رقاقة صغيرة واحدة، ثم ازداد العدد حتى بلغ آلافا."],
+["1971","الجيل الرابع: المعالج الدقيق","ظهر معالج Intel 4004 على رقاقة واحدة، فولدت الحواسيب الشخصية."],
+["1981","الحاسوب الشخصي PC","أطلقت IBM حاسوبها الشخصي، ودخل الحاسوب البيوت والمدارس."],
+["1990 - 2010","المحمول واللوحي","حواسيب خفيفة تحملها في حقيبتك، ثم الهواتف الذكية واللوحات."],
+["اليوم","الذكاء الاصطناعي","حواسيب فائقة السرعة وحوسبة سحابية وآلات تتعلم وتساعد الإنسان."]],
+q:[["حاسوب ENIAC اعتمد على:",["الصمامات المفرغة","الترانزستور","المعالج الدقيق"],0],
+["الجيل الذي جمع الترانزستورات في رقاقة واحدة:",["الدارات المتكاملة","الصمامات","الذكاء الاصطناعي"],0],
+["أول معالج دقيق هو:",["Intel 4004","ENIAC","IBM PC"],0]]},
+{n:"التحدي النهائي",items:[],
+q:[["البيانات بعد المعالجة تصبح:",["معلومات","عتادا","شبكة"],0],
+["TIC تعني الدمج بين:",["الحواسيب والعتاد والبرمجيات وشبكات الاتصال","الراديو فقط","الورق والقلم"],0],
+["أي مجال لا تؤثر فيه TIC؟",["لا يوجد مجال مستثنى","الصحة","التعليم"],0],
+["ترتيب صحيح للاتصال:",["التلغراف ثم الهاتف ثم الإنترنت","الإنترنت ثم التلغراف","الهاتف ثم الحمام"],0]]}
+];
+var LI=['📚','📡','💿','🖥️','🏆'];
+var IC=[['📊','💡','🔧','⚙️','💻','🗣️','📰','🌐','🏥'],['🔥','🕊️','📟','☎️','📻','📺','🌍','📱','💬'],['🃏','📦','🐧','⌨️','🍎','🪟','🔓','🏠','📱','☁️'],['🔦','🔹','🧩','🧠','🖥️','💼','🤖']];
+var RAW='<span>علي</span><span>15</span><span>الرياضيات</span><span>20</span>';
+function proc(){document.getElementById('pr').innerHTML='<div class="res2">علي نجح في الرياضيات: علامته 15 من 20</div>'}
+var EX={
+'0-0':'<div class="t">مثال: هذه بيانات خام. هل تفهم منها شيئا؟</div><div class="chips">'+RAW+'</div><div class="t">كل قيمة وحدها بلا معنى واضح: اسم، رقم، مادة، رقم آخر.</div>',
+'0-1':'<div class="t">نفس البيانات السابقة. اضغط لتعالجها وتحولها إلى معلومة:</div><div class="chips">'+RAW+'</div><div id="pr"><button class="btn" onclick="proc()">عالج البيانات</button></div>',
+'0-2':'<div class="t">مثال</div>الخياط يعرف كيف يقص القماش ويخيطه بمهارة وعلى مقاييس علمية دقيقة، وهذه هي التقنية.',
+'0-3':'<div class="t">مثال</div>آلة الخياطة الكهربائية تجمع المعرفة العلمية والتقنية لتخيط أسرع وبدقة أكبر، وهذه هي التكنولوجيا.',
+'0-4':'<div class="t">مثال</div>برنامج يحسب معدلات التلاميذ آليا في ثوان بدل الحساب باليد.',
+'0-5':'<div class="t">مثال: الأستاذ يشرح الدرس</div><div class="flow"><b>المرسل: الأستاذ</b><span>←</span><b>الرسالة: الدرس</b><span>←</span><b>المستقبل: التلميذ</b></div>',
+'0-6':'<div class="t">مثال</div>نشرة الأخبار تخبر المشاهدين بما حدث اليوم، فهي تقدم المعلومات من المرسل إلى المستقبل.',
+'0-7':'<div class="t">مثال: عناصر تجتمع في مكالمة فيديو</div><div class="chips"><span>حاسوب</span><span>برنامج</span><span>إنترنت</span><span>كاميرا</span></div>',
+'0-8':'<div class="t">أمثلة</div><div class="chips"><span>الصحة</span><span>التجارة الإلكترونية</span><span>النقل</span><span>البورصة</span><span>التعليم</span><span>الجيش</span></div>'
+};
+var S={lv:0,it:0,stage:'learn',qi:0,sc:0,max:0,done:{},seen:{},pts:0};
+var KEY='tic-progress-v2';
+try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv){S.max=sv.max||0;S.done=sv.done||{};S.pts=sv.pts||0;S.lv=Math.min(S.max,L.length-1)}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({max:S.max,done:S.done,pts:S.pts}))}catch(e){}}
+function $(i){return document.getElementById(i)}
+function sh(a){return a.map(function(x,i){return [Math.random(),i]}).sort(function(a,b){return a[0]-b[0]})}
+function renderTop(){
+ var n=Object.keys(S.done).length,p=Math.round(n/L.length*100);
+ $('bar').style.width=p+'%';$('pc').textContent='أنهيت '+n+' من '+L.length+' مستويات';$('pts').textContent=S.pts;
+ var h='';L.forEach(function(l,i){var c=S.done[i]?'done':i===S.lv?'cur':i>S.max?'lock':'';
+  h+='<button class="st '+c+'" data-i="'+i+'">'+(i+1)+'. '+l.n+(S.done[i]?' ✓':'')+'</button>'});
+ $('steps').innerHTML=h}
+$('steps').onclick=function(e){var i=e.target.dataset&&e.target.dataset.i;if(i===undefined||+i>S.max)return;
+ S.lv=+i;S.it=0;S.qi=0;S.sc=0;S.stage=L[S.lv].items.length?'learn':'quiz';draw()};
+function draw(){
+ renderTop();var l=L[S.lv],P=$('panel'),h='';
+ P.style.animation='none';P.offsetHeight;P.style.animation='';
+ if(S.stage==='learn'){
+  var it=l.items[S.it];
+  var ex=EX[S.lv+'-'+S.it];h='<span class="tag">'+it[0]+'</span><h2>'+it[1]+'</h2><p>'+it[2]+'</p>'+(ex?'<div class="ex">'+ex+'</div>':'')+'<div class="dots">';
+  l.items.forEach(function(x,i){h+='<i class="'+(i===S.it?'cur':i<S.it?'on':'')+'"></i>'});
+  h+='</div><div class="pc" style="text-align:center">'+(S.it+1)+' من '+l.items.length+'</div><div class="row"><button class="btn g" id="pv"'+(S.it?'':' disabled')+'>السابق</button><button class="btn" id="nx">'+(S.it===l.items.length-1?'ابدأ اختبار المستوى':'فهمت، التالي')+'</button></div>';
+  P.innerHTML=h;
+  var k=S.lv+'-'+S.it;if(!S.seen[k]&&!S.done[S.lv]){S.seen[k]=1;S.pts++;$('pts').textContent=S.pts}
+  $('pv').onclick=function(){S.it--;draw()};
+  $('nx').onclick=function(){if(S.it<l.items.length-1)S.it++;else{S.stage='quiz';S.qi=0;S.sc=0}draw()};
+ }else{quiz()}}
+function quiz(){
+ var l=L[S.lv],q=l.q[S.qi],P=$('panel');
+ if(!q){var need=l.q.length-1,ok=S.sc>=need;
+  if(ok){var first=!S.done[S.lv];S.done[S.lv]=1;if(first)S.pts+=5;if(S.max<L.length-1&&S.max===S.lv)S.max++;save();renderTop()}
+  var last=S.lv===L.length-1;
+  P.innerHTML='<div class="big"><h2>'+(ok?(last?'أحسنت! أكملت الرحلة':'أحسنت! أنهيت المستوى '+(S.lv+1)):'اقتربت من النجاح')+'</h2><p>نتيجتك: '+S.sc+' من '+l.q.length+'</p><p>'+(ok?(last?'مجموع نقاطك: '+S.pts+'. أنت الآن تعرف أساسيات TIC.':'تم فتح المستوى التالي: '+L[S.lv+1].n):'تحتاج '+need+' إجابات صحيحة على الأقل. راجع الدرس ثم أعد المحاولة.')+'</p><div class="row" style="justify-content:center">'+(ok&&!last?'<button class="btn" id="go">المستوى التالي</button>':'')+(ok?'':'<button class="btn g" id="rv">مراجعة الدرس</button>')+'<button class="btn g" id="rt">إعادة الاختبار</button></div></div>';
+  if($('go'))$('go').onclick=function(){S.lv++;S.it=0;S.qi=0;S.sc=0;S.stage=L[S.lv].items.length?'learn':'quiz';draw()};
+  if($('rv'))$('rv').onclick=function(){S.it=0;S.stage='learn';draw()};
+  $('rt').onclick=function(){S.qi=0;S.sc=0;draw()};return}
+ P.innerHTML='<span class="tag">اختبار المستوى</span><p><b>السؤال '+(S.qi+1)+' من '+l.q.length+'</b></p><h2 style="font-size:1.15rem">'+q[0]+'</h2><div id="os"></div><div class="fb" id="fb"></div>';
+ sh(q[1]).forEach(function(r){var i=r[1],b=document.createElement('button');b.className='opt';b.textContent=q[1][i];
+  b.onclick=function(){var all=$('os').children;
+   for(var j=0;j<all.length;j++){all[j].disabled=true;if(all[j].textContent===q[1][q[2]])all[j].classList.add('ok')}
+   if(i===q[2]){S.sc++;if(!S.done[S.lv]){S.pts+=2}$('fb').textContent='إجابة صحيحة'}
+   else{b.classList.add('no');$('fb').textContent='الإجابة الصحيحة: '+q[1][q[2]]}
+   $('pts').textContent=S.pts;
+   var n=document.createElement('button');n.className='btn';n.textContent='متابعة';n.onclick=function(){S.qi++;quiz()};
+   var d=document.createElement('div');d.className='row';d.style.justifyContent='flex-end';d.appendChild(n);P.appendChild(d)};
+  $('os').appendChild(b)})}
+S.stage=L[S.lv].items.length?'learn':'quiz';
+draw();
+</script>
+</body>
+</html>
