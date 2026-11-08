@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#102b55" />
+  <title>التسجيل في الدورة التكوينية | نادي المعلوماتية والذكاء الاصطناعي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--navy:#102b55;--blue:#1769c2;--cyan:#20a9df;--gold:#f3b928;--ink:#172943;--muted:#68788d;--line:#dce6f2;--pale:#f3f7fc;--white:#fff;--good:#16794b;--bad:#b42318}
+    *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#f5f9ff 0,#fff 430px);font-family:'Cairo',sans-serif;color:var(--ink)}
+    .shell{max-width:900px;margin:0 auto;padding:26px 18px 60px}.hero{position:relative;overflow:hidden;background:linear-gradient(125deg,#10264a,#174b86 68%,#147eae);border-radius:26px;padding:30px 32px;color:#fff;box-shadow:0 16px 40px #12345a20}
+    .hero:before,.hero:after{content:"";position:absolute;border:1px solid #ffffff25;border-radius:50%;width:240px;height:240px;left:-90px;top:-125px}.hero:after{width:170px;height:170px;left:-40px;top:-90px}
+    .school{font-size:14px;color:#dcecff;font-weight:700}.club{display:inline-block;margin-top:14px;padding:5px 13px;border:1px solid #ffffff55;border-radius:30px;color:#ffe08a;font-weight:800;font-size:14px}
+    h1{font-size:clamp(25px,5vw,39px);line-height:1.5;margin:12px 0 4px;font-weight:900}.subtitle{font-size:17px;color:#e5f2ff;font-weight:700}.intro{margin:14px 0 0;color:#eaf4ff;max-width:680px;line-height:1.9}
+    .steps{display:flex;gap:7px;margin:20px 0 0;flex-wrap:wrap}.step{font-size:12px;border:1px solid #ffffff50;border-radius:20px;padding:4px 10px;color:#e8f4ff}.step.active{background:#fff;color:var(--navy);font-weight:800}
+    form{margin-top:22px}.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:23px;margin-bottom:17px;box-shadow:0 8px 24px #183b6410}.panel-head{display:flex;align-items:center;gap:12px;margin:0 0 18px}.num{width:34px;height:34px;display:grid;place-items:center;border-radius:11px;background:#eaf3ff;color:var(--blue);font-weight:900}.panel h2{font-size:19px;margin:0;color:var(--navy)}.hint{font-size:13px;color:var(--muted);margin:-10px 0 17px}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}label,.legend{font-size:14px;font-weight:800;color:#263d5b}.required{color:#d43b32}
+    input[type=text],input[type=email],input[type=tel],textarea{width:100%;border:1px solid #d5e0ed;border-radius:12px;padding:12px 13px;font:inherit;font-size:14px;color:var(--ink);background:#fbfdff;outline:none;transition:.2s}input:focus,textarea:focus{border-color:#4c9be2;box-shadow:0 0 0 3px #268bd51a;background:#fff}textarea{min-height:100px;resize:vertical}
+    .days{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.day{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fbfdff}.day h3{font-size:15px;margin:0 0 9px;color:var(--navy)}.periods{display:grid;grid-template-columns:1fr 1fr;gap:7px}.choice{display:flex;align-items:center;gap:7px;border:1px solid #e1e9f3;border-radius:9px;padding:7px 8px;font-size:13px;font-weight:700;cursor:pointer;background:#fff}.choice:has(input:checked){border-color:#4b9ce0;background:#edf6ff;color:#125aa3}.choice input{accent-color:var(--blue);width:16px;height:16px;margin:0;flex:none}
+    .topic-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.topic{display:flex;gap:9px;align-items:flex-start;border:1px solid #e1e9f3;background:#fbfdff;border-radius:12px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;line-height:1.6}.topic:has(input:checked){border-color:#4b9ce0;background:#edf6ff}.topic input{accent-color:var(--blue);margin-top:5px;flex:none;width:16px;height:16px}
+    .notice{background:#fff9e8;border:1px solid #f5dfa1;border-radius:12px;padding:12px 14px;color:#73530b;font-size:13px;line-height:1.8;margin-top:14px}.actions{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.consent{display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--muted);max-width:480px}.consent input{margin-top:5px;accent-color:var(--blue)}button{border:0;border-radius:13px;background:linear-gradient(110deg,#1769c2,#0c4d91);color:#fff;padding:13px 25px;font:800 15px 'Cairo',sans-serif;cursor:pointer;box-shadow:0 8px 18px #1769c233;transition:.2s}button:hover{transform:translateY(-1px);filter:brightness(1.06)}button:disabled{opacity:.6;cursor:wait;transform:none}.status{display:none;margin-top:15px;padding:13px 15px;border-radius:12px;font-size:14px;font-weight:700;line-height:1.7}.status.show{display:block}.status.success{background:#eaf8f0;color:var(--good);border:1px solid #b9e5ca}.status.error{background:#fff0ef;color:var(--bad);border:1px solid #f4c5c1}.footer{text-align:center;color:#7a899c;font-size:12px;margin-top:22px}.footer strong{color:var(--navy)}
+    @media(max-width:650px){.shell{padding:14px 12px 40px}.hero{padding:23px 20px;border-radius:20px}.grid,.topic-list{grid-template-columns:1fr}.days{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:18px}.actions{align-items:stretch}.actions button{width:100%}}
+    @media(max-width:390px){.days{grid-template-columns:1fr}.periods{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div class="school">ثانوية عبد الحميد بن باديس – بيضاء برج</div>
+      <div class="club">نادي المعلوماتية والذكاء الاصطناعي</div>
+      <h1>شارك في تشكيل برنامج الدورة التكوينية</h1>
+      <div class="subtitle">الذكاء الاصطناعي: أدواته، مهاراته وتطبيقاته العملية</div>
+      <p class="intro">ندعو الأساتذة إلى تسجيل بياناتهم، وتحديد الأوقات المناسبة لهم، واختيار المحاور التي يرغبون في الاستفادة منها، مع إمكانية اقتراح مواضيع إضافية.</p>
+      <div class="steps"><span class="step active">١. المعلومات</span><span class="step">٢. الأوقات</span><span class="step">٣. المحاور</span><span class="step">٤. التأكيد</span></div>
+    </header>
+
+    <form id="registrationForm">
+      <section class="panel">
+        <div class="panel-head"><span class="num">1</span><h2>المعلومات الشخصية</h2></div>
+        <div class="grid">
+          <div class="field"><label for="firstName">الاسم <span class="required">*</span></label><input id="firstName" name="first_name" type="text" autocomplete="given-name" required maxlength="80" placeholder="أدخل اسمك"></div>
+          <div class="field"><label for="lastName">اللقب <span class="required">*</span></label><input id="lastName" name="last_name" type="text" autocomplete="family-name" required maxlength="80" placeholder="أدخل لقبك"></div>
+          <div class="field"><label for="email">البريد الإلكتروني <span class="required">*</span></label><input id="email" name="email" type="email" autocomplete="email" required maxlength="160" placeholder="name@example.com"></div>
+          <div class="field"><label for="phone">رقم الهاتف <span class="required">*</span></label><input id="phone" name="phone" type="tel" autocomplete="tel" required maxlength="30" placeholder="05 / 06 / 07 ..."></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><span class="num">2</span><h2>الأوقات المناسبة لكم</h2></div>
+        <p class="hint">يمكنكم اختيار أكثر من فترة. يرجى تحديد جميع الأوقات التي يمكنكم الحضور فيها.</p>
+        <div class="days" id="availability">
+          <div class="day"><h3>السبت</h3><div class="periods"><label class="choice"><input type="checkbox" name="availability" value="السبت|صباحاً"> صباحاً</label><label class="choice"><input type="checkbox" name="availability" value="السبت|بعد الظهر"> بعد الظهر</label></div></div>
+          <div class="day"><h3>الأحد</h3><div class="periods"><label class="choice"><input type="checkbox" name="availability" value="الأحد|صباحاً"> صباحاً</label><label class="choice"><input type="checkbox" name="availability" value="الأحد|بعد الظهر"> بعد الظهر</label></div></div>
+          <div class="day"><h3>الاثنين</h3><div class="periods"><label class="choice"><input type="checkbox" name="availability" value="الاثنين|صباحاً"> صباحاً</label><label class="choice"><input type="checkbox" name="availability" value="الاثنين|بعد الظهر"> بعد الظهر</label></div></div>
+          <div class="day"><h3>الثلاثاء</h3><div class="periods"><label class="choice"><input type="checkbox" name="availability" value="الثلاثاء|صباحاً"> صباحاً</label><label class="choice"><input type="checkbox" name="availability" value="الثلاثاء|بعد الظهر"> بعد الظهر</label></div></div>
+          <div class="day"><h3>الأربعاء</h3><div class="periods"><label class="choice"><input type="checkbox" name="availability" value="الأربعاء|صباحاً"> صباحاً</label><label class="choice"><input type="checkbox" name="availability" value="الأربعاء|بعد الظهر"> بعد الظهر</label></div></div>
+          <div class="day"><h3>الخميس</h3><div class="periods"><label class="choice"><input type="checkbox" name="availability" value="الخميس|صباحاً"> صباحاً</label><label class="choice"><input type="checkbox" name="availability" value="الخميس|بعد الظهر"> بعد الظهر</label></div></div>
+        </div>
+        <div class="notice">اختياركم للأوقات لا يعني تثبيت موعد الدورة؛ سيتم تحديد الموعد النهائي وفقاً لمدى توفر المشاركين.</div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><span class="num">3</span><h2>المحاور التي تهمكم</h2></div>
+        <p class="hint">اختاروا محوراً واحداً أو أكثر حسب اهتماماتكم.</p>
+        <div class="topic-list" id="topics">
+          <label class="topic"><input type="checkbox" name="topics" value="اكتشاف أدوات الذكاء الاصطناعي ومقارنتها"><span>اكتشاف أدوات الذكاء الاصطناعي ومقارنتها</span></label>
+          <label class="topic"><input type="checkbox" name="topics" value="فن كتابة الأوامر (Prompt Engineering)"><span>فن كتابة الأوامر (Prompt Engineering)</span></label>
+          <label class="topic"><input type="checkbox" name="topics" value="الذكاء الاصطناعي في العمل التربوي"><span>الذكاء الاصطناعي في العمل التربوي وإعداد الوثائق والاختبارات</span></label>
+          <label class="topic"><input type="checkbox" name="topics" value="الإنتاج الإبداعي: الصور والصوت والفيديو"><span>الإنتاج الإبداعي: الصور والصوت والفيديو والعروض</span></label>
+          <label class="topic"><input type="checkbox" name="topics" value="إنشاء المواقع والتطبيقات والحلول الرقمية"><span>إنشاء المواقع والتطبيقات والحلول الرقمية ورموز QR</span></label>
+          <label class="topic"><input type="checkbox" name="topics" value="المهام الإدارية والبحث العلمي"><span>المهام الإدارية والبحث العلمي والتحقق من المصادر</span></label>
+          <label class="topic"><input type="checkbox" name="topics" value="هندسة الاختبارات المقاومة للغش باستخدام الذكاء الاصطناعي"><span>هندسة الاختبارات المقاومة للغش باستخدام الذكاء الاصطناعي</span></label>
+        </div>
+        <div class="field full" style="margin-top:16px"><label for="suggestions">اقتراح مواضيع أو محاور أخرى (اختياري)</label><textarea id="suggestions" name="suggested_topics" maxlength="1500" placeholder="اكتبوا هنا أي مواضيع أخرى ترغبون في تناولها..."></textarea></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><span class="num">4</span><h2>مراجعة وإرسال التسجيل</h2></div>
+        <div class="actions">
+          <label class="consent"><input id="consent" type="checkbox" required><span>أوافق على استخدام بياناتي لغرض تنظيم هذه الدورة والتواصل معي بشأن موعدها فقط.</span></label>
+          <button id="submitBtn" type="submit">تأكيد وإرسال التسجيل</button>
+        </div>
+        <div id="status" class="status" role="status" aria-live="polite"></div>
+      </section>
+    </form>
+    <div class="footer"><strong>نادي المعلوماتية والذكاء الاصطناعي</strong><br>ثانوية عبد الحميد بن باديس – بيضاء برج</div>
+  </main>
+
+  <!-- Supabase JS v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // ضع بيانات مشروع Supabase هنا. استخدم مفتاح anon/publishable فقط في المتصفح، ولا تضع service_role key أبداً.
+    const SUPABASE_URL = 'https://ksuolzzhpssazyfwbkeg.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzdW9senpocHNzYXp5Zndia2VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU1NTcxMDQsImV4cCI6MjA3MTEzMzEwNH0.6ltEPGMJyOZbXmRjNCGZJxYmDDwkiFZy4WzawSTCpFA';
+    const TABLE_NAME = 'teacher_course_registrations';
+
+    const form = document.getElementById('registrationForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusBox = document.getElementById('status');
+    const showStatus = (message, type) => {
+      statusBox.textContent = message;
+      statusBox.className = `status show ${type}`;
+      statusBox.scrollIntoView({behavior:'smooth', block:'center'});
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      statusBox.className = 'status';
+
+      const availability = [...document.querySelectorAll('input[name="availability"]:checked')].map(el => {
+        const [day, period] = el.value.split('|');
+        return { day, period };
+      });
+      const topics = [...document.querySelectorAll('input[name="topics"]:checked')].map(el => el.value);
+
+      if (!availability.length) return showStatus('يرجى اختيار فترة زمنية واحدة على الأقل.', 'error');
+      if (!topics.length) return showStatus('يرجى اختيار محور واحد على الأقل.', 'error');
+      if (!document.getElementById('consent').checked) return showStatus('يرجى الموافقة على استخدام البيانات لإتمام التسجيل.', 'error');
+      if (SUPABASE_URL.includes('YOUR_') || SUPABASE_ANON_KEY.includes('YOUR_')) {
+        return showStatus('الصفحة جاهزة، لكن يجب إضافة رابط مشروع Supabase ومفتاح anon في إعدادات الصفحة أولاً.', 'error');
+      }
+
+      const payload = {
+        first_name: document.getElementById('firstName').value.trim(),
+        last_name: document.getElementById('lastName').value.trim(),
+        email: document.getElementById('email').value.trim().toLowerCase(),
+        phone: document.getElementById('phone').value.trim(),
+        availability,
+        topics,
+        suggested_topics: document.getElementById('suggestions').value.trim() || null
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'جارٍ إرسال التسجيل...';
+      try {
+        const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const { error } = await client.from(TABLE_NAME).insert(payload);
+        if (error) throw error;
+        showStatus('تم تسجيل مشاركتكم بنجاح! شكراً لاهتمامكم. سيتم التواصل معكم بعد تحديد موعد الدورة.', 'success');
+        form.reset();
+      } catch (error) {
+        console.error('Registration error:', error);
+        const duplicate = error.code === '23505';
+        showStatus(duplicate ? 'هذا البريد الإلكتروني مسجل مسبقاً.' : 'تعذر إرسال التسجيل حالياً. يرجى المحاولة لاحقاً أو التواصل مع المنظمين.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'تأكيد وإرسال التسجيل';
+      }
+    });
+  </script>
+</body>
+</html>

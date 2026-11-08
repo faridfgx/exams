@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102b55">
+<title>لوحة إدارة التسجيلات | دورة الذكاء الاصطناعي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--navy:#102b55;--navy2:#173d70;--blue:#2878d4;--sky:#eaf3ff;--gold:#f3b928;--ink:#172b49;--muted:#718096;--line:#e5ebf3;--bg:#f4f7fb;--white:#fff;--green:#16865c;--red:#c64747;--shadow:0 12px 32px rgba(23,55,96,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Cairo",Tahoma,sans-serif}button,input{font:inherit}.hidden{display:none!important}
+.login-wrap{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 15% 15%,#e0efff,transparent 32%),var(--bg)}
+.login-card{width:min(430px,100%);background:#fff;border:1px solid var(--line);border-radius:24px;padding:32px;box-shadow:var(--shadow)}
+.brand-mark{width:58px;height:58px;border-radius:18px;background:linear-gradient(145deg,var(--navy),#2878d4);display:grid;place-items:center;color:white;font-size:27px;margin-bottom:18px}
+h1,h2,h3,p{margin-top:0}.login-card h1{font-size:23px;margin-bottom:6px}.sub{color:var(--muted);font-size:13px;line-height:1.8}
+.field{display:grid;gap:7px;margin:17px 0}.field label{font-size:13px;font-weight:800}.field input{width:100%;padding:12px 14px;border:1px solid #dce4ef;border-radius:12px;outline:none;background:#fbfdff}.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px #2878d41a}
+.btn{border:0;border-radius:12px;padding:11px 17px;background:var(--navy);color:white;font-weight:800;cursor:pointer;transition:.18s}.btn:hover{filter:brightness(1.12);transform:translateY(-1px)}.btn:disabled{opacity:.55;cursor:wait;transform:none}.btn.secondary{background:#edf4ff;color:var(--navy)}.btn.danger{background:#fff0f0;color:var(--red)}.btn.small{padding:7px 12px;font-size:12px}
+.status{font-size:13px;margin-top:12px;line-height:1.7}.status.error{color:var(--red)}.status.ok{color:var(--green)}
+.app{min-height:100vh}.topbar{background:linear-gradient(110deg,#0d2448,#173e72);color:#fff;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;box-shadow:0 5px 18px #102b551a}
+.top-brand{display:flex;align-items:center;gap:13px}.top-icon{width:45px;height:45px;border-radius:14px;background:#ffffff18;border:1px solid #ffffff2b;display:grid;place-items:center;font-size:22px}.topbar h1{font-size:18px;margin:0}.topbar p{font-size:12px;color:#c5d7ef;margin:2px 0 0}.top-actions{display:flex;align-items:center;gap:10px}.top-actions .btn{background:#ffffff18;border:1px solid #ffffff35}
+.container{width:min(1440px,100%);padding:26px;margin:auto}.welcome{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:22px}.welcome h2{font-size:23px;margin:0 0 4px}.welcome p{color:var(--muted);font-size:13px;margin:0}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:20px}.stat{background:#fff;border:1px solid var(--line);border-radius:17px;padding:18px;box-shadow:var(--shadow);min-height:120px}.stat-top{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:12px;font-weight:700}.stat-icon{width:34px;height:34px;border-radius:11px;background:var(--sky);display:grid;place-items:center;font-size:17px}.stat strong{display:block;font-size:30px;line-height:1.5;color:var(--navy);margin-top:4px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:19px;margin-bottom:18px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.panel-head h3{font-size:16px;margin:0}.panel-head p{font-size:12px;color:var(--muted);margin:3px 0 0}
+.analytics{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}.bars{display:grid;gap:13px}.bar-row{display:grid;grid-template-columns:100px 1fr 32px;align-items:center;gap:10px;font-size:12px}.bar-track{height:10px;border-radius:20px;background:#edf2f8;overflow:hidden}.bar-fill{height:100%;background:linear-gradient(90deg,#2878d4,#5cb5ed);border-radius:20px;min-width:0;transition:width .3s}.bar-num{font-weight:800;color:var(--navy);text-align:left;direction:ltr}
+.topic-row{display:grid;grid-template-columns:1fr 38px;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid #eef2f7;font-size:12px}.topic-row:last-child{border:0}.topic-count{background:#edf4ff;color:var(--navy);font-weight:900;border-radius:9px;text-align:center;padding:4px}
+.toolbar{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.search{flex:1;min-width:190px;padding:10px 13px;border:1px solid var(--line);border-radius:11px;outline:none}.search:focus{border-color:var(--blue)}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:760px}th,td{text-align:right;padding:12px 10px;border-bottom:1px solid #edf1f6;font-size:12px;vertical-align:middle}th{color:#6d7b90;background:#f8fafd;font-weight:800;white-space:nowrap}td{color:#273c59}tbody tr:hover{background:#f9fbff}.name-cell{font-weight:800;color:var(--navy)}.muted{color:var(--muted)}.pill{display:inline-block;padding:4px 8px;border-radius:20px;background:#edf4ff;color:#23558f;font-size:11px;margin:2px}.empty{text-align:center;padding:30px;color:var(--muted)}
+.modal-backdrop{position:fixed;inset:0;background:#07172dcc;display:grid;place-items:center;padding:18px;z-index:10}.modal{background:white;border-radius:20px;width:min(650px,100%);max-height:85vh;overflow:auto;padding:23px;box-shadow:0 20px 70px #06152c55}.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.modal-head h3{margin:0}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}.detail{background:#f7f9fc;border:1px solid var(--line);border-radius:12px;padding:11px}.detail small{display:block;color:var(--muted);margin-bottom:4px}.detail strong{font-size:13px;overflow-wrap:anywhere}.detail-section{border-top:1px solid var(--line);padding-top:14px;margin-top:14px}.detail-section h4{font-size:13px;margin:0 0 9px}.refresh-note{font-size:11px;color:var(--muted)}
+@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.analytics{grid-template-columns:1fr}}
+@media(max-width:560px){.topbar{padding:14px 16px;align-items:flex-start}.topbar h1{font-size:14px}.topbar p{font-size:10px}.top-icon{width:38px;height:38px}.top-actions{gap:5px}.top-actions .btn{font-size:11px;padding:8px}.container{padding:17px 13px}.welcome{display:block}.welcome h2{font-size:20px}.cards{gap:9px}.stat{padding:13px;min-height:105px}.stat strong{font-size:25px}.stat-top{font-size:10px}.panel{padding:14px}.bar-row{grid-template-columns:80px 1fr 25px;gap:7px}.detail-grid{grid-template-columns:1fr}.toolbar .btn{flex:1}}
+</style>
+</head>
+<body>
+<section id="loginView" class="login-wrap">
+  <div class="login-card">
+    <div class="brand-mark">✦</div>
+    <h1>لوحة إدارة التسجيلات</h1>
+    <p class="sub">دورة الذكاء الاصطناعي وتطبيقاته التربوية والمهنية<br>ثانوية عبد الحميد بن باديس – بيضاء برج</p>
+    <form id="loginForm">
+      <div class="field"><label for="accessKey">مفتاح دخول الإدارة</label><input id="accessKey" type="password" autocomplete="current-password" required placeholder="أدخل مفتاح الإدارة"></div>
+      <button class="btn" id="loginBtn" type="submit" style="width:100%">دخول لوحة التحكم</button>
+      <div id="loginStatus" class="status" aria-live="polite"></div>
+    </form>
+    <p class="sub" style="margin:18px 0 0">هذه الصفحة مخصصة لإدارة تسجيلات المشاركين.</p>
+  </div>
+</section>
+
+<section id="appView" class="app hidden">
+  <header class="topbar">
+    <div class="top-brand"><div class="top-icon">✦</div><div><h1>لوحة إدارة دورة الذكاء الاصطناعي</h1><p>نادي المعلوماتية والذكاء الاصطناعي</p></div></div>
+    <div class="top-actions"><button class="btn" id="refreshBtn">↻ تحديث</button><button class="btn" id="logoutBtn">تسجيل الخروج</button></div>
+  </header>
+  <main class="container">
+    <div class="welcome"><div><h2>مرحباً بك في لوحة التحكم</h2><p>متابعة المشاركين، أوقات التوفر والمواضيع الأكثر طلباً.</p></div><div class="refresh-note" id="lastUpdated">لم يتم التحديث بعد</div></div>
+    <section class="cards">
+      <article class="stat"><div class="stat-top"><span>إجمالي التسجيلات</span><span class="stat-icon">👥</span></div><strong id="totalCount">—</strong></article>
+      <article class="stat"><div class="stat-top"><span>المتاحون صباحاً</span><span class="stat-icon">☀️</span></div><strong id="morningCount">—</strong></article>
+      <article class="stat"><div class="stat-top"><span>المتاحون بعد الظهر</span><span class="stat-icon">🌤️</span></div><strong id="afternoonCount">—</strong></article>
+      <article class="stat"><div class="stat-top"><span>مواضيع مقترحة إضافية</span><span class="stat-icon">💡</span></div><strong id="suggestionCount">—</strong></article>
+    </section>
+    <section class="analytics">
+      <article class="panel"><div class="panel-head"><div><h3>التوفر حسب اليوم والفترة</h3><p>عدد المشاركين الذين اختاروا كل فترة</p></div></div><div class="bars" id="availabilityChart"></div></article>
+      <article class="panel"><div class="panel-head"><div><h3>المحاور الأكثر اهتماماً</h3><p>عدد مرات اختيار كل محور</p></div></div><div id="topicChart"></div></article>
+    </section>
+    <section class="panel">
+      <div class="panel-head"><div><h3>قائمة المشاركين</h3><p id="tableCount">—</p></div><div class="toolbar"><button class="btn secondary small" id="exportBtn">⬇ تصدير CSV</button></div></div>
+      <div class="toolbar" style="margin-bottom:13px"><input id="searchInput" class="search" type="search" placeholder="ابحث بالاسم أو البريد أو الهاتف..."><button class="btn secondary small" id="clearSearch">مسح البحث</button></div>
+      <div class="table-wrap"><table><thead><tr><th>الاسم واللقب</th><th>البريد الإلكتروني</th><th>رقم الهاتف</th><th>التوفر المختار</th><th>تاريخ التسجيل</th><th>التفاصيل</th></tr></thead><tbody id="registrationsBody"><tr><td colspan="6" class="empty">جارٍ تحميل البيانات...</td></tr></tbody></table></div>
+    </section>
+  </main>
+</section>
+
+<div id="detailBackdrop" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+  <div class="modal"><div class="modal-head"><h3 id="detailTitle">تفاصيل التسجيل</h3><button class="btn secondary small" id="closeModal">إغلاق ✕</button></div><div id="detailContent"></div></div>
+</div>
+
+<script>
+(() => {
+  // ضع بيانات مشروع Supabase نفسه المستخدم في صفحة التسجيل.
+    const SUPABASE_URL = 'https://ksuolzzhpssazyfwbkeg.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzdW9senpocHNzYXp5Zndia2VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU1NTcxMDQsImV4cCI6MjA3MTEzMzEwNH0.6ltEPGMJyOZbXmRjNCGZJxYmDDwkiFZy4WzawSTCpFA';
+    const ADMIN_KEY = 'admin123';
+    // Change this only if your Supabase table has a different name.
+    const REGISTRATIONS_TABLE = 'teacher_course_registrations';
+  // Client-side gate only: this key is visible in the page source.
+  const DAYS = ['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس'];
+  const PERIODS = ['صباحاً','بعد الظهر'];
+  let client = null, registrations = [], filtered = [];
+
+  const $ = id => document.getElementById(id);
+  const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const setStatus = (el, msg, type='') => { el.textContent = msg; el.className = 'status ' + type; };
+  const availabilityItems = row => Array.isArray(row.availability) ? row.availability : [];
+  const availabilityLabel = item => typeof item === 'string' ? item.replace('|',' – ') : `${item.day || ''} – ${item.period || ''}`;
+  const dateLabel = value => value ? new Date(value).toLocaleString('ar-DZ',{dateStyle:'medium',timeStyle:'short'}) : '—';
+
+  function showApp(){ $('loginView').classList.add('hidden'); $('appView').classList.remove('hidden'); }
+  function showLogin(){ $('appView').classList.add('hidden'); $('loginView').classList.remove('hidden'); }
+
+  async function init(){
+    if (SUPABASE_URL.includes('YOUR_') || SUPABASE_ANON_KEY.includes('YOUR_')) {
+      setStatus($('loginStatus'),'يرجى إعداد رابط Supabase ومفتاح anon/publishable داخل الملف أولاً.','error'); return;
+    }
+    client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+
+  $('loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const enteredKey = $('accessKey').value;
+    if (enteredKey !== ADMIN_KEY) {
+      setStatus($('loginStatus'), 'مفتاح الإدارة غير صحيح.', 'error');
+      $('accessKey').select();
+      return;
+    }
+
+    const btn = $('loginBtn');
+    btn.disabled = true;
+    btn.textContent = 'جارٍ تحميل البيانات...';
+    setStatus($('loginStatus'), '');
+
+    try {
+      if (!client) {
+        if (SUPABASE_URL.includes('YOUR_') || SUPABASE_ANON_KEY.includes('YOUR_')) {
+          throw new Error('يرجى إعداد بيانات Supabase داخل الملف.');
+        }
+        client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+
+      await loadData(true);
+      showApp();
+      $('accessKey').value = '';
+    } catch (err) {
+      setStatus($('loginStatus'), friendlyError(err), 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'دخول لوحة التحكم';
+    }
+  });
+
+  function friendlyError(err){
+    const msg = err?.message || 'حدث خطأ غير متوقع.';
+    if (/permission denied|row-level security|not allowed/i.test(msg)) {
+      return 'تم قبول مفتاح الإدارة، لكن Supabase منع قراءة التسجيلات. تحقق من صلاحيات SELECT وسياسة RLS لجدول التسجيلات.';
+    }
+    if (/relation .* does not exist|table .* not found/i.test(msg)) {
+      return `جدول التسجيلات "${REGISTRATIONS_TABLE}" غير موجود. عدّل REGISTRATIONS_TABLE إلى اسم الجدول الصحيح.`;
+    }
+    return msg;
+  }
+
+  async function loadData(initialLogin=false){
+    $('registrationsBody').innerHTML = '<tr><td colspan="6" class="empty">جارٍ تحميل البيانات...</td></tr>';
+    $('refreshBtn').disabled = true;
+
+    try {
+      const { data, error } = await client
+        .from(REGISTRATIONS_TABLE)
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      registrations = Array.isArray(data) ? data : [];
+      filtered = [...registrations];
+      renderDashboard();
+      $('lastUpdated').textContent = 'آخر تحديث: ' + new Date().toLocaleTimeString('ar-DZ');
+    } catch (err) {
+      const message = friendlyError(err);
+      $('registrationsBody').innerHTML = `<tr><td colspan="6" class="empty">${esc(message)}</td></tr>`;
+      if (initialLogin) throw new Error(message);
+      alert(message);
+    } finally {
+      $('refreshBtn').disabled = false;
+    }
+  }
+
+  function renderDashboard(){
+    $('totalCount').textContent = registrations.length;
+    $('morningCount').textContent = registrations.filter(r=>availabilityItems(r).some(x=>availabilityLabel(x).includes('صباحاً'))).length;
+    $('afternoonCount').textContent = registrations.filter(r=>availabilityItems(r).some(x=>availabilityLabel(x).includes('بعد الظهر'))).length;
+    $('suggestionCount').textContent = registrations.filter(r=>(r.suggested_topics||'').trim()).length;
+    renderAvailability(); renderTopics(); renderTable();
+  }
+
+  function renderAvailability(){
+    const counts = DAYS.flatMap(day=>PERIODS.map(period=>({label:`${day} – ${period}`,count:registrations.filter(r=>availabilityItems(r).some(x=>availabilityLabel(x)===`${day} – ${period}`)).length})));
+    const max = Math.max(1,...counts.map(x=>x.count));
+    $('availabilityChart').innerHTML = counts.map(x=>`<div class="bar-row"><span>${esc(x.label)}</span><div class="bar-track"><div class="bar-fill" style="width:${x.count/max*100}%"></div></div><b class="bar-num">${x.count}</b></div>`).join('');
+  }
+
+  function renderTopics(){
+    const map = new Map();
+    registrations.forEach(r=>(r.topics||[]).forEach(t=>map.set(t,(map.get(t)||0)+1)));
+    const items = [...map.entries()].sort((a,b)=>b[1]-a[1]);
+    $('topicChart').innerHTML = items.length ? items.map(([name,count])=>`<div class="topic-row"><span>${esc(name)}</span><span class="topic-count">${count}</span></div>`).join('') : '<div class="empty">لا توجد اختيارات بعد.</div>';
+  }
+
+  function renderTable(){
+    const q = $('searchInput').value.trim().toLocaleLowerCase();
+    filtered = registrations.filter(r=>[r.first_name,r.last_name,r.email,r.phone].join(' ').toLocaleLowerCase().includes(q));
+    $('tableCount').textContent = `${filtered.length} من أصل ${registrations.length} تسجيل`;
+    $('registrationsBody').innerHTML = filtered.length ? filtered.map(r=>{
+      const av = availabilityItems(r).map(availabilityLabel);
+      return `<tr><td class="name-cell">${esc(r.first_name)} ${esc(r.last_name)}</td><td dir="ltr">${esc(r.email)}</td><td dir="ltr">${esc(r.phone)}</td><td>${av.slice(0,2).map(x=>`<span class="pill">${esc(x)}</span>`).join('')}${av.length>2?`<span class="pill">+${av.length-2}</span>`:''}</td><td>${esc(dateLabel(r.created_at))}</td><td><button class="btn secondary small" data-detail="${esc(r.id)}">عرض</button></td></tr>`;
+    }).join('') : '<tr><td colspan="6" class="empty">لا توجد نتائج مطابقة.</td></tr>';
+    document.querySelectorAll('[data-detail]').forEach(btn=>btn.addEventListener('click',()=>showDetails(btn.dataset.detail)));
+  }
+
+  function showDetails(id){
+    const r = registrations.find(x=>x.id===id); if(!r) return;
+    $('detailTitle').textContent = `${r.first_name} ${r.last_name}`;
+    const av = availabilityItems(r).map(availabilityLabel);
+    $('detailContent').innerHTML = `
+      <div class="detail-grid">
+        <div class="detail"><small>الاسم واللقب</small><strong>${esc(r.first_name)} ${esc(r.last_name)}</strong></div>
+        <div class="detail"><small>تاريخ التسجيل</small><strong>${esc(dateLabel(r.created_at))}</strong></div>
+        <div class="detail"><small>البريد الإلكتروني</small><strong dir="ltr">${esc(r.email)}</strong></div>
+        <div class="detail"><small>رقم الهاتف</small><strong dir="ltr">${esc(r.phone)}</strong></div>
+      </div>
+      <div class="detail-section"><h4>أوقات التوفر</h4>${av.length?av.map(x=>`<span class="pill">${esc(x)}</span>`).join(''):'—'}</div>
+      <div class="detail-section"><h4>المحاور المختارة</h4>${(r.topics||[]).length?r.topics.map(x=>`<span class="pill">${esc(x)}</span>`).join(''):'—'}</div>
+      <div class="detail-section"><h4>مواضيع مقترحة من المشارك</h4><p style="white-space:pre-wrap;line-height:1.9;font-size:13px">${esc(r.suggested_topics||'لا توجد اقتراحات إضافية.')}</p></div>`;
+    $('detailBackdrop').classList.remove('hidden');
+  }
+
+  function exportCSV(){
+    const rows = [['الاسم','اللقب','البريد الإلكتروني','الهاتف','أوقات التوفر','المحاور','اقتراحات إضافية','تاريخ التسجيل']];
+    filtered.forEach(r=>rows.push([r.first_name,r.last_name,r.email,r.phone,availabilityItems(r).map(availabilityLabel).join('؛ '),(r.topics||[]).join('؛ '),r.suggested_topics||'',r.created_at||'']));
+    const csv = '\uFEFF' + rows.map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');
+    const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='teacher_course_registrations.csv'; a.click(); URL.revokeObjectURL(url);
+  }
+
+
+function login() {
+    const enteredKey = document.getElementById("adminKey").value;
+
+    if (enteredKey === ADMIN_KEY) {
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+
+        loadRegistrations();
+    } else {
+        alert("مفتاح الإدارة غير صحيح!");
+    }
+}
+
+
+
+  $('refreshBtn').addEventListener('click',()=>{if(adminAccessKey)loadData(false);});
+  $('searchInput').addEventListener('input',renderTable);
+  $('clearSearch').addEventListener('click',()=>{$('searchInput').value='';renderTable();});
+  $('exportBtn').addEventListener('click',exportCSV);
+  $('logoutBtn').addEventListener('click',()=>{adminAccessKey='';registrations=[];$('accessKey').value='';showLogin();});
+  $('closeModal').addEventListener('click',()=>$('detailBackdrop').classList.add('hidden'));
+  $('detailBackdrop').addEventListener('click',e=>{if(e.target===$('detailBackdrop'))$('detailBackdrop').classList.add('hidden');});
+  init();
+})();
+</script>
+</body>
+</html>
