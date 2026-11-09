@@ -86,7 +86,7 @@ h1,h2,h3,p{margin-top:0}.login-card h1{font-size:23px;margin-bottom:6px}.sub{col
   // Client-side gate only: this key is visible in the page source.
   const DAYS = ['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس'];
   const PERIODS = ['صباحاً','بعد الظهر'];
-  let client = null, registrations = [], filtered = [], adminAccessKey = 'admin123';
+  let client = null, registrations = [], filtered = [], adminAccessKey = '';
 
   const $ = id => document.getElementById(id);
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

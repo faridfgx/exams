@@ -24,6 +24,7 @@
     .notice{background:#fff9e8;border:1px solid #f5dfa1;border-radius:12px;padding:12px 14px;color:#73530b;font-size:13px;line-height:1.8;margin-top:14px}.actions{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.consent{display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--muted);max-width:480px}.consent input{margin-top:5px;accent-color:var(--blue)}button{border:0;border-radius:13px;background:linear-gradient(110deg,#1769c2,#0c4d91);color:#fff;padding:13px 25px;font:800 15px 'Cairo',sans-serif;cursor:pointer;box-shadow:0 8px 18px #1769c233;transition:.2s}button:hover{transform:translateY(-1px);filter:brightness(1.06)}button:disabled{opacity:.6;cursor:wait;transform:none}.status{display:none;margin-top:15px;padding:13px 15px;border-radius:12px;font-size:14px;font-weight:700;line-height:1.7}.status.show{display:block}.status.success{background:#eaf8f0;color:var(--good);border:1px solid #b9e5ca}.status.error{background:#fff0ef;color:var(--bad);border:1px solid #f4c5c1}.footer{text-align:center;color:#7a899c;font-size:12px;margin-top:22px}.footer strong{color:var(--navy)}
     @media(max-width:650px){.shell{padding:14px 12px 40px}.hero{padding:23px 20px;border-radius:20px}.grid,.topic-list{grid-template-columns:1fr}.days{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:18px}.actions{align-items:stretch}.actions button{width:100%}}
     @media(max-width:390px){.days{grid-template-columns:1fr}.periods{grid-template-columns:1fr 1fr}}
+    .popup-backdrop{position:fixed;inset:0;background:#07172db3;display:none;place-items:center;padding:18px;z-index:100}.popup-backdrop.show{display:grid;animation:fadeIn .2s ease}.popup{background:#fff;border-radius:24px;width:min(420px,100%);padding:32px 26px 26px;text-align:center;box-shadow:0 24px 70px #06152c55;animation:pop .28s cubic-bezier(.2,1.2,.4,1)}.popup-icon{width:76px;height:76px;margin:0 auto 16px;border-radius:50%;background:#eaf8f0;color:var(--good);display:grid;place-items:center;font-size:40px;font-weight:900}.popup h3{margin:0 0 8px;font-size:22px;color:var(--navy)}.popup p{margin:0 0 22px;color:var(--muted);font-size:14px;line-height:1.9}.popup button{width:100%}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
   </style>
 </head>
 <body>
@@ -89,6 +90,15 @@
     <div class="footer"><strong>نادي المعلوماتية والذكاء الاصطناعي</strong><br>ثانوية عبد الحميد بن باديس – بيضاء برج</div>
   </main>
 
+  <div id="successPopup" class="popup-backdrop" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
+    <div class="popup">
+      <div class="popup-icon">✓</div>
+      <h3 id="popupTitle">تم التسجيل بنجاح!</h3>
+      <p>شكراً لاهتمامكم. سيتم التواصل معكم بعد تحديد موعد الدورة.</p>
+      <button type="button" id="popupClose">حسناً</button>
+    </div>
+  </div>
+
   <!-- Supabase JS v2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -105,6 +115,13 @@
       statusBox.className = `status show ${type}`;
       statusBox.scrollIntoView({behavior:'smooth', block:'center'});
     };
+
+    const popup = document.getElementById('successPopup');
+    const openPopup = () => { popup.classList.add('show'); document.getElementById('popupClose').focus(); };
+    const closePopup = () => popup.classList.remove('show');
+    document.getElementById('popupClose').addEventListener('click', closePopup);
+    popup.addEventListener('click', e => { if (e.target === popup) closePopup(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopup(); });
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -139,7 +156,7 @@
         const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const { error } = await client.from(TABLE_NAME).insert(payload);
         if (error) throw error;
-        showStatus('تم تسجيل مشاركتكم بنجاح! شكراً لاهتمامكم. سيتم التواصل معكم بعد تحديد موعد الدورة.', 'success');
+        openPopup();
         form.reset();
       } catch (error) {
         console.error('Registration error:', error);
