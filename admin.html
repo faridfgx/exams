@@ -30,6 +30,14 @@ h1,h2,h3,p{margin-top:0}.login-card h1{font-size:23px;margin-bottom:6px}.sub{col
 .modal-backdrop{position:fixed;inset:0;background:#07172dcc;display:grid;place-items:center;padding:18px;z-index:10}.modal{background:white;border-radius:20px;width:min(650px,100%);max-height:85vh;overflow:auto;padding:23px;box-shadow:0 20px 70px #06152c55}.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.modal-head h3{margin:0}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}.detail{background:#f7f9fc;border:1px solid var(--line);border-radius:12px;padding:11px}.detail small{display:block;color:var(--muted);margin-bottom:4px}.detail strong{font-size:13px;overflow-wrap:anywhere}.detail-section{border-top:1px solid var(--line);padding-top:14px;margin-top:14px}.detail-section h4{font-size:13px;margin:0 0 9px}.refresh-note{font-size:11px;color:var(--muted)}
 @media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.analytics{grid-template-columns:1fr}}
 @media(max-width:560px){.topbar{padding:14px 16px;align-items:flex-start}.topbar h1{font-size:14px}.topbar p{font-size:10px}.top-icon{width:38px;height:38px}.top-actions{gap:5px}.top-actions .btn{font-size:11px;padding:8px}.container{padding:17px 13px}.welcome{display:block}.welcome h2{font-size:20px}.cards{gap:9px}.stat{padding:13px;min-height:105px}.stat strong{font-size:25px}.stat-top{font-size:10px}.panel{padding:14px}.bar-row{grid-template-columns:80px 1fr 25px;gap:7px}.detail-grid{grid-template-columns:1fr}.toolbar .btn{flex:1}}
+.insight{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:20px}.insight-item{background:linear-gradient(135deg,#fff8e1,#fff);border:1px solid #f5e3a8;border-radius:17px;padding:15px 17px;display:flex;gap:13px;align-items:center;box-shadow:var(--shadow)}.insight-item .ic{font-size:28px}.insight-item small{display:block;color:var(--muted);font-size:11px;font-weight:700;margin-bottom:2px}.insight-item b{font-size:13px;color:var(--navy);line-height:1.6}
+.heat{display:grid;grid-template-columns:80px 1fr 1fr;gap:8px;align-items:center}.heat .h{font-size:12px;font-weight:800;color:var(--muted);text-align:center}.heat .d{font-size:13px;font-weight:800;color:var(--navy)}.heat .c{height:50px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;font-size:17px;line-height:1.15;transition:.2s}.heat .c small{font-size:10px;font-weight:700;opacity:.85}.heat .c.best{outline:3px solid var(--gold);outline-offset:2px}.heat .c:hover{transform:scale(1.04)}
+.donut-wrap{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap}.donut{width:170px;height:170px;border-radius:50%;position:relative;flex:none}.donut:after{content:"";position:absolute;inset:28px;background:#fff;border-radius:50%}.donut-center{position:absolute;inset:0;display:grid;place-items:center;z-index:1;text-align:center}.donut-center strong{display:block;font-size:30px;color:var(--navy);line-height:1.2}.donut-center small{color:var(--muted);font-size:11px;font-weight:700}.legend{display:grid;gap:10px;font-size:12px;min-width:170px}.lg{display:grid;grid-template-columns:14px 1fr auto;gap:8px;align-items:center}.lg i{width:12px;height:12px;border-radius:4px}.lg b{color:var(--navy);direction:ltr}
+.tbar{margin-bottom:15px}.tbar:last-child{margin-bottom:0}.tbar-top{display:flex;justify-content:space-between;gap:12px;font-size:12px;font-weight:700;margin-bottom:6px;line-height:1.7}.tbar-top>span{display:flex;gap:8px;align-items:flex-start}.tbar-top b{color:var(--navy);white-space:nowrap;direction:ltr}.rank{font-style:normal;flex:none;width:22px;height:22px;border-radius:7px;background:var(--sky);color:var(--blue);display:grid;place-items:center;font-size:11px;font-weight:900}.tbar:first-child .rank{background:var(--gold);color:#5b4208}.tbar .bar-track{height:11px}
+.tl{display:flex;align-items:stretch;gap:5px;height:190px}.tl-col{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;color:var(--muted)}.tl-count{height:14px;font-weight:800;color:var(--navy)}.tl-area{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center}.tl-bar{width:100%;max-width:24px;border-radius:7px 7px 0 0;background:linear-gradient(180deg,#5cb5ed,#2878d4);min-height:3px}.tl-bar.zero{background:#e5ebf3}.tl-date{direction:ltr;font-size:9px}
+.sugg{display:grid;gap:10px;max-height:360px;overflow:auto}.sugg-item{background:#f8fafd;border:1px solid var(--line);border-radius:13px;padding:12px 14px}.sugg-item .who{display:flex;justify-content:space-between;gap:10px;font-size:12px;margin-bottom:5px}.sugg-item .who b{color:var(--navy)}.sugg-item .who span{color:var(--muted);font-size:11px}.sugg-item p{margin:0;font-size:13px;line-height:1.9;white-space:pre-wrap}
+@media(max-width:900px){.insight{grid-template-columns:1fr}}
+@media(max-width:560px){.heat{grid-template-columns:62px 1fr 1fr}.donut{width:150px;height:150px}.tl{gap:3px}.tl-date{font-size:8px}}
 </style>
 </head>
 <body>
@@ -60,9 +68,18 @@ h1,h2,h3,p{margin-top:0}.login-card h1{font-size:23px;margin-bottom:6px}.sub{col
       <article class="stat"><div class="stat-top"><span>المتاحون بعد الظهر</span><span class="stat-icon">🌤️</span></div><strong id="afternoonCount">—</strong></article>
       <article class="stat"><div class="stat-top"><span>مواضيع مقترحة إضافية</span><span class="stat-icon">💡</span></div><strong id="suggestionCount">—</strong></article>
     </section>
+    <div class="insight" id="insightBar"></div>
     <section class="analytics">
-      <article class="panel"><div class="panel-head"><div><h3>التوفر حسب اليوم والفترة</h3><p>عدد المشاركين الذين اختاروا كل فترة</p></div></div><div class="bars" id="availabilityChart"></div></article>
-      <article class="panel"><div class="panel-head"><div><h3>المحاور الأكثر اهتماماً</h3><p>عدد مرات اختيار كل محور</p></div></div><div id="topicChart"></div></article>
+      <article class="panel"><div class="panel-head"><div><h3>خريطة التوفر الأسبوعية</h3><p>كلما كان اللون أغمق زاد عدد المتاحين · الإطار الذهبي = أفضل وقت</p></div></div><div id="heatmap"></div></article>
+      <article class="panel"><div class="panel-head"><div><h3>توزيع الفترات</h3><p>صباحاً فقط، بعد الظهر فقط، أو كلاهما</p></div></div><div class="donut-wrap" id="donutWrap"></div></article>
+    </section>
+    <section class="analytics">
+      <article class="panel"><div class="panel-head"><div><h3>ترتيب المحاور حسب الاهتمام</h3><p>العدد ونسبة المشاركين الذين اختاروا كل محور</p></div></div><div id="topicChart"></div></article>
+      <article class="panel"><div class="panel-head"><div><h3>التسجيلات خلال آخر 14 يوماً</h3><p id="timelineNote">—</p></div></div><div class="tl" id="timeline"></div></article>
+    </section>
+    <section class="panel">
+      <div class="panel-head"><div><h3>المواضيع المقترحة من المشاركين</h3><p id="suggCount">—</p></div></div>
+      <div class="sugg" id="suggestionsList"></div>
     </section>
     <section class="panel">
       <div class="panel-head"><div><h3>قائمة المشاركين</h3><p id="tableCount">—</p></div><div class="toolbar"><button class="btn secondary small" id="exportBtn">⬇ تصدير CSV</button></div></div>
@@ -176,20 +193,89 @@ h1,h2,h3,p{margin-top:0}.login-card h1{font-size:23px;margin-bottom:6px}.sub{col
     $('morningCount').textContent = registrations.filter(r=>availabilityItems(r).some(x=>availabilityLabel(x).includes('صباحاً'))).length;
     $('afternoonCount').textContent = registrations.filter(r=>availabilityItems(r).some(x=>availabilityLabel(x).includes('بعد الظهر'))).length;
     $('suggestionCount').textContent = registrations.filter(r=>(r.suggested_topics||'').trim()).length;
-    renderAvailability(); renderTopics(); renderTable();
+    renderInsights(); renderAvailability(); renderDonut(); renderTopics(); renderTimeline(); renderSuggestions(); renderTable();
+  }
+
+  const pct = (n,t) => t ? Math.round(n/t*100) : 0;
+  const hasPeriod = (r,p) => availabilityItems(r).some(x=>availabilityLabel(x).includes(p));
+  const dayKey = d => new Date(d).toLocaleDateString('en-CA');
+
+  function slotMatrix(){
+    return DAYS.map(day=>({day, cells: PERIODS.map(period=>({period, count: registrations.filter(r=>availabilityItems(r).some(x=>availabilityLabel(x)===`${day} – ${period}`)).length}))}));
+  }
+  function topicCounts(){
+    const map = new Map();
+    registrations.forEach(r=>(r.topics||[]).forEach(t=>map.set(t,(map.get(t)||0)+1)));
+    return [...map.entries()].sort((a,b)=>b[1]-a[1]);
+  }
+
+  function renderInsights(){
+    const slots = slotMatrix().flatMap(d=>d.cells.map(c=>({label:`${d.day} – ${c.period}`,count:c.count})));
+    const best = slots.reduce((a,b)=>b.count>a.count?b:a,{label:'—',count:0});
+    const top = topicCounts()[0];
+    const since = Date.now()-7*864e5;
+    const recent = registrations.filter(r=>r.created_at && new Date(r.created_at).getTime()>=since).length;
+    $('insightBar').innerHTML = [
+      ['🏆','أفضل وقت للدورة', best.count ? `${best.label} (${best.count} مشارك)` : '—'],
+      ['🔥','المحور الأكثر طلباً', top ? `${top[0]} (${top[1]})` : '—'],
+      ['📈','تسجيلات آخر 7 أيام', String(recent)]
+    ].map(([ic,t,v])=>`<div class="insight-item"><span class="ic">${ic}</span><div><small>${t}</small><b>${esc(v)}</b></div></div>`).join('');
   }
 
   function renderAvailability(){
-    const counts = DAYS.flatMap(day=>PERIODS.map(period=>({label:`${day} – ${period}`,count:registrations.filter(r=>availabilityItems(r).some(x=>availabilityLabel(x)===`${day} – ${period}`)).length})));
-    const max = Math.max(1,...counts.map(x=>x.count));
-    $('availabilityChart').innerHTML = counts.map(x=>`<div class="bar-row"><span>${esc(x.label)}</span><div class="bar-track"><div class="bar-fill" style="width:${x.count/max*100}%"></div></div><b class="bar-num">${x.count}</b></div>`).join('');
+    const m = slotMatrix(), total = registrations.length;
+    const max = Math.max(1,...m.flatMap(d=>d.cells.map(c=>c.count)));
+    let html = '<div class="heat"><span></span>' + PERIODS.map(p=>`<span class="h">${p}</span>`).join('');
+    m.forEach(d=>{
+      html += `<span class="d">${d.day}</span>`;
+      d.cells.forEach(c=>{
+        const ratio = c.count/max;
+        const bg = c.count ? `rgba(40,120,212,${(0.14+0.86*ratio).toFixed(2)})` : '#f1f5fa';
+        const color = ratio>0.5 ? '#fff' : 'var(--navy)';
+        const best = c.count>0 && c.count===max;
+        html += `<div class="c${best?' best':''}" style="background:${bg};color:${color}" title="${d.day} – ${c.period}: ${c.count}">${c.count}<small>${pct(c.count,total)}%</small></div>`;
+      });
+    });
+    $('heatmap').innerHTML = html + '</div>';
+  }
+
+  function renderDonut(){
+    const t = registrations.length;
+    if(!t){ $('donutWrap').innerHTML = '<div class="empty">لا توجد بيانات بعد.</div>'; return; }
+    let mo=0, af=0, both=0, none=0;
+    registrations.forEach(r=>{
+      const m = hasPeriod(r,'صباحاً'), a = hasPeriod(r,'بعد الظهر');
+      if(m&&a) both++; else if(m) mo++; else if(a) af++; else none++;
+    });
+    const parts = [['صباحاً فقط',mo,'#2878d4'],['بعد الظهر فقط',af,'#f3b928'],['الفترتان معاً',both,'#16865c']];
+    if(none) parts.push(['بدون تحديد',none,'#c9d3e0']);
+    let acc = 0;
+    const stops = parts.map(([,n,c])=>{ const s = acc/t*100; acc += n; return `${c} ${s}% ${acc/t*100}%`; }).join(',');
+    $('donutWrap').innerHTML = `<div class="donut" style="background:conic-gradient(${stops})"><div class="donut-center"><div><strong>${t}</strong><small>مشارك</small></div></div></div>` +
+      `<div class="legend">${parts.map(([l,n,c])=>`<div class="lg"><i style="background:${c}"></i><span>${l}</span><b>${n} · ${pct(n,t)}%</b></div>`).join('')}</div>`;
   }
 
   function renderTopics(){
-    const map = new Map();
-    registrations.forEach(r=>(r.topics||[]).forEach(t=>map.set(t,(map.get(t)||0)+1)));
-    const items = [...map.entries()].sort((a,b)=>b[1]-a[1]);
-    $('topicChart').innerHTML = items.length ? items.map(([name,count])=>`<div class="topic-row"><span>${esc(name)}</span><span class="topic-count">${count}</span></div>`).join('') : '<div class="empty">لا توجد اختيارات بعد.</div>';
+    const items = topicCounts(), t = registrations.length, max = Math.max(1,...items.map(i=>i[1]));
+    $('topicChart').innerHTML = items.length ? items.map(([name,count],i)=>
+      `<div class="tbar"><div class="tbar-top"><span><em class="rank">${i+1}</em>${esc(name)}</span><b>${count} · ${pct(count,t)}%</b></div><div class="bar-track"><div class="bar-fill" style="width:${count/max*100}%"></div></div></div>`
+    ).join('') : '<div class="empty">لا توجد اختيارات بعد.</div>';
+  }
+
+  function renderTimeline(){
+    const days = [];
+    for(let i=13;i>=0;i--){ const d = new Date(); d.setDate(d.getDate()-i); days.push({key:dayKey(d), label:`${d.getDate()}/${d.getMonth()+1}`, count:0}); }
+    const index = Object.fromEntries(days.map((d,i)=>[d.key,i]));
+    registrations.forEach(r=>{ if(!r.created_at) return; const i = index[dayKey(r.created_at)]; if(i!==undefined) days[i].count++; });
+    const max = Math.max(1,...days.map(d=>d.count)), sum = days.reduce((a,d)=>a+d.count,0);
+    $('timelineNote').textContent = `${sum} تسجيل خلال هذه الفترة`;
+    $('timeline').innerHTML = days.map(d=>`<div class="tl-col" title="${d.label}: ${d.count}"><span class="tl-count">${d.count||''}</span><div class="tl-area"><div class="tl-bar${d.count?'':' zero'}" style="height:${d.count?Math.max(6,d.count/max*100):2}%"></div></div><span class="tl-date">${d.label}</span></div>`).join('');
+  }
+
+  function renderSuggestions(){
+    const list = registrations.filter(r=>(r.suggested_topics||'').trim());
+    $('suggCount').textContent = list.length ? `${list.length} اقتراح` : 'لا توجد اقتراحات بعد';
+    $('suggestionsList').innerHTML = list.length ? list.map(r=>`<div class="sugg-item"><div class="who"><b>${esc(r.first_name)} ${esc(r.last_name)}</b><span>${esc(dateLabel(r.created_at))}</span></div><p>${esc(r.suggested_topics)}</p></div>`).join('') : '<div class="empty">لم يقترح أي مشارك مواضيع إضافية.</div>';
   }
 
   function renderTable(){
