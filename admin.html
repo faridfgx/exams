@@ -81,13 +81,12 @@ h1,h2,h3,p{margin-top:0}.login-card h1{font-size:23px;margin-bottom:6px}.sub{col
   // ضع بيانات مشروع Supabase نفسه المستخدم في صفحة التسجيل.
     const SUPABASE_URL = 'https://ksuolzzhpssazyfwbkeg.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzdW9senpocHNzYXp5Zndia2VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU1NTcxMDQsImV4cCI6MjA3MTEzMzEwNH0.6ltEPGMJyOZbXmRjNCGZJxYmDDwkiFZy4WzawSTCpFA';
-    const ADMIN_KEY = 'admin123';
     // Change this only if your Supabase table has a different name.
     const REGISTRATIONS_TABLE = 'teacher_course_registrations';
   // Client-side gate only: this key is visible in the page source.
   const DAYS = ['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس'];
   const PERIODS = ['صباحاً','بعد الظهر'];
-  let client = null, registrations = [], filtered = [];
+  let client = null, registrations = [], filtered = [], adminAccessKey = 'admin123';
 
   const $ = id => document.getElementById(id);
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -109,12 +108,7 @@ h1,h2,h3,p{margin-top:0}.login-card h1{font-size:23px;margin-bottom:6px}.sub{col
   $('loginForm').addEventListener('submit', async e => {
     e.preventDefault();
 
-    const enteredKey = $('accessKey').value;
-    if (enteredKey !== ADMIN_KEY) {
-      setStatus($('loginStatus'), 'مفتاح الإدارة غير صحيح.', 'error');
-      $('accessKey').select();
-      return;
-    }
+    adminAccessKey = $('accessKey').value;
 
     const btn = $('loginBtn');
     btn.disabled = true;
@@ -133,6 +127,7 @@ h1,h2,h3,p{margin-top:0}.login-card h1{font-size:23px;margin-bottom:6px}.sub{col
       showApp();
       $('accessKey').value = '';
     } catch (err) {
+      adminAccessKey = '';
       setStatus($('loginStatus'), friendlyError(err), 'error');
     } finally {
       btn.disabled = false;
@@ -142,6 +137,8 @@ h1,h2,h3,p{margin-top:0}.login-card h1{font-size:23px;margin-bottom:6px}.sub{col
 
   function friendlyError(err){
     const msg = err?.message || 'حدث خطأ غير متوقع.';
+    if (/unauthorized/i.test(msg)) return 'مفتاح الإدارة غير صحيح.';
+    if (/could not find the function|get_registrations/i.test(msg)) return 'الدالة get_registrations غير موجودة في Supabase. نفّذ كود SQL أولاً.';
     if (/permission denied|row-level security|not allowed/i.test(msg)) {
       return 'تم قبول مفتاح الإدارة، لكن Supabase منع قراءة التسجيلات. تحقق من صلاحيات SELECT وسياسة RLS لجدول التسجيلات.';
     }
@@ -156,10 +153,7 @@ h1,h2,h3,p{margin-top:0}.login-card h1{font-size:23px;margin-bottom:6px}.sub{col
     $('refreshBtn').disabled = true;
 
     try {
-      const { data, error } = await client
-        .from(REGISTRATIONS_TABLE)
-        .select('*')
-        .order('created_at', { ascending: false });
+      const { data, error } = await client.rpc('get_registrations', { p_key: adminAccessKey });
 
       if (error) throw error;
 
@@ -210,7 +204,7 @@ h1,h2,h3,p{margin-top:0}.login-card h1{font-size:23px;margin-bottom:6px}.sub{col
   }
 
   function showDetails(id){
-    const r = registrations.find(x=>x.id===id); if(!r) return;
+    const r = registrations.find(x=>String(x.id)===String(id)); if(!r) return;
     $('detailTitle').textContent = `${r.first_name} ${r.last_name}`;
     const av = availabilityItems(r).map(availabilityLabel);
     $('detailContent').innerHTML = `
@@ -233,20 +227,6 @@ h1,h2,h3,p{margin-top:0}.login-card h1{font-size:23px;margin-bottom:6px}.sub{col
     const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
     const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='teacher_course_registrations.csv'; a.click(); URL.revokeObjectURL(url);
   }
-
-
-function login() {
-    const enteredKey = document.getElementById("adminKey").value;
-
-    if (enteredKey === ADMIN_KEY) {
-        document.getElementById("loginScreen").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-
-        loadRegistrations();
-    } else {
-        alert("مفتاح الإدارة غير صحيح!");
-    }
-}
 
 
 
