@@ -4,7 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#14463a">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
 <title>رحلة المعلوماتية | منصة التعلّم التفاعلي</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -26,6 +29,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font-family:var(--font);line-
   padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 button,input,select{font-family:inherit;font-size:1rem}
 bdi{unicode-bidi:isolate}
+img.emoji{height:1em;width:1em;margin:0 .06em;vertical-align:-.12em;display:inline-block}
 :focus-visible{outline:3px solid color-mix(in srgb,var(--pri2) 55%,transparent);outline-offset:2px}
 
 /* ---------- buttons ---------- */
@@ -194,9 +198,27 @@ footer.foot{text-align:center;color:var(--mut);font-size:.85rem;padding:8px 0 0}
 <body>
 <div id="app"></div>
 
-<script src="students.js"></script>
-<script src="config.js"></script>
+<script src="students.js?v=20261116b"></script>
+<script src="config.js?v=20261116b"></script>
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>
+/* ---------- إصدار الصفحة: غيّر هذا الرقم (وأرقام ?v= أعلاه) عند كل تحديث ---------- */
+var V='20261116b';
+(function(){
+  function check(){
+    fetch(location.pathname+'?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){
+      var m=t.match(/var V='([^']+)'/);
+      if(m&&m[1]!==V){
+        var q=new URLSearchParams(location.search);
+        if(q.get('v')===m[1])return; /* تفادي حلقة إعادة التحميل */
+        location.replace(location.pathname+'?v='+encodeURIComponent(m[1])+location.hash);
+      }
+    }).catch(function(){});
+  }
+  check();
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)check()});
+})();
+
 /* ---------- بيانات الوحدات ---------- */
 var UNITS=[
  {k:'tic',f:'tic.html',ic:'📡',c:'#4f46e5',t:'تكنولوجيا الإعلام والاتصال',lessons:['المفاهيم','تطور الاتصال','أنظمة التشغيل','أجهزة الحاسوب','التحدي النهائي']},
@@ -209,7 +231,7 @@ var TOTAL_LESSONS=UNITS.reduce(function(a,u){return a+u.lessons.length},0);
 
 /* ---------- أدوات ومصادر إضافية ---------- */
 var TOOLS=[
- {ic:'📝',c:'#e08a3c',t:'معاينة الإجابة النموذجية للفرض',d:'اطّلع على التصحيح النموذجي',img:'devoirsl1.webp'},
+ {ic:'📝',c:'#e08a3c',t:'معاينة الإجابة النموذجية للفرض',d:'اطّلع على التصحيح النموذجي',img:'images/devoirsl1.webp'},
  {ic:'💿',c:'#d97706',t:'محاكاة تثبيت Windows 7',d:'جرّب خطوات التثبيت تفاعليا',url:'https://csdocs.work.gd/win7sim.html'},
  {ic:'📚',c:'#4f46e5',t:'امتحانات السنوات الماضية',d:'تدرّب على مواضيع سابقة',url:'https://exams.work.gd/'},
  {ic:'🧮',c:'#0d9488',t:'حساب المعدل',d:'احسب معدلك بسهولة',url:'https://exams.work.gd/calculmoyen.html'}
@@ -403,9 +425,9 @@ function showDash(){
      '<button class="btn ghost sm" id="out">خروج</button></div></div></header>'+
    '<main class="wrap">'+
     '<section class="ov fade">'+ringSvg(pc)+
-      '<div><h2>أهلا '+esc(cur.firstName)+' </h2><p>'+(done?'واصل رحلتك، أنت تتقدم بشكل رائع.':'مستعد لبدء رحلتك مع المعلوماتية؟')+'</p>'+
+      '<div><h2>أهلا '+esc(cur.firstName)+' 👋</h2><p>'+(done?'واصل رحلتك، أنت تتقدم بشكل رائع.':'مستعد لبدء رحلتك مع المعلوماتية؟')+'</p>'+
       '<div class="kpis"><div class="kpi"><b>'+done+'/'+TOTAL_LESSONS+'</b><span>دروس منجزة</span></div><div class="kpi"><b>'+unitsDone+'/'+UNITS.length+'</b><span>وحدات مكتملة</span></div><div class="kpi"><b>'+pts+'</b><span>مجموع النقاط</span></div></div>'+
-      (next?'<button class="btn lg" id="cont2">'+(done?'تابع من حيث توقفت ←':'ابدأ التعلم ←')+'</button>':'<span class="done-msg"> أحسنت! أنهيت جميع الوحدات</span>')+
+      (next?'<button class="btn lg" id="cont2">'+(done?'تابع من حيث توقفت ←':'ابدأ التعلم ←')+'</button>':'<span class="done-msg">🎉 أحسنت! أنهيت جميع الوحدات</span>')+
       '</div></section>'+
     '<div class="sec-title"><h2>أدوات ومصادر إضافية</h2><span>تدرّب وراجع بنفسك</span></div>'+
     '<div class="tools">'+TOOLS.map(function(t,i){
@@ -423,7 +445,7 @@ function showDash(){
     b.onclick=function(){openUnit(UNITS.filter(function(u){return u.k===b.dataset.u})[0])};
   });
   Array.prototype.forEach.call(app.querySelectorAll('[data-img]'),function(b){
-    b.onclick=function(){var t=TOOLS[+b.dataset.img];openImg(t.img,t.t)};
+    b.onclick=function(){var t=TOOLS[+b.dataset.img];openImg(t.img+'?v='+V,t.t)};
   });
   window.scrollTo(0,0);
 }
@@ -434,7 +456,7 @@ function openUnit(u){
   var st=getProg()[u.k],h='';
   if(st){try{h='#'+btoa(JSON.stringify({max:st.max||0,done:st.done||{},pts:st.pts||0}))}catch(e){}}
   app.innerHTML='<div class="lbar"><button class="btn ghost sm" id="back">→ الرئيسية</button><div class="tt">'+u.ic+' '+esc(u.t)+'</div><span class="sync" id="sync"></span></div>'+
-    '<iframe id="fr" title="'+esc(u.t)+'" src="'+u.f+h+'"></iframe>';
+    '<iframe id="fr" title="'+esc(u.t)+'" src="'+u.f+'?v='+V+h+'"></iframe>';
   $('back').onclick=showDash;setSync(syncState);
 }
 
@@ -446,7 +468,18 @@ window.addEventListener('message',function(e){
   }
 });
 
+/* ---------- Twemoji: يحوّل الإيموجي تلقائيا بعد كل رسم للواجهة ---------- */
+var twQ=0,twObs=new MutationObserver(function(){if(!twQ)twQ=requestAnimationFrame(twRun)});
+function twRun(){
+  twQ=0;
+  if(!window.twemoji)return; /* إن تعذّر تحميل المكتبة تبقى إيموجي النظام */
+  twObs.disconnect();
+  try{twemoji.parse(document.body,{folder:'svg',ext:'.svg'})}catch(e){}
+  twObs.observe(document.body,{childList:true,subtree:true,characterData:true});
+}
+
 showLogin();
+twRun();
 </script>
 </body>
 </html>
