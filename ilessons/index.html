@@ -30,7 +30,7 @@ bdi{unicode-bidi:isolate}
 
 /* ---------- buttons ---------- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:11px 22px;background:var(--pri);color:#fff;
-  font-weight:700;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s;box-shadow:0 4px 12px rgba(20,70,58,.25)}
+  font-weight:700;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s;box-shadow:0 4px 12px rgba(20,70,58,.25);text-decoration:none}
 .btn:hover:not(:disabled){background:var(--pri2);transform:translateY(-1px)}
 .btn:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
 .btn.ghost{background:transparent;color:var(--tx);border:1px solid var(--bd);box-shadow:none}
@@ -160,6 +160,29 @@ select:focus,input:focus{outline:none;border-color:var(--pri2);box-shadow:0 0 0 
 .unit .btn{background:var(--c);box-shadow:none}
 .unit .btn:hover:not(:disabled){background:var(--c);filter:brightness(1.1)}
 
+/* ---------- tools & resources ---------- */
+.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:760px){.tools{grid-template-columns:1fr}}
+.tool{--c:#14463a;display:flex;align-items:center;gap:14px;width:100%;padding:16px 18px;background:var(--surface);border:1px solid var(--bd);
+  border-radius:var(--r);box-shadow:var(--sh);color:var(--tx);text-decoration:none;cursor:pointer;text-align:start;font:inherit;
+  transition:transform .2s,box-shadow .2s,border-color .2s}
+.tool:hover{transform:translateY(-3px);box-shadow:var(--sh2);border-color:var(--c)}
+.tool .ti{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;font-size:1.5rem;flex:none;background:color-mix(in srgb,var(--c) 14%,var(--surface))}
+.tool .tx2{flex:1;min-width:0}
+.tool b{display:block;font-weight:800;line-height:1.4}
+.tool small{color:var(--mut);display:block;font-size:.85rem}
+.tool .ar{color:var(--mut);font-size:1.2rem}
+
+/* ---------- image viewer ---------- */
+.lb{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.88);display:flex;flex-direction:column;animation:fade .25s ease both}
+.lb-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top,0px));color:#fff}
+.lb-bar .tt{flex:1;font-weight:800;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb-bar .btn.ghost{color:#fff;border-color:rgba(255,255,255,.3)}
+.lb-bar .btn.ghost:hover:not(:disabled){background:rgba(255,255,255,.12)}
+.lb-body{flex:1;overflow:auto;display:flex;padding:10px}
+.lb-body img{margin:auto;max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;background:#fff;cursor:zoom-in}
+.lb-body.zoom img{max-width:none;max-height:none;width:auto;cursor:zoom-out}
+
 /* ---------- lesson viewer ---------- */
 .lbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:8px 14px;background:var(--surface);border-bottom:1px solid var(--bd);height:56px}
 .lbar .tt{flex:1;min-width:0;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -184,6 +207,14 @@ var UNITS=[
 ];
 var TOTAL_LESSONS=UNITS.reduce(function(a,u){return a+u.lessons.length},0);
 
+/* ---------- أدوات ومصادر إضافية ---------- */
+var TOOLS=[
+ {ic:'📝',c:'#e08a3c',t:'معاينة الإجابة النموذجية للفرض',d:'اطّلع على التصحيح النموذجي',img:'images/devoirsl1.webp'},
+ {ic:'💿',c:'#d97706',t:'محاكاة تثبيت Windows 7',d:'جرّب خطوات التثبيت تفاعليا',url:'https://csdocs.work.gd/win7sim.html'},
+ {ic:'📚',c:'#4f46e5',t:'امتحانات السنوات الماضية',d:'تدرّب على مواضيع سابقة',url:'https://exams.work.gd/'},
+ {ic:'🧮',c:'#0d9488',t:'حساب المعدل',d:'احسب معدلك بسهولة',url:'https://exams.work.gd/calculmoyen.html'}
+];
+
 /* ---------- أدوات ---------- */
 var app=document.getElementById('app');
 var cur=null,curU=null,view='login',mem={};
@@ -199,6 +230,23 @@ function ls(k,v){
 function getProg(){try{return JSON.parse(ls('ts_prog:'+sid(cur))||'{}')||{}}catch(e){return{}}}
 function setUnit(k,st){var p=getProg();p[k]=st;ls('ts_prog:'+sid(cur),JSON.stringify(p));pushUnit(k,st)}
 function brand(){return '<div class="brand"><span class="logo">💻</span><span class="tx">رحلة المعلوماتية</span></div>'}
+
+/* ---------- عارض الصور ---------- */
+function openImg(src,title){
+  var o=document.createElement('div');o.className='lb';
+  o.innerHTML='<div class="lb-bar"><div class="tt">'+esc(title)+'</div>'+
+    '<a class="btn ghost sm" href="'+esc(src)+'" target="_blank" rel="noopener">فتح في تبويب ↗</a>'+
+    '<button class="btn ghost sm" id="lbx">✕ إغلاق</button></div>'+
+    '<div class="lb-body" id="lbb"><img src="'+esc(src)+'" alt="'+esc(title)+'"></div>';
+  document.body.appendChild(o);
+  function close(){o.remove();document.removeEventListener('keydown',key)}
+  function key(e){if(e.key==='Escape')close()}
+  document.addEventListener('keydown',key);
+  o.querySelector('#lbx').onclick=close;
+  o.querySelector('#lbb').onclick=function(e){
+    if(e.target.tagName==='IMG')this.classList.toggle('zoom');else close();
+  };
+}
 
 /* ---------- Supabase ---------- */
 var syncState='';
@@ -359,6 +407,13 @@ function showDash(){
       '<div class="kpis"><div class="kpi"><b>'+done+'/'+TOTAL_LESSONS+'</b><span>دروس منجزة</span></div><div class="kpi"><b>'+unitsDone+'/'+UNITS.length+'</b><span>وحدات مكتملة</span></div><div class="kpi"><b>'+pts+'</b><span>مجموع النقاط</span></div></div>'+
       (next?'<button class="btn lg" id="cont2">'+(done?'تابع من حيث توقفت ←':'ابدأ التعلم ←')+'</button>':'<span class="done-msg">🎉 أحسنت! أنهيت جميع الوحدات</span>')+
       '</div></section>'+
+    '<div class="sec-title"><h2>أدوات ومصادر إضافية</h2><span>تدرّب وراجع بنفسك</span></div>'+
+    '<div class="tools">'+TOOLS.map(function(t,i){
+      var inner='<span class="ti">'+t.ic+'</span><span class="tx2"><b>'+esc(t.t)+'</b><small>'+esc(t.d)+'</small></span><span class="ar">'+(t.img?'🔍':'↗')+'</span>';
+      return t.img
+        ?'<button class="tool" style="--c:'+t.c+'" data-img="'+i+'">'+inner+'</button>'
+        :'<a class="tool" style="--c:'+t.c+'" href="'+t.url+'" target="_blank" rel="noopener">'+inner+'</a>';
+    }).join('')+'</div>'+
     '<div class="sec-title"><h2>وحداتك الدراسية</h2><span>اختر الوحدة التي تريد دراستها</span></div>'+
     '<div class="units">'+cards+'</div>'+
    '</main>';
@@ -366,6 +421,9 @@ function showDash(){
   if(next)$('cont2').onclick=function(){openUnit(next)};
   Array.prototype.forEach.call(app.querySelectorAll('[data-u]'),function(b){
     b.onclick=function(){openUnit(UNITS.filter(function(u){return u.k===b.dataset.u})[0])};
+  });
+  Array.prototype.forEach.call(app.querySelectorAll('[data-img]'),function(b){
+    b.onclick=function(){var t=TOOLS[+b.dataset.img];openImg(t.img,t.t)};
   });
   window.scrollTo(0,0);
 }
