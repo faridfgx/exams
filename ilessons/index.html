@@ -209,7 +209,7 @@ var TOTAL_LESSONS=UNITS.reduce(function(a,u){return a+u.lessons.length},0);
 
 /* ---------- أدوات ومصادر إضافية ---------- */
 var TOOLS=[
- {ic:'📝',c:'#e08a3c',t:'معاينة الإجابة النموذجية للفرض',d:'اطّلع على التصحيح النموذجي',img:'images/devoirsl1.webp'},
+ {ic:'📝',c:'#e08a3c',t:'معاينة الإجابة النموذجية للفرض',d:'اطّلع على التصحيح النموذجي',img:'devoirsl1.webp'},
  {ic:'💿',c:'#d97706',t:'محاكاة تثبيت Windows 7',d:'جرّب خطوات التثبيت تفاعليا',url:'https://csdocs.work.gd/win7sim.html'},
  {ic:'📚',c:'#4f46e5',t:'امتحانات السنوات الماضية',d:'تدرّب على مواضيع سابقة',url:'https://exams.work.gd/'},
  {ic:'🧮',c:'#0d9488',t:'حساب المعدل',d:'احسب معدلك بسهولة',url:'https://exams.work.gd/calculmoyen.html'}
@@ -403,9 +403,9 @@ function showDash(){
      '<button class="btn ghost sm" id="out">خروج</button></div></div></header>'+
    '<main class="wrap">'+
     '<section class="ov fade">'+ringSvg(pc)+
-      '<div><h2>أهلا '+esc(cur.firstName)+' 👋</h2><p>'+(done?'واصل رحلتك، أنت تتقدم بشكل رائع.':'مستعد لبدء رحلتك مع المعلوماتية؟')+'</p>'+
+      '<div><h2>أهلا '+esc(cur.firstName)+' </h2><p>'+(done?'واصل رحلتك، أنت تتقدم بشكل رائع.':'مستعد لبدء رحلتك مع المعلوماتية؟')+'</p>'+
       '<div class="kpis"><div class="kpi"><b>'+done+'/'+TOTAL_LESSONS+'</b><span>دروس منجزة</span></div><div class="kpi"><b>'+unitsDone+'/'+UNITS.length+'</b><span>وحدات مكتملة</span></div><div class="kpi"><b>'+pts+'</b><span>مجموع النقاط</span></div></div>'+
-      (next?'<button class="btn lg" id="cont2">'+(done?'تابع من حيث توقفت ←':'ابدأ التعلم ←')+'</button>':'<span class="done-msg">🎉 أحسنت! أنهيت جميع الوحدات</span>')+
+      (next?'<button class="btn lg" id="cont2">'+(done?'تابع من حيث توقفت ←':'ابدأ التعلم ←')+'</button>':'<span class="done-msg"> أحسنت! أنهيت جميع الوحدات</span>')+
       '</div></section>'+
     '<div class="sec-title"><h2>أدوات ومصادر إضافية</h2><span>تدرّب وراجع بنفسك</span></div>'+
     '<div class="tools">'+TOOLS.map(function(t,i){
